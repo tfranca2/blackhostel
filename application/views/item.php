@@ -16,9 +16,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </script>
 </head>
 <body>
-<div id="row">
+<div class="row">
 	<h1>Cadastro de Item</h1>
-	
+</div>
 		<?php 
 		/**
 		* Área da tela responsável pela pesquisa e exibição da lista de resultados
@@ -28,23 +28,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 			<div class="row">
 				<p> Consulta </p>
-				<a href="<?php echo site_url();?>/item/insert">Novo</a>
 			</div>
 			<div class="row">
-				<form action="<?php echo site_url();?>/item/search">
 				<div class="large-4 columns">
+				<form action="<?php echo site_url();?>/item/search">
 				
 					<label>Descrição
 						<input type="text" placeholder="Descrição do item" name="descricao" />
 					</label>	
-					<input type="submit" name="submit" value="Buscar" class="button success">
+					<input type="submit" name="submit" value="Buscar" class="button success tiny">
 				
-				</div>				
 				</form>
+				</div>				
+				<div class="large-8 columns">
+					<a class="button tiny right" href="<?php echo site_url();?>/item/insert">Novo</a>
+				</div>
+				
 				<hr>
 			
 			</div>
 			<div class="row">
+				<div class="large-12 columns">
 				<table> 
 					<tr>
 						<th>ID</th>
@@ -55,12 +59,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<?php foreach($tabledata as $item){ ?>
 					<tr>
 						<td><?php echo $item->id_item ?></td>
-						<td><?php echo $item->descricao ?></td>
+						<td width="70%"><?php echo $item->descricao ?></td>
 						<td><?php echo $item->preco ?></td>
 						<th></th>
 					</tr>
 					<?php } ?>
 				</table> 
+				</div>
 			</div>
 			
 		<?php 
@@ -91,10 +96,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="row">
 			<div class="large-4 columns">
 			 <?php
-				echo form_submit(array('name'=>'cadastrar','class' =>'button success'),'Cadastrar')." ";
-				echo form_reset(array('name'=>'limpar','class' =>'button success'),'Limpar');
+				echo form_submit(array('name'=>'cadastrar','class' =>'button success tiny'),'Cadastrar')." ";
+				echo form_reset(array('name'=>'limpar','class' =>'button success tiny'),'Limpar');
 			  ?>
-			 <a href="<?php echo site_url();?>/item" class="button success">Voltar</a>  
+			
+			</div>
+			<div class="large-8 columns">
+				<a class="button tiny right" href="<?php echo site_url();?>/item" class="button success">Voltar</a>  
 			</div>
 		</div>
 		
@@ -113,8 +121,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 		<?php } ?>
 
-
-</div>
 
 </body>
 </html>
