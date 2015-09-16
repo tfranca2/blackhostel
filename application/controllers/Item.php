@@ -11,27 +11,30 @@ class Item extends CI_Controller {
     }
 	 
 	public function index(){
-		$viewData = array('part' => 'search','tabledata'=>$this->db->get('item')->result());
-		$this->load->view('item', $viewData);
+		
+		$this->load->view('item', array(
+					'part' => 'search'
+					,'tabledata'=>$this->db->get('item')->result()
+				));
 	}
 	
 	public function search(){
 		$this->db->like('descricao', $this->input->get('descricao'));
-		$viewData = array('part' => 'search','tabledata'=>$this->db->get('item')->result());
-		$this->load->view('item', $viewData);
-		$this->db->like('title', 'match'); 
+		
+		$this->load->view('item',array(
+					'part' => 'search'
+					,'tabledata'=>$this->db->get('item')->result()
+				));
 	}
 	
 	public function insert(){
-		$viewData = array('part' => 'insert');
-		$this->load->view('item', $viewData);
+		$this->load->view('item', array('part' => 'insert'));
 	}
 	
 	
 	public function save(){
 		$this->form_validation->set_message('monetary',"%s não corresponde a um padrão de moeda.");
 		$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required|min_length[5]|max_length[60]|ucwords');
-		//$this->form_validation->set_rules('preco', 'Preço', 'required|monetary');
 		$this->form_validation->set_rules('preco', 'Preço', 'required');
 		
 		if ($this->form_validation->run() == TRUE){
@@ -39,26 +42,18 @@ class Item extends CI_Controller {
 			$dados = elements(array('descricao','preco'),$this->input->post());
 			$this->db->insert('item', $dados); 
 			
-			$viewData = array(
-				'msg' => 'Item cadastrado com sucesso'
-				,'part' => 'insert');
-			
-			$this->load->view('item',$viewData);
+			$this->load->view('item',array(
+					'msg' => 'Item cadastrado com sucesso'
+					,'part' => 'insert'
+				));
 			
 		}else{
-			$viewData = array('part' => 'insert');
-			$this->load->view('item', $viewData);
+			$this->load->view('item', array('part' => 'insert'));
 		}
 	}
 	
 	public function monetary($str){
-		if(preg_match('/^[\d\.\,]+$/', $str)){
-			return TRUE;
-		}
-		return FALSE;
+		return (preg_match('/^[\d\.\,]+$/', $str))?TRUE:FALSE;
 	}
-	
-	
-	
 	
 }
