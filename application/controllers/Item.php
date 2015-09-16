@@ -3,22 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Item extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-	 
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper(array('url','form','array'));
@@ -50,22 +34,21 @@ class Item extends CI_Controller {
 		//$this->form_validation->set_rules('preco', 'Preço', 'required|monetary');
 		$this->form_validation->set_rules('preco', 'Preço', 'required');
 		
-		if ($this->form_validation->run() == FALSE){
-			$viewData = array('part' => 'insert');
-			$this->load->view('item', $viewData);
-		}else{
+		if ($this->form_validation->run() == TRUE){
 			
 			$dados = elements(array('descricao','preco'),$this->input->post());
 			$this->db->insert('item', $dados); 
 			
 			$viewData = array(
-			'msg' => 'Item cadastrado com sucesso'
-			,'part' => 'insert'
-			);
+				'msg' => 'Item cadastrado com sucesso'
+				,'part' => 'insert');
 			
 			$this->load->view('item',$viewData);
+			
+		}else{
+			$viewData = array('part' => 'insert');
+			$this->load->view('item', $viewData);
 		}
-		
 	}
 	
 	public function monetary($str){
