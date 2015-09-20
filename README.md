@@ -1,7 +1,7 @@
 Blackhostel
 =
 
-Gerenciamento de pousada
+Gerenciamento de Pousada
 -
 
 
