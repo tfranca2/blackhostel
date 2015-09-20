@@ -11,7 +11,6 @@ class Item extends CI_Controller {
     }
 	 
 	public function index(){
-		
 		$this->load->view('index', array(
 					'page'=>'item'
 					,'title'=> 'Itens'
@@ -81,7 +80,6 @@ class Item extends CI_Controller {
 			
 			$this->session->set_flashdata('msg', 'Item atualizado com sucesso.');
 			redirect(current_url());
-			
 			
 		}else{
 			$this->editing();
