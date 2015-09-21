@@ -13,7 +13,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 * Área da tela responsável pela pesquisa e exibição da lista de resultados
 */
 	if($part =="searching"){
+	
+
 ?>
+
 
 	<form action="<?php echo site_url();?>/item/searching">
 	<div class="row">
@@ -43,13 +46,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<tr>
 				<td><?php echo $item->id_item ?></td>
 				<td width="70%"><?php echo $item->descricao ?></td>
-				<td><?php echo $item->preco ?></td>
+				<td><?php echo monetaryOutput($item->preco) ?></td>
 				<td>
 					<a href="<?php echo site_url();?>/item/editing/<?php  echo $item->id_item ?>">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
-				</td>
-				<td>
+				
 					<a href="<?php echo site_url();?>/item/deleting/<?php  echo $item->id_item ?>">Deletar 
 						<span class="glyphicon glyphicon-delete"></span>
 					</a>
@@ -189,9 +191,9 @@ echo form_close();
 	<?php } ?>
 	
 	
-	<?php /* if(!empty($this->session->flashdata('msg'))){ ?>
+	<?php  if(!empty($this->session->flashdata('msg'))){ ?>
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } */?>
+	<?php } ?>
 </div>	
