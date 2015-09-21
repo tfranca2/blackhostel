@@ -49,6 +49,18 @@ class Item extends CI_Controller {
 			$this->searching();
 		}
 	}
+	public function deleting(){
+		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_item');
+		if($id){
+			$this->load->view('index', array(
+						'page'=>'item'
+						,'title'=> 'Itens'
+						,'part' => 'deleting'
+						,'item'=> $this->db->get_where('item', array('id_item' => $id))->row() ));
+		}else{
+			$this->searching();
+		}
+	}
 	
 	public function save(){
 		if ($this->runFormValidations() == TRUE){
@@ -83,6 +95,22 @@ class Item extends CI_Controller {
 			
 		}else{
 			$this->editing();
+		}
+	}
+	
+	public function delete(){
+		if ($this->runFormValidations() == TRUE){
+			
+			$dados = elements(array('descricao','preco'),$this->input->post());
+			
+			$this->db->where('id_item', $this->input->post('id_item'));
+			$this->db->delete('item', $dados); 
+			
+			$this->session->set_flashdata('msg', 'Item deletado com sucesso.');
+			redirect(current_url());
+			
+		}else{
+			$this->deleting();
 		}
 	}
 	
