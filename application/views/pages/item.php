@@ -139,7 +139,13 @@ echo form_close();
 ?>
 
 <div class="row">
-	<?php echo validation_errors(); ?>
+	
+	<?php if(!empty(validation_errors())){ ?>
+	<div class="alert alert-success">
+		<?php echo validation_errors(); ?>
+	</div>
+	<?php } ?>
+	
 	
 	<?php if(!empty($this->session->flashdata('msg'))){ ?>
 	<div class="alert alert-success">
