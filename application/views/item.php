@@ -89,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="large-4 columns">
 			  <?php
 				echo form_label('Preço');
-				echo form_input(array('name'=>'preco','placeholder'=>'Preço do item'),set_value('preco'));
+				echo form_input(array('name'=>'preco','id'=>'preco','placeholder'=>'Preço do item'),set_value('preco'));
 			  ?>
 			</div>
 		</div>
