@@ -46,8 +46,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td><?php echo $item->preco ?></td>
 				<td>
 					<a href="<?php echo site_url();?>/item/editing/<?php  echo $item->id_item ?>">Editar 
-						<span class="glyphicon glyphicon-edit">
-						</span>
+						<span class="glyphicon glyphicon-edit"></span>
+					</a>
+				</td>
+				<td>
+					<a href="<?php echo site_url();?>/item/deleting/<?php  echo $item->id_item ?>">Deletar 
+						<span class="glyphicon glyphicon-delete"></span>
 					</a>
 				</td>
 			</tr>
@@ -95,7 +99,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 
 <?php 
-echo form_close();
 
 /**
 * Área da tela responsável pelo formulário de edição de dados
@@ -135,6 +138,45 @@ echo form_close();
 </div>
 
 <?php
+/**
+* Área da tela responsável pela confirmação de deleção dos dados
+*/
+	}else if($part =="deleting"){
+		
+	echo form_open('item/delete');
+	echo form_hidden('id_item', $item->id_item);
+?>
+
+<div class="row">
+	<div class="col-md-6 form-group">		  
+	  <?php
+		echo form_label('Descrição');
+		echo form_input(array('name'=>'descricao','class'=>'form-control','readonly'=>'readonly'),$item->descricao);
+	  ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('Preço');
+		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','readonly'=>'readonly'),$item->preco);
+	  ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	 <?php
+		echo form_submit(array('name'=>'deletar','class' =>'btn btn-danger'),'Deletar')." ";
+		//echo form_reset(array('name'=>'limpar','class' =>'btn btn-danger'),'Limpar');
+	  ?>	
+	</div>
+	<div class="col-md-6 form-group">
+		<a class="btn btn-info" href="<?php echo site_url();?>/item" class="button success">Voltar</a>  
+	</div>
+</div>
+
+<?php
+echo form_close();
 }
 ?>
 
@@ -147,9 +189,9 @@ echo form_close();
 	<?php } ?>
 	
 	
-	<?php if(!empty($this->session->flashdata('msg'))){ ?>
+	<?php /* if(!empty($this->session->flashdata('msg'))){ ?>
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } ?>
+	<?php } */?>
 </div>	
