@@ -19,7 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `blackhostel`
 --
-
+create database `blackhostel`;
+use `blackhostel`;
 -- --------------------------------------------------------
 
 --
