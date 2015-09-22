@@ -14,3 +14,15 @@ function monetaryOutput($number){
 	return preg_replace($pattern, $replacementCent, $number);
 	
 }
+
+function styleMenuActive($menu){
+	if(containsStr($menu,$_SERVER['REQUEST_URI'])){
+		return 'active';
+	}
+}
+
+function containsStr($str, $src){
+	return (preg_match("/$str/",$src))?TRUE:FALSE;
+}
+
+

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Item extends CI_Controller {
+class Perfil extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
@@ -12,10 +12,10 @@ class Item extends CI_Controller {
 	 
 	public function index(){
 		$this->load->view('index', array(
-					'page'=>'item'
-					,'title'=> 'Itens'
+					'page'=>'perfil'
+					,'title'=> 'Perfil'
 					,'part' => 'searching'
-					,'tabledata'=>$this->db->get('item')->result()
+					,'tabledata'=>$this->db->get('perfil')->result()
 				));
 	}
 	
@@ -23,40 +23,41 @@ class Item extends CI_Controller {
 		$this->db->like('descricao', $this->input->get('descricao'));
 		
 		$this->load->view('index',array(
-					'page'=>'item'
-					,'title'=> 'Itens'
+					'page'=>'perfil'
+					,'title'=> 'Perfis'
 					,'part' => 'searching'
-					,'tabledata'=>$this->db->get('item')->result()
+					,'tabledata'=>$this->db->get('perfil')->result()
 				));
 	}
 	
 	public function inserting(){
 		$this->load->view('index', array(
-					'page'=>'item'
-					,'title'=> 'Itens'
-					,'part' => 'inserting'));
+					'page'=>'perfil'
+					,'title'=> 'Perfis'
+					,'part' => 'inserting'
+					,'itens'=> $this->db->get('item')->result()));
 	}
 	
 	public function editing(){
-		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_item');
+		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_perfil');
 		if($id){
 			$this->load->view('index', array(
-						'page'=>'item'
-						,'title'=> 'Itens'
+						'page'=>'perfil'
+						,'title'=> 'Perfis'
 						,'part' => 'editing'
-						,'item'=> $this->db->get_where('item', array('id_item' => $id))->row() ));
+						,'perfil'=> $this->db->get_where('perfil', array('id_perfil' => $id))->row() ));
 		}else{
 			$this->searching();
 		}
 	}
 	public function deleting(){
-		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_item');
+		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_perfil');
 		if($id){
 			$this->load->view('index', array(
-						'page'=>'item'
-						,'title'=> 'Itens'
+						'page'=>'perfil'
+						,'title'=> 'Perfis'
 						,'part' => 'deleting'
-						,'item'=> $this->db->get_where('item', array('id_item' => $id))->row() ));
+						,'perfil'=> $this->db->get_where('perfil', array('id_perfil' => $id))->row() ));
 		}else{
 			$this->searching();
 		}
@@ -65,17 +66,17 @@ class Item extends CI_Controller {
 	public function save(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('descricao','preco'),$this->input->post());
-			$dados['preco'] = monetaryInput($dados['preco']);
-			$this->db->insert('item', $dados); 
+			$dados = elements(array('descricao','preco_base'),$this->input->post());
+			$dados['preco_base'] = monetaryInput($dados['preco_base']);
+			$this->db->insert('perfil', $dados); 
 			
 			$this->load->view('index',array(
-					'page'=>'item'
-					,'title'=> 'Itens'
+					'page'=>'perfil'
+					,'title'=> 'Perfis'
 					,'part' => 'inserting'
 			));
 			
-			$this->session->set_flashdata('msg', 'Item cadastrado com sucesso.');
+			$this->session->set_flashdata('msg', 'Perfil cadastrado com sucesso.');
 			redirect(current_url());
 			
 		}else{
@@ -88,10 +89,10 @@ class Item extends CI_Controller {
 			
 			$dados = elements(array('descricao','preco'),$this->input->post());
 			$dados['preco'] = monetaryInput($dados['preco']);
-			$this->db->where('id_item', $this->input->post('id_item'));
-			$this->db->update('item', $dados); 
+			$this->db->where('id_perfil', $this->input->post('id_perfil'));
+			$this->db->update('perfil', $dados); 
 			
-			$this->session->set_flashdata('msg', 'Item atualizado com sucesso.');
+			$this->session->set_flashdata('msg', 'Perfil atualizado com sucesso.');
 			redirect(current_url());
 			
 		}else{
@@ -103,10 +104,10 @@ class Item extends CI_Controller {
 		if ($this->runFormValidations() == TRUE){
 			
 			
-			$this->db->where('id_item', $this->input->post('id_item'));
-			$this->db->delete('item'); 
+			$this->db->where('id_perfil', $this->input->post('id_perfil'));
+			$this->db->delete('perfil'); 
 			
-			$this->session->set_flashdata('msg', 'Item deletado com sucesso.');
+			$this->session->set_flashdata('msg', 'Perfil deletado com sucesso.');
 			redirect(current_url());
 			
 		}else{
@@ -122,7 +123,7 @@ class Item extends CI_Controller {
 		
 		
 		$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required|min_length[5]|max_length[60]|ucwords');
-		$this->form_validation->set_rules('preco', 'Preço', 'required');
+		$this->form_validation->set_rules('preco_base', 'Preço', 'required');
 		
 		return $this->form_validation->run();
 	

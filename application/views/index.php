@@ -76,7 +76,8 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="<?php echo site_url()."/item"?>">Itens </a></li>
+            <li class="<?php echo styleMenuActive('item') ?>"><a href="<?php echo site_url()."/item"?>">Itens </a></li>
+			<li class="<?php echo styleMenuActive('perfil') ?>"><a href="<?php echo site_url()."/perfil"?>">Perfis </a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Reports</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Analytics</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Export</a></li>
