@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 15-Set-2015 às 18:51
+-- Generation Time: 22-Set-2015 às 18:24
 -- Versão do servidor: 5.6.25
 -- PHP Version: 5.5.27
 
@@ -19,8 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `blackhostel`
 --
-create database `blackhostel`;
-use `blackhostel`;
+
 -- --------------------------------------------------------
 
 --
@@ -31,25 +30,45 @@ CREATE TABLE IF NOT EXISTS `item` (
   `id_item` int(11) NOT NULL,
   `descricao` varchar(200) NOT NULL,
   `preco` decimal(10,2) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `item`
 --
 
 INSERT INTO `item` (`id_item`, `descricao`, `preco`) VALUES
-(1, 'BLABLALBA', '250.00'),
-(2, 'BLABLALBA', '12.00'),
-(3, 'BLABLALBA', '250.00'),
-(4, 'BLABLALBA', '250.00'),
-(5, 'BLABLALBA', '250.00'),
-(6, 'Coca Cola', '250.00'),
-(7, 'CocaCola Zero', '10.00'),
-(8, 'Coca-Cola Zero', '2.00'),
-(9, 'Coca-Cola Zero', '2.00'),
-(10, 'BLABLALBA', '250.00'),
-(11, 'BLABLALBA', '2.00'),
-(12, 'BLABLALBA', '250.00');
+(20, 'Coca-Cola Zero', '1050.50');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `perfil`
+--
+
+CREATE TABLE IF NOT EXISTS `perfil` (
+  `id_perfil` int(11) NOT NULL,
+  `descricao` varchar(200) NOT NULL,
+  `preco_base` decimal(10,2) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `perfil`
+--
+
+INSERT INTO `perfil` (`id_perfil`, `descricao`, `preco_base`) VALUES
+(1, 'Suite Master', '0.00'),
+(2, 'BLABLALBA', '156156.51');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `perfil_item`
+--
+
+CREATE TABLE IF NOT EXISTS `perfil_item` (
+  `id_perfil` int(11) NOT NULL,
+  `id_item` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -62,6 +81,18 @@ ALTER TABLE `item`
   ADD PRIMARY KEY (`id_item`);
 
 --
+-- Indexes for table `perfil`
+--
+ALTER TABLE `perfil`
+  ADD PRIMARY KEY (`id_perfil`);
+
+--
+-- Indexes for table `perfil_item`
+--
+ALTER TABLE `perfil_item`
+  ADD PRIMARY KEY (`id_perfil`,`id_item`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -69,7 +100,12 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT for table `perfil`
+--
+ALTER TABLE `perfil`
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
