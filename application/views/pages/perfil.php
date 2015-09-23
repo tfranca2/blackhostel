@@ -4,9 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <script>
 	$(document).ready(function(){
-		//$('#preco').mask('000.000.000.000.000,00', {reverse: true});
-		$('#duallist').DualListBox({json:false});
-		$('select').DualListBox();
+		$('#preco').mask('000.000.000.000.000,00', {reverse: true});
+		$('#duallist').DualListBox({json:false, available:'Disponiveis', selected:'Selecionados',showing:'mostrando',filterLabel:'Filtro'});
 	});
 </script>
 
@@ -50,12 +49,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td width="70%"><?php echo $perfil->descricao ?></td>
 				<td><?php echo monetaryOutput($perfil->preco_base) ?></td>
 				<td>
-					<a href="<?php echo site_url();?>/perfil/editing/<?php  echo $perfil->id_perfil ?>">Editar 
+					<a href="<?php echo site_url();?>/perfil/editing/<?php  echo $perfil->id_perfil ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
 				
-					<a href="<?php echo site_url();?>/perfil/deleting/<?php  echo $perfil->id_perfil ?>">Deletar 
-						<span class="glyphicon glyphicon-delete"></span>
+					<a href="<?php echo site_url();?>/perfil/deleting/<?php  echo $perfil->id_perfil ?>" class="btn btn-default btn-sm">Deletar 
+						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</td>
 			</tr>
@@ -97,15 +96,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="row">
 	<div class="col-md-6 form-group">
 		<label>Itens</label>
-		<select name="item" class="form-control" id="duallist" multiple="true">
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+		<select name="itens[]" class="form-control" id="duallist" multiple="true">
 			<?php foreach($itens as $item){ ?>
-				<option value="<?php echo $item->id_item ?>" ><?php echo $item->descricao ?></option>
+				<option value="<?php echo $item->id_item ?>"><?php echo $item->descricao.' - '.$item->preco ?> </option>
 			<?php } ?>
 		</select>
 	</div>
 </div>
-
-	
 
 <div class="row">
 	<div class="col-md-6 form-group">
@@ -142,8 +143,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">
 	  <?php
 		echo form_label('Preço');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do perfil'),$perfil->preco);
+		echo form_input(array('name'=>'preco_base','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do perfil'),$perfil->preco_base);
 	  ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+		<select name="itens[]" class="form-control" id="duallist" multiple="true">
+			<?php echo ($perfilItens)?>
+			<?php foreach($itens as $item){ ?>
+				<option value="<?php echo $item->id_item ?>" <?php echo (@in_array($item->id_item, $perfilItens))?'selected="true"':'' ?> ><?php echo $item->descricao.' - '.$item->preco ?> </option>
+			<?php } ?>
+		</select>
 	</div>
 </div>
 <div class="row">
@@ -180,7 +191,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">
 	  <?php
 		echo form_label('Preço');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','readonly'=>'readonly'),$perfil->preco);
+		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','readonly'=>'readonly'),$perfil->preco_base);
 	  ?>
 	</div>
 </div>

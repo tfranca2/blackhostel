@@ -45,11 +45,26 @@ class Perfil extends CI_Controller {
 						'page'=>'perfil'
 						,'title'=> 'Perfis'
 						,'part' => 'editing'
-						,'perfil'=> $this->db->get_where('perfil', array('id_perfil' => $id))->row() ));
+						,'perfil'=> $this->db->get_where('perfil', array('id_perfil' => $id))->row() 
+						,'itens'=> $this->db->get('item')->result()
+						,'perfilItens'=> $this->itensPerfil($id) ));
+						
+					
 		}else{
 			$this->searching();
 		}
 	}
+	
+	public function itensPerfil($id){
+		$this->db->select('id_item');
+		$ids = $this->db->get_where('perfil_item', array('id_perfil' => $id))->result_array();
+		$out = array();
+		foreach($ids as $id){
+			array_push($out, $id['id_item']);
+		}
+		return $out;
+	}
+	
 	public function deleting(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_perfil');
 		if($id){
@@ -70,17 +85,16 @@ class Perfil extends CI_Controller {
 			$dados['preco_base'] = monetaryInput($dados['preco_base']);
 			$this->db->insert('perfil', $dados); 
 			$last_id = $this->db->insert_id();
-		
-			$itens = array(1,2,3);
+			
+			$itens = $this->input->post('itens[]');
+			
 			foreach($itens as $item){
 				$data = array(
 				   'id_perfil' => $last_id, 
 				   'id_item' => $item
 				 );	
-				//$this->db->insert('perfil_item', $data); 	
+				$this->db->insert('perfil_item', $data); 	
 			}
-			
-			
 			
 			$this->load->view('index',array(
 					'page'=>'perfil'
@@ -99,10 +113,21 @@ class Perfil extends CI_Controller {
 	public function edit(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('descricao','preco'),$this->input->post());
-			$dados['preco'] = monetaryInput($dados['preco']);
+			$dados = elements(array('descricao','preco_base'),$this->input->post());
+			$dados['preco_base'] = monetaryInput($dados['preco_base']);
 			$this->db->where('id_perfil', $this->input->post('id_perfil'));
 			$this->db->update('perfil', $dados); 
+			
+			$itens = $this->input->post('itens[]');
+			$this->db->delete('perfil_item',array('id_perfil' => $this->input->post('id_perfil')));
+			
+			foreach($itens as $item){
+				$data = array(
+				   'id_perfil' =>$this->input->post('id_perfil'), 
+				   'id_item' => $item
+				 );
+				$this->db->insert('perfil_item', $data); 	
+			}
 			
 			$this->session->set_flashdata('msg', 'Perfil atualizado com sucesso.');
 			redirect(current_url());
