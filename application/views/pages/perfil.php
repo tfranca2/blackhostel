@@ -91,7 +91,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="row">
 	<div class="col-md-6 form-group">
-	
+		<label>Itens</label>
 		<select name="item" class="form-control">
 			<?php foreach($itens as $item){ ?>
 				<option value="<?php echo $item->id_item ?>" ><?php echo $item->descricao ?></option>

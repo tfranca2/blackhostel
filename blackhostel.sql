@@ -89,8 +89,15 @@ ALTER TABLE `perfil`
 --
 -- Indexes for table `perfil_item`
 --
-ALTER TABLE `perfil_item`
-  ADD PRIMARY KEY (`id_perfil`,`id_item`);
+--ALTER TABLE `perfil_item`
+--  ADD PRIMARY KEY (`id_perfil`,`id_item`);
+ALTER TABLE perfil_item
+ADD FOREIGN KEY (id_perfil)
+REFERENCES perfil(id_perfil);
+
+ALTER TABLE perfil_item
+ADD FOREIGN KEY (id_item)
+REFERENCES item(id_item);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -100,12 +107,18 @@ ALTER TABLE `perfil_item`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT;
+  
+  
 --
 -- AUTO_INCREMENT for table `perfil`
 --
 ALTER TABLE `perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT;
+  
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+

@@ -69,6 +69,18 @@ class Perfil extends CI_Controller {
 			$dados = elements(array('descricao','preco_base'),$this->input->post());
 			$dados['preco_base'] = monetaryInput($dados['preco_base']);
 			$this->db->insert('perfil', $dados); 
+			$last_id = $this->db->insert_id();
+		
+			$itens = array(1,2,3);
+			foreach($itens as $item){
+				$data = array(
+				   'id_perfil' => $last_id, 
+				   'id_item' => $item
+				 );	
+				//$this->db->insert('perfil_item', $data); 	
+			}
+			
+			
 			
 			$this->load->view('index',array(
 					'page'=>'perfil'
