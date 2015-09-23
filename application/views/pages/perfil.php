@@ -4,7 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <script>
 	$(document).ready(function(){
-		$('#preco').mask('000.000.000.000.000,00', {reverse: true});
+		//$('#preco').mask('000.000.000.000.000,00', {reverse: true});
+		$('#duallist').DualListBox({json:false});
+		$('select').DualListBox();
 	});
 </script>
 
@@ -58,6 +60,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</td>
 			</tr>
 			<?php } ?>
+			
+			
+			
 		</table> 
 		</div>
 	</div>
@@ -92,12 +97,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="row">
 	<div class="col-md-6 form-group">
 		<label>Itens</label>
-		<select name="item" class="form-control">
+		<select name="item" class="form-control" id="duallist" multiple="true">
 			<?php foreach($itens as $item){ ?>
 				<option value="<?php echo $item->id_item ?>" ><?php echo $item->descricao ?></option>
 			<?php } ?>
-		</select>	
-		
+		</select>
 	</div>
 </div>
 
