@@ -93,6 +93,7 @@
           <ul class="nav nav-sidebar">
             <li class="<?php echo styleMenuActive('item') ?>"><a href="<?php echo site_url()."/item"?>">Itens </a></li>
 			<li class="<?php echo styleMenuActive('perfil') ?>"><a href="<?php echo site_url()."/perfil"?>">Perfis </a></li>
+			<li class="<?php echo styleMenuActive('quarto') ?>"><a href="<?php echo site_url()."/quarto"?>">Quartos </a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Reports</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Analytics</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Export</a></li>
