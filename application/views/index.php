@@ -32,16 +32,31 @@
 	
     <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Placed at the end of the document so the pages load faster 
+	-->
     <script src="<?php echo base_url();?>assets/js/jquery.min.js"></script>
+	<!-- Bootstrap 
+	-->
     <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
-	<!-- Tables Plug-In -->
-    <script src="<?php echo base_url();?>assets/js/bootstrap-table.js"></script>
-	<!-- Mask JQuery -->
+
+	<!-- Mask JQuery 
+	-->
 	<script src="<?php echo base_url();?>assets/js/jquery.mask.min.js"></script>
    
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug 
+	-->
     <script src="<?php echo base_url();?>assets/js/ie10-viewport-bug-workaround.js"></script>
+	
+	<!-- DualList Plug-in 
+	-->
+	<script src="<?php echo base_url();?>assets/js/dual-list-box.min.js"></script>
+	<!--
+	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://rawgit.com/Geodan/DualListBox/master/dist/dual-list-box.min.js"></script>
+	-->
+	
 
   </head>
 
@@ -76,7 +91,9 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="<?php echo site_url()."/item"?>">Itens </a></li>
+            <li class="<?php echo styleMenuActive('item') ?>"><a href="<?php echo site_url()."/item"?>">Itens </a></li>
+			<li class="<?php echo styleMenuActive('perfil') ?>"><a href="<?php echo site_url()."/perfil"?>">Perfis </a></li>
+			<li class="<?php echo styleMenuActive('quarto') ?>"><a href="<?php echo site_url()."/quarto"?>">Quartos </a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Reports</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Analytics</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Export</a></li>

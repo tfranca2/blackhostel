@@ -5,7 +5,7 @@ class Item extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->helper(array('url','form','array'));
+		$this->load->helper(array('url','form','array','app'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
     }
@@ -66,6 +66,7 @@ class Item extends CI_Controller {
 		if ($this->runFormValidations() == TRUE){
 			
 			$dados = elements(array('descricao','preco'),$this->input->post());
+			$dados['preco'] = monetaryInput($dados['preco']);
 			$this->db->insert('item', $dados); 
 			
 			$this->load->view('index',array(
@@ -86,7 +87,7 @@ class Item extends CI_Controller {
 		if ($this->runFormValidations() == TRUE){
 			
 			$dados = elements(array('descricao','preco'),$this->input->post());
-			
+			$dados['preco'] = monetaryInput($dados['preco']);
 			$this->db->where('id_item', $this->input->post('id_item'));
 			$this->db->update('item', $dados); 
 			
@@ -101,10 +102,9 @@ class Item extends CI_Controller {
 	public function delete(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('descricao','preco'),$this->input->post());
 			
 			$this->db->where('id_item', $this->input->post('id_item'));
-			$this->db->delete('item', $dados); 
+			$this->db->delete('item'); 
 			
 			$this->session->set_flashdata('msg', 'Item deletado com sucesso.');
 			redirect(current_url());
@@ -119,6 +119,8 @@ class Item extends CI_Controller {
 		$this->form_validation->set_message('monetary',"%s não corresponde a um padrão de moeda.");
 		
 		$this->form_validation->set_message('descricao',"%s é um campo obrigatório.");
+		
+		
 		$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required|min_length[5]|max_length[60]|ucwords');
 		$this->form_validation->set_rules('preco', 'Preço', 'required');
 		
@@ -126,8 +128,5 @@ class Item extends CI_Controller {
 	
 	}
 	
-	public function monetary($str){
-		return (preg_match('/^[\d\.\,]+$/', $str))?TRUE:FALSE;
-	}
 	
 }
