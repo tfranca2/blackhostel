@@ -48,12 +48,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td width="70%"><?php echo $item->descricao ?></td>
 				<td><?php echo monetaryOutput($item->preco) ?></td>
 				<td>
-					<a href="<?php echo site_url();?>/item/editing/<?php  echo $item->id_item ?>">Editar 
+					<a href="<?php echo site_url();?>/item/editing/<?php  echo $item->id_item ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
 				
-					<a href="<?php echo site_url();?>/item/deleting/<?php  echo $item->id_item ?>">Deletar 
-						<span class="glyphicon glyphicon-delete"></span>
+					<a href="<?php echo site_url();?>/item/deleting/<?php  echo $item->id_item ?>" class="btn btn-default btn-sm">Deletar 
+						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</td>
 			</tr>
