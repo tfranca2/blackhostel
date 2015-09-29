@@ -13,15 +13,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 * Área da tela responsável pela pesquisa e exibição da lista de resultados
 */
 	if($part =="searching"){
-	
 
+	
 ?>
 
 
 	<form action="<?php echo site_url();?>/quarto/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
+			<label>Descrição</label>
 			<input type="text" placeholder="Descrição do quarto" name="descricao" class="form-control"/>
+		</div>
+		<div class="col-md-5 form-group">
+			<label>Perfil</label>
+			<select name="id_per" class="form-control">
+					<option value="" > -- Selecione -- </option>
+				<?php foreach($perfils as $perfil){ ?>
+					<option value="<?php echo $perfil->id_perfil ?>" ><?php echo $perfil->descricao ?> </option>
+				<?php } ?>
+			</select>
 		</div>
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
@@ -50,12 +60,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td><?php echo $quarto->numero ?></td>
 				<td><?php echo $quarto->ds_perfil.' R$'.$quarto->preco_perfil ?></td>
 				<td>
-					<a href="<?php echo site_url();?>/quarto/editing/<?php  echo $quarto->id_quarto ?>">Editar 
+					<a href="<?php echo site_url();?>/quarto/editing/<?php  echo $quarto->id_quarto ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
 				
-					<a href="<?php echo site_url();?>/quarto/deleting/<?php  echo $quarto->id_quarto ?>">Deletar 
-						<span class="glyphicon glyphicon-delete"></span>
+					<a href="<?php echo site_url();?>/quarto/deleting/<?php  echo $quarto->id_quarto ?>" class="btn btn-default btn-sm">Deletar 
+						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</td>
 			</tr>
@@ -175,18 +185,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">		  
 	  <?php
 		echo form_label('Descrição');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','readonly'=>'readonly'),$quarto->descricao);
+		echo form_input(array('name'=>'descricao','class'=>'form-control','disabled'=>'true'),$quarto->ds_quarto);
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('Preço');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','readonly'=>'readonly'),$quarto->preco);
+		echo form_label('Número');
+		echo form_input(array('name'=>'numero','id'=>'preco','class'=>'form-control','disabled'=>'true'),$quarto->numero);
 	  ?>
 	</div>
 </div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <label>Perfil</label>
+	  <select name="id_perfil" class="form-control" disabled="true">
+			<?php foreach($perfils as $perfil){ ?>
+				<option value="<?php echo $perfil->id_perfil ?>" <?php echo ($perfil->id_perfil == $quarto->idperfil)?'selected="true"':'' ?> ><?php echo $perfil->descricao.' - R$ '.$perfil->preco_base ?> </option>
+			<?php } ?>
+		</select>
+	</div>
+</div>
+
 <div class="row">
 	<div class="col-md-6 form-group">
 	 <?php
