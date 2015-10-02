@@ -22,6 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<form action="<?php echo site_url();?>/perfil/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
+			<label>Descrição</label>
 			<input type="text" placeholder="Descrição do perfil" name="descricao" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">

@@ -78,7 +78,11 @@
             <li><a href="assets/Dashboard Template for Bootstrap.html">Dashboard</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Settings</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Profile</a></li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Help</a></li>
+            <li>
+				<a href="<?php echo site_url();?>/login/logout">
+					Sair <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> 
+				</a>
+			</li>
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -91,9 +95,21 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="<?php echo styleMenuActive('item') ?>"><a href="<?php echo site_url()."/item"?>">Itens </a></li>
-			<li class="<?php echo styleMenuActive('perfil') ?>"><a href="<?php echo site_url()."/perfil"?>">Perfis </a></li>
-			<li class="<?php echo styleMenuActive('quarto') ?>"><a href="<?php echo site_url()."/quarto"?>">Quartos </a></li>
+            <li class="<?php echo styleMenuActive('item') ?>">
+				<a href="<?php echo site_url()."/item"?>">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Itens
+				</a>
+			</li>
+			<li class="<?php echo styleMenuActive('perfil') ?>">
+				<a href="<?php echo site_url()."/perfil"?>">
+					<span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Perfis
+				</a>
+			</li>
+			<li class="<?php echo styleMenuActive('quarto') ?>">
+				<a href="<?php echo site_url()."/quarto"?>"> 
+					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
+				</a>
+			</li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Reports</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Analytics</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Export</a></li>
