@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php foreach($tabledata as $quarto){ ?>
 			<tr>
 				<td><?php echo $quarto->id_quarto ?></td>
-				<td width="70%"><?php echo $quarto->ds_quarto ?></td>
+				<td width="60%"><?php echo $quarto->ds_quarto ?></td>
 				<td><?php echo $quarto->numero ?></td>
 				<td><?php echo $quarto->ds_perfil.' R$'.$quarto->preco_perfil ?></td>
 				<td>
