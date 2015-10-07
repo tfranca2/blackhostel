@@ -9,6 +9,7 @@ class Quarto extends CI_Controller {
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
 		$this->load->model('Login_model','login');
+		$this->load->model('Perfil_model','perfil');
 		$this->login->authorize();
     }
 	 
@@ -48,7 +49,6 @@ class Quarto extends CI_Controller {
 	public function editing(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_quarto');
 		if($id){
-			
 			$this->load->view('index', array(
 						'page'=>'quarto'
 						,'title'=> 'Quarto'
@@ -58,6 +58,11 @@ class Quarto extends CI_Controller {
 		}else{
 			$this->searching();
 		}
+	}
+	
+	public function detail(){
+		$id = $this->uri->segment(3);
+		//TODO quarto datail
 	}
 	
 	public function getQuartoFromDB($id = 0){

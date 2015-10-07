@@ -58,8 +58,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td><?php echo $quarto->id_quarto ?></td>
 				<td width="60%"><?php echo $quarto->ds_quarto ?></td>
 				<td><?php echo $quarto->numero ?></td>
-				<td><?php echo $quarto->ds_perfil.' R$'.$quarto->preco_perfil ?></td>
+				<td><?php echo $quarto->ds_perfil ?></td>
 				<td>
+					<a href="<?php echo site_url();?>/quarto/detail/<?php  echo $quarto->id_quarto ?>" class="btn btn-default btn-sm">Detalhes 
+						<span class="glyphicon glyphicon-search"></span>
+					</a>
+					
 					<a href="<?php echo site_url();?>/quarto/editing/<?php  echo $quarto->id_quarto ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>

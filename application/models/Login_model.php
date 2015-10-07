@@ -15,17 +15,29 @@ class Login_model extends CI_Model {
 	}
 	
 	public function login(){
-		$this->form_validation->set_rules('email', 'E-mail', 'required');
+		$this->form_validation->set_rules('username', 'Usuário', 'required');
 		$this->form_validation->set_rules('password', 'Senha', 'required');
 		
 		if($this->form_validation->run()){
-			$newdata = array(
-                   'username'  => 'johndoe',
-                   'email'     => 'johndoe@some-site.com',
-                   'logged_in' => TRUE
-               );
-			$this->session->set_userdata('user_session',$newdata);
-			redirect('/', 'refresh');
+			
+			$usuario = $this->db->get_where('usuario', array('login' => $this->input->post("username")))->row();
+			
+			if(empty($usuario))
+				return false;
+			
+			if($usuario->senha == md5($this->input->post("password"))){
+				
+				$newdata = array(
+					   'username'  => 'johndoe',
+					   'email'     => 'johndoe@some-site.com',
+					   'logged_in' => TRUE
+				   );
+				$this->session->set_userdata('user_session',$newdata);
+				return true;
+			
+			}else{
+				return false;
+			}
 		}
 	}
 	

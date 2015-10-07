@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 05-Out-2015 às 18:31
+-- Generation Time: 07-Out-2015 às 18:04
 -- Versão do servidor: 5.6.25
 -- PHP Version: 5.5.27
 
@@ -104,6 +104,26 @@ CREATE TABLE IF NOT EXISTS `quarto` (
 INSERT INTO `quarto` (`id_quarto`, `numero`, `descricao`, `id_perfil`) VALUES
 (1, '2', 'Quarto Tal', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `usuario`
+--
+
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `id_usuario` int(11) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `login` varchar(255) NOT NULL,
+  `senha` varchar(255) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `usuario`
+--
+
+INSERT INTO `usuario` (`id_usuario`, `nome`, `login`, `senha`) VALUES
+(1, 'Jocélio', 'jocelio', '200820e3227815ed1756a6b531e7e0d2');
+
 --
 -- Indexes for dumped tables
 --
@@ -134,6 +154,13 @@ ALTER TABLE `quarto`
   ADD PRIMARY KEY (`id_quarto`);
 
 --
+-- Indexes for table `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `login` (`login`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -152,6 +179,11 @@ ALTER TABLE `perfil`
 --
 ALTER TABLE `quarto`
   MODIFY `id_quarto` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- Constraints for dumped tables
 --
