@@ -22,6 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<form action="<?php echo site_url();?>/perfil/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
+			<label>Descrição</label>
 			<input type="text" placeholder="Descrição do perfil" name="descricao" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
@@ -40,14 +41,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<tr>
 				<th>ID</th>
 				<th>Descrição</th>
-				<th>Preço</th>
+				<th>Reserva</th>
+				<th>Preço Perfil</th>
+				<th>Preço Itens (Soma)</th>
+				<th>Total Perfil</th>
 				<th>Opções</th>
 			</tr>
 			<?php foreach($tabledata as $perfil){ ?>
 			<tr>
 				<td><?php echo $perfil->id_perfil ?></td>
-				<td width="70%"><?php echo $perfil->descricao ?></td>
-				<td><?php echo monetaryOutput($perfil->preco_base) ?></td>
+				<td><?php echo $perfil->descricao ?></td>
+				<td><?php echo $perfil->tp_modo_reserva == 1?'Diária':'Hora'; ?></td>
+				<td><?php echo monetaryOutput($perfil->preco_base) ?> R$</td>
+				<td><?php echo monetaryOutput($perfil->preco_itens) ?> R$</td>
+				<td><?php echo monetaryOutput($perfil->preco_base + $perfil->preco_itens) ?> R$</td>
 				<td>
 					<a href="<?php echo site_url();?>/perfil/editing/<?php  echo $perfil->id_perfil ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
@@ -87,12 +94,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">
 	  <?php
 		echo form_label('Preço');
-		echo form_input(array('name'=>'preco_base','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do perfil / Hora'),set_value('preco'));
+		echo form_input(array('name'=>'preco_base','id'=>'preco','class'=>'form-control','placeholder'=>'Preço base do perfil'),set_value('preco'));
 		
 	  ?>
 	</div>
 </div>
-
+<div class="row">
+	<div class="col-md-6 form-group">
+		<label>Modalidade de Reserva</label>
+		<select name="tp_modo_reserva" class="form-control" required="true">
+				<option value=""> -- Selecione --</option>
+				<option value="1">Diária </option>
+				<option value="2">Hora </option>
+		
+		</select>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-6 form-group">
 		<label>Itens</label>
@@ -145,6 +162,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		echo form_label('Preço');
 		echo form_input(array('name'=>'preco_base','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do perfil'),$perfil->preco_base);
 	  ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+		<label>Modalidade de Reserva</label>
+		<select name="tp_modo_reserva" class="form-control" required="true">
+				<option value=""> -- Selecione --</option>
+				<option value="1" <?php echo ($perfil->tp_modo_reserva ==1)?'selected="true"':'' ?> >Diária </option>
+				<option value="2" <?php echo ($perfil->tp_modo_reserva ==2)?'selected="true"':'' ?>>Hora </option>
+		
+		</select>
 	</div>
 </div>
 <div class="row">

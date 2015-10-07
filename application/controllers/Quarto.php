@@ -8,6 +8,8 @@ class Quarto extends CI_Controller {
 		$this->load->helper(array('url','form','array','app'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
+		$this->load->model('Login_model','login');
+		$this->login->authorize();
     }
 	 
 	public function index(){
@@ -16,18 +18,22 @@ class Quarto extends CI_Controller {
 					'page'=>'quarto'
 					,'title'=> 'Quarto'
 					,'part' => 'searching'
+					,'perfils' => $this->db->get('perfil')->result()
 					,'tabledata'=>$this->getQuartoFromDB()
 				));
 	}
 	
 	public function searching(){
-		$this->db->like('descricao', $this->input->get('descricao'));
+		$this->db->like('quarto.descricao', $this->input->get('descricao'));
+		$this->db->like('quarto.id_perfil', $this->input->get('id_per'));
+		$quartos = $this->getQuartoFromDB();
 		
 		$this->load->view('index',array(
 					'page'=>'quarto'
 					,'title'=> 'Quarto'
 					,'part' => 'searching'
-					,'tabledata'=>$this->db->get("quarto")
+					,'perfils' => $this->getPerfilsFromDB()
+					,'tabledata'=> $quartos
 				));
 	}
 	
@@ -35,7 +41,7 @@ class Quarto extends CI_Controller {
 		$this->load->view('index', array(
 					'page'=>'quarto'
 					,'title'=> 'Quarto'
-					,'perfils' => $this->db->get('perfil')->result()
+					,'perfils' => $this->getPerfilsFromDB()
 					,'part' => 'inserting'));
 	}
 	
@@ -47,7 +53,7 @@ class Quarto extends CI_Controller {
 						'page'=>'quarto'
 						,'title'=> 'Quarto'
 						,'part' => 'editing'
-						,'perfils' => $this->db->get('perfil')->result()
+						,'perfils' => $this->getPerfilsFromDB()
 						,'quarto'=>$this->getQuartoFromDB($id) ));
 		}else{
 			$this->searching();
@@ -68,14 +74,20 @@ class Quarto extends CI_Controller {
 		
 	}
 	
+	public function getPerfilsFromDB(){
+		return $this->db->get('perfil')->result();
+	}
+	
 	public function deleting(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_quarto');
 		if($id){
+			
 			$this->load->view('index', array(
 						'page'=>'quarto'
 						,'title'=> 'Quarto'
 						,'part' => 'deleting'
-						,'quarto'=> $this->db->get_where('quarto', array('id_quarto' => $id))->row() ));
+						,'perfils' => $this->db->get('perfil')->result()
+						,'quarto'=>$this->getQuartoFromDB($id) ));
 		}else{
 			$this->searching();
 		}
@@ -109,7 +121,7 @@ class Quarto extends CI_Controller {
 			$this->db->update('quarto', $dados); 
 			
 			$this->session->set_flashdata('msg', 'Quarto atualizado com sucesso.');
-			$this->searching();
+			$this->index();
 			//redirect(current_url());
 			
 		}else{	

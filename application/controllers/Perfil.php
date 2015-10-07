@@ -8,6 +8,9 @@ class Perfil extends CI_Controller {
 		$this->load->helper(array('url','form','array','app'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
+		$this->load->model('Login_model','login');
+		$this->load->model('Perfil_model','perfilModel');
+		$this->login->authorize();
     }
 	 
 	public function index(){
@@ -15,18 +18,17 @@ class Perfil extends CI_Controller {
 					'page'=>'perfil'
 					,'title'=> 'Perfil'
 					,'part' => 'searching'
-					,'tabledata'=>$this->db->get('perfil')->result()
+					,'tabledata'=>$this->perfilModel->loadPerfil()->result()
 				));
 	}
 	
 	public function searching(){
-		$this->db->like('descricao', $this->input->get('descricao'));
 		
 		$this->load->view('index',array(
 					'page'=>'perfil'
 					,'title'=> 'Perfis'
 					,'part' => 'searching'
-					,'tabledata'=>$this->db->get('perfil')->result()
+					,'tabledata'=>$this->perfilModel->findPerfil($this->input->get('descricao'))->result()
 				));
 	}
 	
@@ -81,7 +83,7 @@ class Perfil extends CI_Controller {
 	public function save(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('descricao','preco_base'),$this->input->post());
+			$dados = elements(array('descricao','preco_base','tp_modo_reserva'),$this->input->post());
 			$dados['preco_base'] = monetaryInput($dados['preco_base']);
 			$this->db->insert('perfil', $dados); 
 			$last_id = $this->db->insert_id();
@@ -113,7 +115,7 @@ class Perfil extends CI_Controller {
 	public function edit(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('descricao','preco_base'),$this->input->post());
+			$dados = elements(array('descricao','preco_base','tp_modo_reserva'),$this->input->post());
 			$dados['preco_base'] = monetaryInput($dados['preco_base']);
 			$this->db->where('id_perfil', $this->input->post('id_perfil'));
 			$this->db->update('perfil', $dados); 
@@ -165,6 +167,8 @@ class Perfil extends CI_Controller {
 		return $this->form_validation->run();
 	
 	}
+	
+
 	
 	
 }
