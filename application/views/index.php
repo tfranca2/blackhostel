@@ -95,32 +95,11 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-<<<<<<< HEAD
             <li class="<?php echo styleMenuActive('item') ?>"><a href="<?php echo site_url()."/item"?>">Itens </a></li>
 			<li class="<?php echo styleMenuActive('perfil') ?>"><a href="<?php echo site_url()."/perfil"?>">Perfis </a></li>
 			<li class="<?php echo styleMenuActive('quarto') ?>"><a href="<?php echo site_url()."/quarto"?>">Quartos </a></li>
 			<li class="<?php echo styleMenuActive('produto') ?>"><a href="<?php echo site_url()."/produto"?>">Produtos </a></li>
 			<li class="<?php echo styleMenuActive('situacao') ?>"><a href="<?php echo site_url()."/situacao"?>">Situações </a></li>
-=======
-            <li class="<?php echo styleMenuActive('item') ?>">
-				<a href="<?php echo site_url()."/item"?>">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Itens
-				</a>
-			</li>
-			<li class="<?php echo styleMenuActive('perfil') ?>">
-				<a href="<?php echo site_url()."/perfil"?>">
-					<span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Perfis
-				</a>
-			</li>
-			<li class="<?php echo styleMenuActive('quarto') ?>">
-				<a href="<?php echo site_url()."/quarto"?>"> 
-					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
-				</a>
-			</li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Reports</a></li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Analytics</a></li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Export</a></li>
->>>>>>> a815ae948e623b11415c93d13ada7eb4962bf041
           </ul>
           <ul class="nav nav-sidebar">
 			<li class="<?php echo styleMenuActive('cliente') ?>"><a href="<?php echo site_url()."/cliente"?>">Cliente </a></li>
