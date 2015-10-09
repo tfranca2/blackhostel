@@ -1,14 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
- 
-?>
-<script>
-	$(document).ready(function(){
-		$('#preco').mask('000.000.000.000.000,00', {reverse: true});
-	});
-</script>
 
-<?php 
 /**
 * Área da tela responsável pela pesquisa e exibição da lista de resultados
 */
@@ -18,11 +10,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 
-	<form action="<?php echo site_url();?>/item/searching">
+	<form action="<?php echo site_url();?>/situacao/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
-			<label>Descrição</label>
-			<input type="text" placeholder="Descrição do item" name="descricao" class="form-control"/>
+			<input type="text" placeholder="Descrição da situacao" name="situacao" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
@@ -30,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 	<div class="row">
 		<div class="col-md-1 col-often-11 form-group pull-right">
-			<a class="btn btn-info" href="<?php echo site_url();?>/item/inserting">Novo</a>
+			<a class="btn btn-info" href="<?php echo site_url();?>/situacao/inserting">Novo</a>
 		</div>
 	</div>
 	</form>
@@ -39,21 +30,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<table class="table table-responsive"> 
 			<tr>
 				<th>ID</th>
-				<th>Descrição</th>
-				<th>Preço</th>
+				<th>Situação</th>
 				<th>Opções</th>
 			</tr>
-			<?php foreach($tabledata as $item){ ?>
+			<?php foreach($tabledata as $situacao){ ?>
 			<tr>
-				<td><?php echo $item->id_item ?></td>
-				<td width="70%"><?php echo $item->descricao ?></td>
-				<td><?php echo monetaryOutput($item->preco) ?></td>
+				<td><?php echo $situacao->id_situacao ?></td>
+				<td width="50%"><?php echo $situacao->situacao ?></td>
 				<td>
-					<a href="<?php echo site_url();?>/item/editing/<?php  echo $item->id_item ?>" class="btn btn-default btn-sm">Editar 
+					<a href="<?php echo site_url();?>/situacao/editing/<?php  echo $situacao->id_situacao ?>">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
 				
-					<a href="<?php echo site_url();?>/item/deleting/<?php  echo $item->id_item ?>" class="btn btn-default btn-sm">Deletar 
+					<a href="<?php echo site_url();?>/situacao/deleting/<?php  echo $situacao->id_situacao ?>">Deletar 
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</td>
@@ -69,22 +58,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 	}else if($part =="inserting"){
 		
-	echo form_open('item/save');	
+	echo form_open('situacao/save');	
 ?>
 
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
 		echo form_label('Descrição');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'Descrição do item'),set_value('descricao'),'autofocus');
-	  ?>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	  <?php
-		echo form_label('Preço');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do item'),set_value('preco'));
+		echo form_input(array('name'=>'situacao','class'=>'form-control','placeholder'=>'Descrição da situação'),set_value('situacao'),'autofocus');
 	  ?>
 	</div>
 </div>
@@ -97,7 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 	</div>
 	<div class="col-md-6 form-group">
-		<a class="btn btn-info" href="<?php echo site_url();?>/item" class="button success">Voltar</a>  
+		<a class="btn btn-info" href="<?php echo site_url();?>/situacao" class="button success">Voltar</a>  
 	</div>
 </div>
 
@@ -108,23 +89,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 	}else if($part =="editing"){
 		
-	echo form_open('item/edit');
-	echo form_hidden('id_item', $item->id_item);
+	echo form_open('situacao/edit');
+	echo form_hidden('id_situacao', $situacao->id_situacao);
 ?>
 
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
 		echo form_label('Descrição');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'Descrição do item'),$item->descricao ,'autofocus');
-	  ?>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	  <?php
-		echo form_label('Preço');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do item'),$item->preco);
+		echo form_input(array('name'=>'situacao','class'=>'form-control','placeholder'=>'Descrição da situacao'),$situacao->situacao ,'autofocus');
 	  ?>
 	</div>
 </div>
@@ -136,7 +109,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  ?>	
 	</div>
 	<div class="col-md-6 form-group">
-		<a class="btn btn-info" href="<?php echo site_url();?>/item" class="button success">Voltar</a>  
+		<a class="btn btn-info" href="<?php echo site_url();?>/situacao" class="button success">Voltar</a>  
 	</div>
 </div>
 
@@ -146,23 +119,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 	}else if($part =="deleting"){
 		
-	echo form_open('item/delete');
-	echo form_hidden('id_item', $item->id_item);
+	echo form_open('situacao/delete');
+	echo form_hidden('id_situacao', $situacao->id_situacao);
 ?>
 
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
 		echo form_label('Descrição');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','readonly'=>'readonly'),$item->descricao);
-	  ?>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	  <?php
-		echo form_label('Preço');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','readonly'=>'readonly'),$item->preco);
+		echo form_input(array('name'=>'situacao','class'=>'form-control','readonly'=>'readonly'),$situacao->situacao);
 	  ?>
 	</div>
 </div>
@@ -170,11 +135,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">
 	 <?php
 		echo form_submit(array('name'=>'deletar','class' =>'btn btn-danger'),'Deletar')." ";
-		//echo form_reset(array('name'=>'limpar','class' =>'btn btn-danger'),'Limpar');
 	  ?>	
 	</div>
 	<div class="col-md-6 form-group">
-		<a class="btn btn-info" href="<?php echo site_url();?>/item" class="button success">Voltar</a>  
+		<a class="btn btn-info" href="<?php echo site_url();?>/situacao" class="button success">Voltar</a>  
 	</div>
 </div>
 

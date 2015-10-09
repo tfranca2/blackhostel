@@ -231,7 +231,7 @@ echo form_close();
 
 <div class="row">
 	
-	<?php if(!empty(validation_errors())){ ?>
+	<?php /* if(!empty(validation_errors())){ ?>
 	<div class="alert alert-success">
 		<?php echo validation_errors(); ?>
 	</div>
@@ -242,5 +242,5 @@ echo form_close();
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } ?>
+	<?php } */ ?>
 </div>	

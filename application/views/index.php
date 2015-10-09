@@ -95,31 +95,16 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="<?php echo styleMenuActive('item') ?>">
-				<a href="<?php echo site_url()."/item"?>">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Itens
-				</a>
-			</li>
-			<li class="<?php echo styleMenuActive('perfil') ?>">
-				<a href="<?php echo site_url()."/perfil"?>">
-					<span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Perfis
-				</a>
-			</li>
-			<li class="<?php echo styleMenuActive('quarto') ?>">
-				<a href="<?php echo site_url()."/quarto"?>"> 
-					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
-				</a>
-			</li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Reports</a></li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Analytics</a></li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Export</a></li>
+            <li class="<?php echo styleMenuActive('item') ?>"><a href="<?php echo site_url()."/item"?>">Itens </a></li>
+			<li class="<?php echo styleMenuActive('perfil') ?>"><a href="<?php echo site_url()."/perfil"?>">Perfis </a></li>
+			<li class="<?php echo styleMenuActive('quarto') ?>"><a href="<?php echo site_url()."/quarto"?>">Quartos </a></li>
+			<li class="<?php echo styleMenuActive('produto') ?>"><a href="<?php echo site_url()."/produto"?>">Produtos </a></li>
+			<li class="<?php echo styleMenuActive('situacao') ?>"><a href="<?php echo site_url()."/situacao"?>">Situações </a></li>
           </ul>
           <ul class="nav nav-sidebar">
+			<li class="<?php echo styleMenuActive('cliente') ?>"><a href="<?php echo site_url()."/cliente"?>">Cliente </a></li>
             <li><a href="">Nav item</a></li>
             <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="">Nav item again</a></li>

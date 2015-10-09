@@ -1,24 +1,49 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.12
+-- version 3.3.9
 -- http://www.phpmyadmin.net
 --
+
 -- Host: 127.0.0.1
 -- Generation Time: 07-Out-2015 às 18:04
 -- Versão do servidor: 5.6.25
 -- PHP Version: 5.5.27
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+-- Servidor: localhost
+-- Tempo de Geração: Out 07, 2015 as 10:17 AM
+-- Versão do Servidor: 5.5.8
+-- Versão do PHP: 5.3.5
+
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Database: `blackhostel`
+-- Banco de Dados: `blackhostel`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cliente`
+--
+
+CREATE TABLE IF NOT EXISTS `cliente` (
+  `id_cliente` int(11) NOT NULL AUTO_INCREMENT,
+  `cliente` varchar(100) NOT NULL,
+  `cpf` varchar(15) NOT NULL,
+  `rg` varchar(20) NOT NULL,
+  PRIMARY KEY (`id_cliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Extraindo dados da tabela `cliente`
+--
+
 
 -- --------------------------------------------------------
 
@@ -27,10 +52,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `item` (
-  `id_item` int(11) NOT NULL,
+  `id_item` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(200) NOT NULL,
-  `preco` decimal(10,2) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `preco` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id_item`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Extraindo dados da tabela `item`
@@ -47,11 +73,12 @@ INSERT INTO `item` (`id_item`, `descricao`, `preco`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `perfil` (
-  `id_perfil` int(11) NOT NULL,
+  `id_perfil` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(200) NOT NULL,
   `preco_base` decimal(10,2) NOT NULL,
-  `tp_modo_reserva` int(2) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `tp_modo_reserva` int(2) NOT NULL,
+  PRIMARY KEY (`id_perfil`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Extraindo dados da tabela `perfil`
@@ -87,6 +114,24 @@ INSERT INTO `perfil_item` (`id_perfil`, `id_item`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `produto`
+--
+
+CREATE TABLE IF NOT EXISTS `produto` (
+  `id_produto` int(11) NOT NULL AUTO_INCREMENT,
+  `produto` varchar(100) NOT NULL,
+  `preco` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id_produto`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Extraindo dados da tabela `produto`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `quarto`
 --
 
@@ -95,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `quarto` (
   `numero` varchar(255) NOT NULL,
   `descricao` varchar(255) DEFAULT NULL,
   `id_perfil` int(10) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `quarto`
@@ -187,14 +232,20 @@ ALTER TABLE `usuario`
 --
 -- Constraints for dumped tables
 --
+=======
 
 --
--- Limitadores para a tabela `perfil_item`
+-- Estrutura da tabela `situacao`
 --
-ALTER TABLE `perfil_item`
-  ADD CONSTRAINT `perfil_item_ibfk_1` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`),
-  ADD CONSTRAINT `perfil_item_ibfk_2` FOREIGN KEY (`id_item`) REFERENCES `item` (`id_item`);
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+CREATE TABLE IF NOT EXISTS `situacao` (
+  `id_situacao` int(11) NOT NULL AUTO_INCREMENT,
+  `situacao` varchar(100) NOT NULL,
+  PRIMARY KEY (`id_situacao`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+--
+-- Extraindo dados da tabela `situacao`
+--
+
