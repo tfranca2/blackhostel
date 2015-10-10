@@ -14,7 +14,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					success: function(data){
 						obj = JSON.parse(data);
 						console.log(obj);
-						$('#description').val(obj.descricao);
+						console.log(obj.quarto.ds_quarto);
+						$('#description').val(obj.quarto.ds_quarto);
+						$('#number').val(obj.quarto.numero);
+						$('#perfil').val(obj.perfil.descricao);
+						$('#total-price').val(obj.perfil.total);
+						
 						$('#myModal').modal('show');
 					}
 				});
@@ -99,7 +104,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="modal-content">
 		  <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title" id="myModalLabel">Detalhamento Quarto</h4>
+			<h4 class="modal-title" id="myModalLabel">Detalhamento de Quarto</h4>
 		  </div>
 		  <div class="modal-body">
 				<div class="row">
@@ -107,7 +112,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<label>	Descrição </label>
 						<input text="text" disabled id="description" class="form-control"/>	
 					</div>
+					<div class="col-md-3 form-group">
+						<label>	Número </label>
+						<input text="text" disabled id="number" class="form-control"/>	
+					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-6 form-group">
+						<label>	Perfil </label>
+						<input text="text" disabled id="perfil" class="form-control"/>	
+					</div>
+					<div class="col-md-3 form-group">
+						<label>	Preço Total </label>	
+						<div class="input-group">
+						  <div class="input-group-addon">R$</div>
+						  <input type="text" class="form-control" id="total-price" disabled>
+						</div>
+					</div>
+				</div>				
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -145,6 +167,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">
 	  <label>Perfil</label>
 	  <select name="id_perfil" class="form-control">
+	  <option > -- Selecione -- </option>
 			<?php foreach($perfils as $perfil){ ?>
 				<option value="<?php echo $perfil->id_perfil ?>"><?php echo $perfil->descricao.' - R$ '.$perfil->preco_base ?> </option>
 			<?php } ?>
@@ -195,6 +218,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">
 	  <label>Perfil</label>
 	  <select name="id_perfil" class="form-control">
+	  <option > -- Selecione -- </option>
 			<?php foreach($perfils as $perfil){ ?>
 				<option value="<?php echo $perfil->id_perfil ?>" <?php echo ($perfil->id_perfil == $quarto->idperfil)?'selected="true"':'' ?> ><?php echo $perfil->descricao.' - R$ '.$perfil->preco_base ?> </option>
 			<?php } ?>
@@ -243,6 +267,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">
 	  <label>Perfil</label>
 	  <select name="id_perfil" class="form-control" disabled="true">
+			<option > -- Selecione -- </option>
 			<?php foreach($perfils as $perfil){ ?>
 				<option value="<?php echo $perfil->id_perfil ?>" <?php echo ($perfil->id_perfil == $quarto->idperfil)?'selected="true"':'' ?> ><?php echo $perfil->descricao.' - R$ '.$perfil->preco_base ?> </option>
 			<?php } ?>
@@ -269,8 +294,8 @@ echo form_close();
 
 <div class="row">
 	
-	<?php /* if(!empty(validation_errors())){ ?>
-	<div class="alert alert-success">
+	<?php  if(!empty(validation_errors())){ ?>
+	<div class="alert alert-danger">
 		<?php echo validation_errors(); ?>
 	</div>
 	<?php } ?>
@@ -280,5 +305,5 @@ echo form_close();
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } */ ?>
+	<?php } ?>
 </div>	

@@ -64,6 +64,7 @@ class Quarto extends CI_Controller {
 		$id = $this->uri->segment(3);
 		$quarto = $this->getQuartoFromDB($id);
 		$perfil = $this->perfil->findPerfilById($quarto->idperfil)->row();
+		$perfil->total = monetaryOutput($perfil->preco_base + $perfil->preco_itens);
 		echo json_encode( array("id"=>$id,"quarto"=> $quarto,"perfil"=>$perfil));
 	}
 	
@@ -138,24 +139,19 @@ class Quarto extends CI_Controller {
 	}
 	
 	public function delete(){
-		if ($this->runFormValidations() == TRUE){
-			
 			
 			$this->db->where('id_quarto', $this->input->post('id_quarto'));
 			$this->db->delete('quarto'); 
 			
 			$this->session->set_flashdata('msg', 'Quarto deletado com sucesso.');
-			redirect(current_url());
-			
-		}else{
 			$this->deleting();
-		}
+			
 	}
 	
 	private function runFormValidations(){
 		
 		$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required|min_length[5]|max_length[60]|ucwords');
-		
+		$this->form_validation->set_rules('numero', 'Número', 'required');
 		return $this->form_validation->run();
 	
 	}
