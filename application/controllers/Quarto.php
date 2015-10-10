@@ -62,7 +62,9 @@ class Quarto extends CI_Controller {
 	
 	public function detail(){
 		$id = $this->uri->segment(3);
-		//TODO quarto datail
+		$quarto = $this->getQuartoFromDB($id);
+		$perfil = $this->perfil->findPerfilById($quarto->idperfil)->row();
+		echo json_encode( array("id"=>$id,"quarto"=> $quarto,"perfil"=>$perfil));
 	}
 	
 	public function getQuartoFromDB($id = 0){

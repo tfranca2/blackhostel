@@ -5,6 +5,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(document).ready(function(){
 		$('#numero').mask('9999');
+		
+		$(".detail").click(function(){
+                 
+			$.ajax({
+					url: $(this).attr('href'),
+					type: 'GET',
+					success: function(data){
+						obj = JSON.parse(data);
+						console.log(obj);
+						$('#description').val(obj.descricao);
+						$('#myModal').modal('show');
+					}
+				});
+                        return false;
+         });
+		
 	});
 </script>
 
@@ -16,7 +32,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	
 ?>
-
 
 	<form action="<?php echo site_url();?>/quarto/searching">
 	<div class="row">
@@ -56,11 +71,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php foreach($tabledata as $quarto){ ?>
 			<tr>
 				<td><?php echo $quarto->id_quarto ?></td>
-				<td width="60%"><?php echo $quarto->ds_quarto ?></td>
+				<td><?php echo $quarto->ds_quarto ?></td>
 				<td><?php echo $quarto->numero ?></td>
 				<td><?php echo $quarto->ds_perfil ?></td>
 				<td>
-					<a href="<?php echo site_url();?>/quarto/detail/<?php  echo $quarto->id_quarto ?>" class="btn btn-default btn-sm">Detalhes 
+					<a href="<?php echo site_url();?>/quarto/detail/<?php  echo $quarto->id_quarto ?>" class="btn btn-default btn-sm detail">Detalhes 
 						<span class="glyphicon glyphicon-search"></span>
 					</a>
 					
@@ -76,6 +91,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php } ?>
 		</table> 
 		</div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="myModalLabel">Detalhamento Quarto</h4>
+		  </div>
+		  <div class="modal-body">
+				<div class="row">
+					<div class="col-md-6 form-group">
+						<label>	Descrição </label>
+						<input text="text" disabled id="description" class="form-control"/>	
+					</div>
+				</div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+		  </div>
+		</div>
+	  </div>
 	</div>
 	
 <?php 
