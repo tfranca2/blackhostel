@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Bootstrap Login Form Template</title>
+        <title>BlackHostel Login</title>
 
         <!-- CSS -->
         <link rel="stylesheet" href="<?php echo base_url();?>assets/css/css">
@@ -36,23 +36,25 @@
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 text">
                             <h1><strong>BlackHostel</strong> Login Form</h1>
-                         
+							 
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3 form-box">
                         	<div class="form-top">
                         		<div class="form-top-left">
-                        			<h3>Formulário de login e acesso ao sistema.</h3>
+                        			<h3>Formulário de login e acesso ao sistema. </h3>
                             		<p>Informe seu e-mail e senha para realizar o login.</p>
+									<p class="input-error"> <?php echo @$this->session->flashdata('message');  ?></p>
+									
                         		</div>
                         		
                             </div>
                             <div class="form-bottom">
 			                    <form role="form" action="<?php echo site_url();?>/login/login" method="post" class="login-form">
 			                    	<div class="form-group">
-			                    		<label class="sr-only" for="form-username">E-mail</label>
-			                        	<input type="email" name="email" placeholder="E-mail..." class="form-username form-control" id="form-email">
+			                    		<label class="sr-only" for="form-username">Usuário</label>
+			                        	<input type="text" name="username" placeholder="Usuário..." class="form-username form-control" id="form-email" >
 			                        </div>
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-password">Senha</label>

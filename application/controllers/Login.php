@@ -16,10 +16,16 @@ class Login extends CI_Controller {
 	}
 	
 	public function login(){
-		$this->login->login();
+		if($this->login->login()){
+			redirect('/', 'refresh');
+		}else{
+			$this->session->set_flashdata('message', 'Usuário ou Senha não estão corretos.');	
+			redirect('/login', 'refresh');
+		}
 	}
 	
 	public function logout(){
 		$this->login->logout();
 	}
+	
 }

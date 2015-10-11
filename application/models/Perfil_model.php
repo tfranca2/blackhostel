@@ -31,6 +31,18 @@ class Perfil_model extends CI_Model {
 
 		return $this->db->query($sql);
 	}
+	
+	public function findPerfilById($id = 0){
+		$like = ($id != "")? " and p.id_perfil = ".$id." ":"";
+		$sql = "select p.id_perfil, p.descricao, p.preco_base, p.tp_modo_reserva, sum(preco) preco_itens from perfil p 
+				inner join perfil_item pi on pi.id_perfil = p.id_perfil 
+				inner join item i on i.id_item = pi.id_item
+				where 1=1".$like."
+				group by p.id_perfil, p.descricao, p.preco_base, p.tp_modo_reserva";
+
+		return $this->db->query($sql);
+	}
+	
 }
 
 ?>
