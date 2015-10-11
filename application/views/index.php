@@ -30,6 +30,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 	
+	
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster 
@@ -50,6 +51,11 @@
 	<!-- DualList Plug-in 
 	-->
 	<script src="<?php echo base_url();?>assets/js/dual-list-box.min.js"></script>
+	
+	<!-- DualList Plug-in 
+	-->
+	<script src="<?php echo base_url();?>assets/js/search.js"></script>
+	
 	<!--
 	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -75,9 +81,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Dashboard</a></li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Settings</a></li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Profile</a></li>
+            <li><a href="assets/Dashboard Template for Bootstrap.html">Relatórios</a></li>
+            <li><a href="assets/Dashboard Template for Bootstrap.html">Configurações</a></li>
+            <li><a href="assets/Dashboard Template for Bootstrap.html">Usuários</a></li>
             <li>
 				<a href="<?php echo site_url();?>/login/logout">
 					Sair <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> 
@@ -85,7 +91,7 @@
 			</li>
           </ul>
           <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
+            <input type="text" class="form-control" placeholder="Buscar..." id="search">
           </form>
         </div>
       </div>
@@ -120,29 +126,18 @@
 					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Situações 
 				</a>
 			</li>
-          </ul>
-          <ul class="nav nav-sidebar">
 			<li class="<?php echo styleMenuActive('cliente') ?>">
 				<a href="<?php echo site_url()."/cliente"?>">
 				<span class="glyphicon glyphicon-user" aria-hidden="true"></span> Cliente 
 				</a>
 			</li>
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 		
-		
           <h1 class="page-header"><?php echo @$title ?></h1>
 			<?php $this->load->view("pages/".$page); ?>	
-			
-       
+		
         </div>
       </div>
     </div>
