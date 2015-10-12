@@ -187,7 +187,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php foreach($perfils as $perfil){ ?>
 				<option value="<?php echo $perfil->id_perfil ?>"><?php echo $perfil->descricao.' - R$ '.$perfil->preco_base ?> </option>
 			<?php } ?>
-		</select>
+	  </select>
 	</div>
 </div>
 <div class="row">

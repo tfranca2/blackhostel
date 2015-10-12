@@ -19,6 +19,8 @@
 	
 	<!-- Tables Plug-In -->
     <link href="<?php echo base_url();?>assets/css/bootstrap-table.css" rel="stylesheet">
+	
+	<link href="<?php echo base_url();?>assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="<?php echo base_url();?>assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -55,6 +57,9 @@
 	<!-- DualList Plug-in 
 	-->
 	<script src="<?php echo base_url();?>assets/js/search.js"></script>
+	
+	<script src="<?php echo base_url();?>assets/js/bootstrap-datetimepicker.min.js"></script>
+	<script src="<?php echo base_url();?>assets/js/locales/bootstrap-datetimepicker.pt-BR.js"></script>
 	
 	<!--
 	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -101,6 +106,11 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
+		    <li class="<?php echo styleMenuActive('reserva') ?>">
+				<a href="<?php echo site_url()."/reserva"?>">
+					<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Reservas
+				</a>
+			</li>
             <li class="<?php echo styleMenuActive('item') ?>">
 				<a href="<?php echo site_url()."/item"?>">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Itens
