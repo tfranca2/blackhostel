@@ -55,6 +55,11 @@
  */
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
+	
+/*
+* CUSTOM TIMEZONE DEFINITION
+*/
+date_default_timezone_set('America/Fortaleza');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

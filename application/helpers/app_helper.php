@@ -12,7 +12,16 @@ function monetaryOutput($number){
 	$replacementCent = '$1,$2';
 
 	return preg_replace($pattern, $replacementCent, $number);
-	
+}
+
+function dateTimeToBr($date){
+	if($date)
+	return date('d/m/Y H:i:s', strtotime($date));
+}
+
+function dateTimeToUs($date){
+	if($date)
+	return date('Y-m-d H:i:s', strtotime($date));
 }
 
 function styleMenuActive($menu){
