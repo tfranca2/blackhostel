@@ -20,6 +20,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						$('#perfil').val(obj.perfil.descricao);
 						$('#total-price').val(obj.perfil.total);
 						
+						if(obj.perfil.tp_modo_reserva ==1){
+							modo_reserva = 'Diária';
+						}else if(obj.perfil.tp_modo_reserva ==2){
+							modo_reserva = 'Hora';
+						}
+						$('#type').val( modo_reserva );
+						
+						
 						$('#myModal').modal('show');
 					}
 				});
@@ -53,6 +61,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php } ?>
 			</select>
 		</div>
+	</div>
+	<div class="row">
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
 		</div>
@@ -71,7 +81,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th>Descrição</th>
 				<th>Número</th>
 				<th>Perfil de Quarto</th>
-				<th>Opções</th>
+				<th style="width:25%; align:center;">Opções</th>
 			</tr>
 			<?php foreach($tabledata as $quarto){ ?>
 			<tr>
@@ -126,10 +136,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<label>	Preço Total </label>	
 						<div class="input-group">
 						  <div class="input-group-addon">R$</div>
-						  <input type="text" class="form-control" id="total-price" disabled>
+						  <input type="text" class="form-control" id="total-price" disabled />
 						</div>
 					</div>
-				</div>				
+				</div>
+				<div class="row">
+					<div class="col-md-3 form-group">
+						<label>	Tipo De Reserva </label>
+						<input type="text" class="form-control" id="type" disabled />
+					</div>
+				</div>
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -171,7 +187,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php foreach($perfils as $perfil){ ?>
 				<option value="<?php echo $perfil->id_perfil ?>"><?php echo $perfil->descricao.' - R$ '.$perfil->preco_base ?> </option>
 			<?php } ?>
-		</select>
+	  </select>
 	</div>
 </div>
 <div class="row">

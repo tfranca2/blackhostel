@@ -25,6 +25,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<label>Descrição</label>
 			<input type="text" placeholder="Descrição do perfil" name="descricao" class="form-control"/>
 		</div>
+	</div>
+	<div class="row">
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
 		</div>
@@ -42,8 +44,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th>ID</th>
 				<th>Descrição</th>
 				<th>Reserva</th>
-				<th>Preço Perfil</th>
-				<th>Preço Itens (Soma)</th>
+				<th>Preço do Perfil</th>
+				<th>Preço dos Itens</th>
 				<th>Total Perfil</th>
 				<th>Opções</th>
 			</tr>
@@ -116,7 +118,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-6 form-group">
+	<div class="col-md-8 form-group">
 		<select name="itens[]" class="form-control" id="duallist" multiple="true">
 			<?php foreach($itens as $item){ ?>
 				<option value="<?php echo $item->id_item ?>"><?php echo $item->descricao.' - '.$item->preco ?> </option>
