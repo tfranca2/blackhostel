@@ -123,7 +123,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-3 form-group">
+	<div class="col-md-2 form-group">
 	  <label>Entrada</label>
 	  <div class="input-group datetimepicker2">
             <input type="datetime" class="form-control" name="entrada" id="entrada" >
