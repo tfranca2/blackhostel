@@ -1,7 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
- 
-?>
+<?php defined('BASEPATH') OR exit('No direct script access allowed') ?>
 <script>
 	$(document).ready(function(){
 		
@@ -71,15 +68,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
 				<td><?php echo dateTimeToBr( $reserva->saida ) ?></td>
 				<td><?php
-				 if($reserva->situacao ==1){
-					echo 'EM USO';
-				 }else if($reserva->situacao ==2){ 
-					echo 'RESERVADO';
-				 }else if($reserva->situacao ==3){
-					echo 'LIVRE';
-				 }else if($reserva->situacao ==4){
-					echo 'MANUTENÇÃO';
-					}?>
+				
+						 if($reserva->id_situacao ==1){
+							echo 'EM USO';
+						 }else if($reserva->id_situacao == 2){ 
+							echo 'RESERVADO';
+						 }else if($reserva->id_situacao == 3){
+							echo 'LIVRE';
+						 }else if($reserva->id_situacao == 4){
+							echo 'MANUTENÇÃO';
+						 }
+					?>
 				</td>
 				<td>
 					<a href="<?php echo site_url();?>/reserva/editing/<?php  echo $reserva->id_reserva ?>" class="btn btn-default btn-sm">Editar 
@@ -186,7 +185,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">
 	  <?php
 		echo form_label('Entrada');
-		echo form_input(array('name'=>'entrada','id'=>'entrada','class'=>'form-control','readonly'=>''),dateTimeToBr( $reserva->entrada ));
+		echo form_input(array('name'=>'entrada','id'=>'entrada','class'=>'form-control','readonly'=>''), dateTimeToBr( $reserva->entrada ));
 	  ?>
 	</div>
 </div>
@@ -194,8 +193,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-md-6 form-group">
 		<select name="situacao" class="form-control">
 				<option value=""> -- Selecione -- </option>
-				<option value="1" <?php echo $reserva->situacao == 1?'selected':''; ?>> EM USO </option>
-				<option value="2" <?php echo $reserva->situacao == 2?'selected':''; ?>> RESERVADO </option>
+				<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
+				<option value="2" <?php echo $reserva->id_situacao == 2?'selected':''; ?>> RESERVADO </option>
 	  </select>
 	</div>
 </div>
@@ -268,7 +267,7 @@ echo form_close();
 
 <div class="row">
 	
-	<?php /* if(!empty(validation_errors())){ ?>
+	<?php  if(!empty(validation_errors())){ ?>
 	<div class="alert alert-danger">
 		<?php echo validation_errors(); ?>
 	</div>
@@ -278,5 +277,5 @@ echo form_close();
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } */ ?>
+	<?php } ?>
 </div>	

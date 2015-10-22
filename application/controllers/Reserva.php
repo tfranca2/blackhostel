@@ -80,7 +80,7 @@ class Reserva extends CI_Controller {
 			$dados = elements(array('id_quarto','entrada'),$this->input->post());
 			
 			$dados['entrada'] = dateTimeToUs($dados['entrada']);
-			$dados['situacao'] =self::RESERVADO;
+			$dados['id_situacao'] =self::RESERVADO;
 			$this->db->insert('reserva', $dados); 
 			
 			$this->load->view('index',array(
@@ -100,7 +100,7 @@ class Reserva extends CI_Controller {
 	public function edit(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('id_quarto','entrada','situacao'),$this->input->post());
+			$dados = elements(array('id_quarto','entrada','id_situacao'),$this->input->post());
 			$dados['entrada'] = dateTimeToUs($dados['entrada']);
 			
 			$this->db->where('id_reserva', $this->input->post('id_reserva'));
