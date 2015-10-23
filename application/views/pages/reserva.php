@@ -169,7 +169,16 @@
 	echo form_open('reserva/edit');
 	echo form_hidden('id_reserva', $reserva->id_reserva);
 ?>
-
+<div class="row">
+	<div class="col-md-3 form-group">
+	  <label>Tipo Reserva</label>
+	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto">
+			<option value=""> -- Selecione -- </option>
+			<option value="1">Diárias</option>
+			<option value="2">Horas</option>
+	  </select>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
@@ -191,11 +200,12 @@
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-		<select name="situacao" class="form-control">
-				<option value=""> -- Selecione -- </option>
-				<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
-				<option value="2" <?php echo $reserva->id_situacao == 2?'selected':''; ?>> RESERVADO </option>
-	  </select>
+	<label>Situação</label>
+	    <select name="id_situacao" class="form-control">
+			<option value=""> -- Selecione -- </option>
+			<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
+			<option value="2" <?php echo $reserva->id_situacao == 2?'selected':''; ?>> RESERVADO </option>
+	    </select>
 	</div>
 </div>
 <div class="row">
@@ -241,11 +251,12 @@
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
+		<label>Situação</label>
 		<select name="situacao" class="form-control">
 				<option value=""> -- Selecione -- </option>
 				<option value="1" <?php echo $reserva->situacao == 1?'selected':''; ?>> EM USO </option>
 				<option value="2" <?php echo $reserva->situacao == 2?'selected':''; ?>> RESERVADO </option>
-	  </select>
+		</select>
 	</div>
 </div>
 <div class="row">

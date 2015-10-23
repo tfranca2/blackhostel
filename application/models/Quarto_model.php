@@ -18,6 +18,29 @@ class Quarto_model extends CI_Model {
 		return $this->db->query($sql);
 	}
 	
+	
+	public function getAvailableRoomsForEdition( $tipoReserva = 0, $idCurrentReservation){
+		
+		$quartos = $this->getQuartosDisponiveisTipoReserva($tipoReserva)->result();
+		
+		$sql = "select q.* from quarto q 
+				left join reserva r on r.id_quarto = q.id_quarto
+				left join perfil p on p.id_perfil = q.id_perfil
+				where r.id_reserva = ".$idCurrentReservation;
+				
+		$currentReservedRoom = $this->db->query($sql)->row();
+		
+		foreach($quartos as $key => $quarto){
+			if($quarto->id_quarto == $currentReservedRoom->id_quarto ){
+				unset($quartos[$key]);
+			}
+			
+		}
+		
+		return array_merge($quartos, array($currentReservedRoom)); 
+		
+	}
+	
 }
 
 ?>

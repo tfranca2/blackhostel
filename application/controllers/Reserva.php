@@ -48,12 +48,12 @@ class Reserva extends CI_Controller {
 	
 	public function editing(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
+		
 		if($id){
 			$this->load->view('index', array(
 						'page'=>'reserva'
 						,'title'=> 'Reservas'
 						,'part' => 'editing'
-						,'quartos'=> $this->quarto->getQuartosDisponiveisTipoReserva()->result()
 						,'reserva'=> $this->db->get_where('reserva', array('id_reserva' => $id))->row() ));
 		}else{
 			$this->searching();
@@ -135,8 +135,10 @@ class Reserva extends CI_Controller {
 	}
 	
 	public function quartos(){
-	$tipo = $this->uri->segment(3);
+		$tipo = $this->uri->segment(3);
+		$id = $this->uri->segment(4);
 		if($tipo){
+			//$quartos = $this->quarto->getAvailableRoomsForEdition($tipo,$id);
 			$quartos = $this->quarto->getQuartosDisponiveisTipoReserva($tipo)->result();
 			echo json_encode($quartos);
 		}
