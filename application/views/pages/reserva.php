@@ -6,20 +6,29 @@
 		  language: 'pt-BR',
 		});
 		
-		$("#tipo-quarto").change(function(){
-            $('#selectquartos').empty();
-			$('#selectquartos').append( '<option value=""> -- Selecione --</option>' ); 
+		$("#tipo-quarto").on('change', function(){
+           loadQuartos();
+         });
+		 
+		 function loadQuartos(){
+			$('#selectquartos').empty();
+			$('#selectquartos').append( '<option value=""> -- Selecione --</option>' );
+ 			var url =  "<?php echo site_url()."/reserva/quartos/" ;?>"+ $("#tipo-quarto").val()+"/"+<?php echo ($this->uri->segment(3))?$this->uri->segment(3):'0'; ?>;
+			console.log(url);
 			$.ajax({
-					url: "<?php echo site_url()."/reserva/quartos/" ;?>"+ $(this).val() ,
+					url: url ,
 					type: 'GET',
 					success: function(data){
 						obj = JSON.parse(data);
 						$.each(obj, function(i,quarto) {
-							$('#selectquartos').append( '<option value="' + quarto.id_quarto+ '">'+ quarto.descricao+ '</option>' ); 
+							sel = (quarto.id_quarto == <?php echo (@$reserva->id_quarto)?@$reserva->id_quarto:0; ?> )?
+								"selected":"";
+							
+							$('#selectquartos').append( '<option value="' + quarto.id_quarto+ '" '+sel+'>'+ quarto.descricao+ '</option>' ); 
 						});	
 					}
-				});
-         });
+			});
+		 }
 		
 	});
 </script>
@@ -54,21 +63,22 @@
 			<tr>
 				<th>ID</th>
 				<th>Quarto</th>
+				<th>Perfil</th>
 				<th>Tipo Reserva</th>
 				<th>Entrada</th>
 				<th>Saída</th>
 				<th>Situação</th>
 				<th>Opções</th>
 			</tr>
-			<?php foreach($tabledata as $reserva){ ?>
+			<?php foreach($tabledata as $reserva){?>
 			<tr>
 				<td><?php echo $reserva->id_reserva ?></td>
+				<td><?php echo $reserva->ds_quarto ?></td>
 				<td><?php echo $reserva->descricao ?></td>
 				<td><?php echo $reserva->tp_modo_reserva ==1?'Diária':'Hora'; ?></td>
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
 				<td><?php echo dateTimeToBr( $reserva->saida ) ?></td>
 				<td><?php
-				
 						 if($reserva->id_situacao ==1){
 							echo 'EM USO';
 						 }else if($reserva->id_situacao == 2){ 
@@ -168,21 +178,24 @@
 		
 	echo form_open('reserva/edit');
 	echo form_hidden('id_reserva', $reserva->id_reserva);
+	
 ?>
+
+
 <div class="row">
 	<div class="col-md-3 form-group">
 	  <label>Tipo Reserva</label>
 	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto">
 			<option value=""> -- Selecione -- </option>
-			<option value="1">Diárias</option>
-			<option value="2">Horas</option>
+			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
+			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
 	  </select>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
-	  <select name="id_quarto" class="form-control">
+	  <select name="id_quarto" class="form-control" id="selectquartos">
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
 			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->descricao ?> </option>
@@ -231,9 +244,19 @@
 ?>
 
 <div class="row">
+	<div class="col-md-3 form-group">
+	  <label>Tipo Reserva</label>
+	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto" disabled>
+			<option value=""> -- Selecione -- </option>
+			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
+			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
+	  </select>
+	</div>
+</div>
+<div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
-	  <select name="id_quarto" class="form-control">
+	  <select name="id_quarto" class="form-control" id="selectquartos" disabled>
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
 			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->descricao ?> </option>
@@ -245,20 +268,20 @@
 	<div class="col-md-6 form-group">
 	  <?php
 		echo form_label('Entrada');
-		echo form_input(array('name'=>'entrada','id'=>'entrada','class'=>'form-control','readonly'=>''),dateTimeToBr( $reserva->entrada ));
+		echo form_input(array('name'=>'entrada','id'=>'entrada','class'=>'form-control','readonly'=>''), dateTimeToBr( $reserva->entrada ));
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-		<label>Situação</label>
-		<select name="situacao" class="form-control">
-				<option value=""> -- Selecione -- </option>
-				<option value="1" <?php echo $reserva->situacao == 1?'selected':''; ?>> EM USO </option>
-				<option value="2" <?php echo $reserva->situacao == 2?'selected':''; ?>> RESERVADO </option>
-		</select>
+	<label>Situação</label>
+	    <select name="id_situacao" class="form-control" disabled>
+			<option value=""> -- Selecione -- </option>
+			<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
+			<option value="2" <?php echo $reserva->id_situacao == 2?'selected':''; ?>> RESERVADO </option>
+	    </select>
 	</div>
-</div>
+</div>	
 <div class="row">
 	<div class="col-md-6 form-group">
 	 <?php

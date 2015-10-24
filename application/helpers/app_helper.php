@@ -34,4 +34,10 @@ function containsStr($str, $src){
 	return (preg_match("/$str/",$src))?TRUE:FALSE;
 }
 
+function dump($var){
+	echo '<pre>';	
+	print_r($var);
+	echo '</pre>';	
+}
+
 

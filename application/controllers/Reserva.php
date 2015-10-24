@@ -48,26 +48,30 @@ class Reserva extends CI_Controller {
 	
 	public function editing(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
-		
+		$reserva = $this->reserva->getFullCurrentReservation( $id);
+		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id);
 		if($id){
 			$this->load->view('index', array(
 						'page'=>'reserva'
 						,'title'=> 'Reservas'
 						,'part' => 'editing'
-						,'reserva'=> $this->db->get_where('reserva', array('id_reserva' => $id))->row() ));
+						,'reserva'=> $reserva
+						,'quartos'=> $quartos));
 		}else{
 			$this->searching();
 		}
 	}
 	public function deleting(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
+		$reserva = $this->reserva->getFullCurrentReservation( $id);
+		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id);
 		if($id){
 			$this->load->view('index', array(
 						'page'=>'reserva'
 						,'title'=> 'Reservas'
 						,'part' => 'deleting'
-						,'quartos'=> $this->quarto->getQuartosDisponiveis()->result()
-						,'reserva'=> $this->db->get_where('reserva', array('id_reserva' => $id))->row() ));
+						,'quartos'=> $quartos
+						,'reserva'=> $reserva));
 		}else{
 			$this->searching();
 		}
@@ -90,10 +94,10 @@ class Reserva extends CI_Controller {
 			));
 			
 			$this->session->set_flashdata('msg', 'Reserva registrada com sucesso.');
-			redirect(current_url());
+			redirect('/reserva');
 			
 		}else{
-			$this->inserting();
+			$this->searching();
 		}
 	}
 	
@@ -106,7 +110,7 @@ class Reserva extends CI_Controller {
 			$this->db->where('id_reserva', $this->input->post('id_reserva'));
 			$this->db->update('reserva', $dados); 
 			
-			$this->session->set_flashdata('msg', 'Reserva atualizado com sucesso.');
+			$this->session->set_flashdata('msg', 'Reserva atualizada com sucesso.');
 			$this->index();
 			
 		}else{
@@ -115,13 +119,16 @@ class Reserva extends CI_Controller {
 	}
 	
 	public function delete(){
-
+		if($this->input->post('id_reserva')){
 			$this->db->where('id_reserva', $this->input->post('id_reserva'));
 			$this->db->delete('reserva'); 
 			
-			$this->session->set_flashdata('msg', 'reserva deletado com sucesso.');
-
-			$this->deleting();
+			$this->session->set_flashdata('msg', 'Reserva deletada com sucesso.');
+			$this->index();
+		}else{
+			$this->session->set_flashdata('msg', ":(");
+			$this->index();
+		}
 		
 	}
 	
@@ -138,8 +145,7 @@ class Reserva extends CI_Controller {
 		$tipo = $this->uri->segment(3);
 		$id = $this->uri->segment(4);
 		if($tipo){
-			//$quartos = $this->quarto->getAvailableRoomsForEdition($tipo,$id);
-			$quartos = $this->quarto->getQuartosDisponiveisTipoReserva($tipo)->result();
+			$quartos = $this->quarto->getAvailableBadroomsForEdition($tipo, $id);
 			echo json_encode($quartos);
 		}
 	}
