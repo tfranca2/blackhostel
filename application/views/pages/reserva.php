@@ -5,6 +5,7 @@
 		$('.datetimepicker2').datetimepicker({
 		  language: 'pt-BR',
 		});
+		//$('.datetimepicker2').datetimepicker();
 		
 		$("#tipo-quarto").on('change', function(){
            loadQuartos();
@@ -132,11 +133,12 @@
 	  </select>
 	</div>
 </div>
+
 <div class="row">
-	<div class="col-md-2 form-group">
+	<div class="col-md-3 form-group">
 	  <label>Entrada</label>
-	  <div class="input-group datetimepicker2">
-            <input type="datetime" class="form-control" name="entrada" id="entrada" >
+	  <div class="input-group">
+            <input type="datetime" class="form-control datetimepicker2" name="entrada" id="entrada" >
             <span class="input-group-addon add-on">
                 <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
             </span>
