@@ -18,6 +18,7 @@
     <link href="<?php echo base_url();?>assets/css/dashboard.css" rel="stylesheet">
 	
 	 <link href="<?php echo base_url();?>assets/css/jquery-ui.css" rel="stylesheet">
+	 <link href="<?php echo base_url();?>assets/css/jquery-ui.theme.css" rel="stylesheet">
 	 <link href="<?php echo base_url();?>assets/css/jquery-ui-timepicker-addon.css" rel="stylesheet">
 	
 	<!-- Tables Plug-In -->

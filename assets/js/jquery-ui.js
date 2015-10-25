@@ -3825,7 +3825,7 @@ function Datepicker() {
 	this._dayOverClass = "ui-datepicker-days-cell-over"; // The name of the day hover marker class
 	this.regional = []; // Available regional settings, indexed by language code
 	this.regional[""] = { // Default regional settings
-		closeText: "Done", // Display text for close link
+		closeText: "Fechar", // Display text for close link
 		prevText: "Prev", // Display text for previous month link
 		nextText: "Next", // Display text for next month link
 		currentText: "Today", // Display text for current month link
@@ -5445,11 +5445,11 @@ $.extend(Datepicker.prototype, {
 			this.formatDate(currentText, gotoDate, this._getFormatConfig(inst)));
 
 		controls = (!inst.inline ? "<button type='button' class='ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all' data-handler='hide' data-event='click'>" +
-			this._get(inst, "closeText") + "</button>" : "");
+			"Ok" + "</button>" : "");
 
 		buttonPanel = (showButtonPanel) ? "<div class='ui-datepicker-buttonpane ui-widget-content'>" + (isRTL ? controls : "") +
 			(this._isInRange(inst, gotoDate) ? "<button type='button' class='ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all' data-handler='today' data-event='click'" +
-			">" + currentText + "</button>" : "") + (isRTL ? "" : controls) + "</div>" : "";
+			">" + "Agora" + "</button>" : "") + (isRTL ? "" : controls) + "</div>" : "";
 
 		firstDay = parseInt(this._get(inst, "firstDay"),10);
 		firstDay = (isNaN(firstDay) ? 0 : firstDay);
@@ -8109,7 +8109,7 @@ var dialog = $.widget( "ui.dialog", {
 		autoOpen: true,
 		buttons: [],
 		closeOnEscape: true,
-		closeText: "Close",
+		closeText: "Fechar",
 		dialogClass: "",
 		draggable: true,
 		hide: null,

@@ -2,10 +2,28 @@
 <script>
 	$(document).ready(function(){
 		
-		$('.datetimepicker2').datetimepicker({
-		  language: 'pt-BR',
+		$('.datetimepicker2').datetimepicker({	
+		  beforeShow: function(input, inst) {				  
+				// Handle calendar position before showing it.
+				// It's not supported by Datepicker itself (for now) so we need to use its internal variables.
+				var calendar = inst.dpDiv;
+
+				// Dirty hack, but we can't do anything without it (for now, in jQuery UI 1.8.20)
+				setTimeout(function() {
+					
+					$('.ui_tpicker_time_label').text("Tempo");
+					$('.ui_tpicker_hour_label').text("Hora");
+					$('.ui_tpicker_minute_label').text("Minuto");
+					calendar.position({
+						my: 'left top',
+						at: 'left bottom',
+						collision: 'none',
+						of: input
+					});
+				}, 1);
+			}
 		});
-		//$('.datetimepicker2').datetimepicker();
+		
 		
 		$("#tipo-quarto").on('change', function(){
            loadQuartos();
