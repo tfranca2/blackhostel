@@ -49,7 +49,7 @@ class Reserva extends CI_Controller {
 	public function editing(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
 		$reserva = $this->reserva->getFullCurrentReservation( $id);
-		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id);
+		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id, $reserva->entrada, $reserva->saida);
 		if($id){
 			$this->load->view('index', array(
 						'page'=>'reserva'
@@ -64,7 +64,8 @@ class Reserva extends CI_Controller {
 	public function deleting(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
 		$reserva = $this->reserva->getFullCurrentReservation( $id);
-		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id);
+	
+		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id, $reserva->entrada, $reserva->saida);
 		if($id){
 			$this->load->view('index', array(
 						'page'=>'reserva'
@@ -81,9 +82,10 @@ class Reserva extends CI_Controller {
 
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('id_quarto','entrada'),$this->input->post());
+			$dados = elements(array('id_quarto','entrada','saida'),$this->input->post());
 			
 			$dados['entrada'] = dateTimeToUs($dados['entrada']);
+			$dados['saida'] = dateTimeToUs($dados['saida']);
 			$dados['id_situacao'] =self::RESERVADO;
 			$this->db->insert('reserva', $dados); 
 			
@@ -142,10 +144,12 @@ class Reserva extends CI_Controller {
 	}
 	
 	public function quartos(){
+		$entrada = dateTimeToUs( $this->input->get('entrada'));
+		$saida   = dateTimeToUs( $this->input->get('saida'));
 		$tipo = $this->uri->segment(3);
 		$id = $this->uri->segment(4);
 		if($tipo){
-			$quartos = $this->quarto->getAvailableBadroomsForEdition($tipo, $id);
+			$quartos = $this->quarto->getAvailableBadroomsForEdition($tipo, $id, $entrada, $saida );
 			echo json_encode($quartos);
 		}
 	}

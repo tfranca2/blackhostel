@@ -8,23 +8,27 @@ class Quarto_model extends CI_Model {
 		
     }
 	
-	public function getQuartosDisponiveisTipoReserva($tipoReserva = 0){
+	public function getQuartosDisponiveisTipoReserva($tipoReserva = 0, $entrada, $saida){
 	
 		$filter = ($tipoReserva)?"and p.tp_modo_reserva =". $tipoReserva:"";
+		if($tipoReserva ==1){
+			$filter .=" and (r.entrada is null or r.entrada not between '".$entrada."' and '".$saida."') 
+						and (r.saida is null or r.saida not between '".$entrada."' and '".$saida."')";
+		}
+		
 		$sql ="select q.* from quarto q 
 				left join reserva r on r.id_quarto = q.id_quarto
 				left join perfil p on p.id_perfil = q.id_perfil
 				where (r.id_situacao in (2,3,4) or r.id_reserva is null)
 				".$filter;
 				
-				
 		return $this->db->query($sql);
 	}
 	
 	
-	public function getAvailableBadroomsForEdition( $tipoReserva = 0, $idCurrentReservation){
+	public function getAvailableBadroomsForEdition( $tipoReserva = 0, $idCurrentReservation, $entrada, $saida){
 
-		$quartos = $this->getQuartosDisponiveisTipoReserva($tipoReserva)->result();
+		$quartos = $this->getQuartosDisponiveisTipoReserva($tipoReserva, $entrada, $saida)->result();
 
 		$sql = "select q.* from quarto q 
 				left join reserva r on r.id_quarto = q.id_quarto

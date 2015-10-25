@@ -21,7 +21,7 @@ function dateTimeToBr($date){
 
 function dateTimeToUs($date){
 	if($date)
-	return date('Y-m-d H:i:s', strtotime($date));
+	return date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $date)));
 }
 
 function styleMenuActive($menu){

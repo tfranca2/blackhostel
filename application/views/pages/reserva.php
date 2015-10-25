@@ -1,16 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed') ?>
 <script>
 	$(document).ready(function(){
-		
-		$('.datetimepicker2').datetimepicker({	
-		  beforeShow: function(input, inst) {				  
-				// Handle calendar position before showing it.
-				// It's not supported by Datepicker itself (for now) so we need to use its internal variables.
+	
+		$('.calendar').datetimepicker({	
+		  beforeShow: function(input, inst) {
 				var calendar = inst.dpDiv;
-
-				// Dirty hack, but we can't do anything without it (for now, in jQuery UI 1.8.20)
 				setTimeout(function() {
-					
 					$('.ui_tpicker_time_label').text("Tempo");
 					$('.ui_tpicker_hour_label').text("Hora");
 					$('.ui_tpicker_minute_label').text("Minuto");
@@ -21,22 +16,30 @@
 						of: input
 					});
 				}, 1);
+			},
+			onSelect: function(){
+				$('#tipo-quarto').prop('selectedIndex',0);
 			}
 		});
 		
 		
 		$("#tipo-quarto").on('change', function(){
            loadQuartos();
+		   if($("#tipo-quarto").val() == 1){
+			$("#saida").attr("required","true");
+		   }else{
+			$("#saida").removeAttr("required");
+		   }
          });
 		 
 		 function loadQuartos(){
 			$('#selectquartos').empty();
-			$('#selectquartos').append( '<option value=""> -- Selecione --</option>' );
  			var url =  "<?php echo site_url()."/reserva/quartos/" ;?>"+ $("#tipo-quarto").val()+"/"+<?php echo ($this->uri->segment(3))?$this->uri->segment(3):'0'; ?>;
 			console.log(url);
 			$.ajax({
 					url: url ,
 					type: 'GET',
+					data: {entrada:$("#entrada").val(), saida:$("#saida").val()},
 					success: function(data){
 						obj = JSON.parse(data);
 						$.each(obj, function(i,quarto) {
@@ -135,8 +138,28 @@
 
 <div class="row">
 	<div class="col-md-3 form-group">
+	  <label>Entrada</label>
+	  <div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required>
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+	<div class="col-md-3 form-group">
+	  <label>Saída</label>
+	  <div class="input-group">
+            <input type="datetime" class="form-control calendar" name="saida" id="saida" >
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3 form-group">
 	  <label>Tipo Reserva</label>
-	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto">
+	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto" required>
 			<option value=""> -- Selecione -- </option>
 			<option value="1">Diárias</option>
 			<option value="2">Horas</option>
@@ -146,24 +169,12 @@
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
-	  <select name="id_quarto" class="form-control" id="selectquartos">
-			<option value=""> -- Selecione -- </option>
+	  <select name="id_quarto" class="form-control" id="selectquartos" required multiple>
 	  </select>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-md-3 form-group">
-	  <label>Entrada</label>
-	  <div class="input-group">
-            <input type="datetime" class="form-control datetimepicker2" name="entrada" id="entrada" >
-            <span class="input-group-addon add-on">
-                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
-            </span>
-		</div>
 
-	</div>
-</div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  
@@ -215,7 +226,7 @@
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
-	  <select name="id_quarto" class="form-control" id="selectquartos">
+	  <select name="id_quarto" class="form-control" id="selectquartos" multiple>
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
 			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->descricao ?> </option>
