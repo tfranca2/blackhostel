@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0062)http://azmind.com/demo/bootstrap-login-forms/form-3/index.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,7 +25,7 @@
         <!-- Favicon and touch icons -->
         <link rel="icon" href="<?php echo base_url();?>assets/img/favicon.jpg">
         
-    </head>
+</head>
 
     <body>
 
