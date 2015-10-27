@@ -16,7 +16,7 @@ function monetaryOutput($number){
 
 function dateTimeToBr($date){
 	if($date)
-	return date('d/m/Y H:i:s', strtotime($date));
+	return date('d/m/Y H:i', strtotime($date));
 }
 
 function dateTimeToUs($date){

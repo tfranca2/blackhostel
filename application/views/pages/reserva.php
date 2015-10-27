@@ -41,7 +41,9 @@
 					type: 'GET',
 					data: {entrada:$("#entrada").val(), saida:$("#saida").val()},
 					success: function(data){
+						console.log(data);
 						obj = JSON.parse(data);
+						$('#selectquartos').append( '<option> -- Selecione -- </option>' );
 						$.each(obj, function(i,quarto) {
 							sel = (quarto.id_quarto == <?php echo (@$reserva->id_quarto)?@$reserva->id_quarto:0; ?> )?
 								"selected":"";
@@ -138,8 +140,8 @@
 
 <div class="row">
 	<div class="col-md-3 form-group">
-	  <label>Entrada</label>
-	  <div class="input-group">
+	  	<label>Entrada</label>
+	  	<div class="input-group">
             <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required>
             <span class="input-group-addon add-on">
                 <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
@@ -147,8 +149,8 @@
 		</div>
 	</div>
 	<div class="col-md-3 form-group">
-	  <label>Saída</label>
-	  <div class="input-group">
+	  	<label>Saída</label>
+	  	<div class="input-group">
             <input type="datetime" class="form-control calendar" name="saida" id="saida" >
             <span class="input-group-addon add-on">
                 <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
@@ -169,7 +171,8 @@
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
-	  <select name="id_quarto" class="form-control" id="selectquartos" required multiple>
+	  <select name="id_quarto" class="form-control" id="selectquartos" required >
+	  	<option value=""> -- Selecione -- </option>
 	  </select>
 	</div>
 </div>
@@ -211,8 +214,29 @@
 	echo form_hidden('id_reserva', $reserva->id_reserva);
 	
 ?>
-
-
+<div class="row">
+	<div class="col-md-3 form-group">
+	  <label>Entrada</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required 
+            value="<?php echo dateTimeToBr( $reserva->entrada ) ?>"
+            <?php echo ($reserva->id_situacao == 2)?'':'disabled'; ?>> 
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+	<div class="col-md-3 form-group">
+	  <label>Saída</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
+            <?php echo ($reserva->id_situacao == 2)?'':'disabled'; ?>> 
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-3 form-group">
 	  <label>Tipo Reserva</label>
@@ -226,20 +250,12 @@
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
-	  <select name="id_quarto" class="form-control" id="selectquartos" multiple>
+	  <select name="id_quarto" class="form-control" id="selectquartos">
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
 			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->descricao ?> </option>
 			<?php } ?>
 	  </select>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	  <?php
-		echo form_label('Entrada');
-		echo form_input(array('name'=>'entrada','id'=>'entrada','class'=>'form-control','readonly'=>''), dateTimeToBr( $reserva->entrada ));
-	  ?>
 	</div>
 </div>
 <div class="row">
@@ -273,7 +289,28 @@
 	echo form_open('reserva/delete');
 	echo form_hidden('id_reserva', $reserva->id_reserva);
 ?>
-
+<div class="row">
+	<div class="col-md-3 form-group">
+	  <label>Entrada</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required value="<?php  echo dateTimeToBr( $reserva->entrada ) ?>"
+            disabled="true"> 
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+	<div class="col-md-3 form-group">
+	  <label>Saída</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
+            disabled="true"> 
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-3 form-group">
 	  <label>Tipo Reserva</label>
@@ -295,14 +332,7 @@
 	  </select>
 	</div>
 </div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	  <?php
-		echo form_label('Entrada');
-		echo form_input(array('name'=>'entrada','id'=>'entrada','class'=>'form-control','readonly'=>''), dateTimeToBr( $reserva->entrada ));
-	  ?>
-	</div>
-</div>
+
 <div class="row">
 	<div class="col-md-6 form-group">
 	<label>Situação</label>

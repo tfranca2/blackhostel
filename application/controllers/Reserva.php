@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Reserva extends CI_Controller {
 
@@ -10,13 +9,13 @@ class Reserva extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		$this->load->model('Login_model','login');
+		$this->login->authorize();
 		$this->load->helper(array('url','form','array','app','date'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
-		$this->load->model('Login_model','login');
 		$this->load->model('Quarto_model','quarto');
 		$this->load->model('Reserva_model','reserva'); 
-		$this->login->authorize();
     }
 	 
 	public function index(){
@@ -48,7 +47,7 @@ class Reserva extends CI_Controller {
 	
 	public function editing(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
-		$reserva = $this->reserva->getFullCurrentReservation( $id);
+		$reserva = $this->reserva->getFullCurrentReservation($id);
 		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id, $reserva->entrada, $reserva->saida);
 		if($id){
 			$this->load->view('index', array(
@@ -79,7 +78,7 @@ class Reserva extends CI_Controller {
 	}
 	
 	public function save(){
-
+		$this->form_validation->set_rules('entrada', 'Entrada', 'required');
 		if ($this->runFormValidations() == TRUE){
 			
 			$dados = elements(array('id_quarto','entrada','saida'),$this->input->post());
@@ -105,11 +104,16 @@ class Reserva extends CI_Controller {
 	
 	public function edit(){
 		if ($this->runFormValidations() == TRUE){
+			$id = $this->input->post('id_reserva');
+			$reserva = $this->reserva->getFullCurrentReservation($id);
 			
-			$dados = elements(array('id_quarto','entrada','id_situacao'),$this->input->post());
-			$dados['entrada'] = dateTimeToUs($dados['entrada']);
+			$dados = elements(array('id_quarto','id_situacao'),$this->input->post());
+			if($reserva->id_situacao == 2){
+				$dados['entrada'] = dateTimeToUs($dados['entrada']);
+				$dados['saida'] = dateTimeToUs($dados['saida']);
+			}
 			
-			$this->db->where('id_reserva', $this->input->post('id_reserva'));
+			$this->db->where('id_reserva', $id);
 			$this->db->update('reserva', $dados); 
 			
 			$this->session->set_flashdata('msg', 'Reserva atualizada com sucesso.');
@@ -136,7 +140,7 @@ class Reserva extends CI_Controller {
 	
 	private function runFormValidations(){
 		
-		$this->form_validation->set_rules('entrada', 'Entrada', 'required');
+		
 		$this->form_validation->set_rules('id_quarto', 'Quarto', 'required');
 		
 		return $this->form_validation->run();
@@ -150,6 +154,7 @@ class Reserva extends CI_Controller {
 		$id = $this->uri->segment(4);
 		if($tipo){
 			$quartos = $this->quarto->getAvailableBadroomsForEdition($tipo, $id, $entrada, $saida );
+			//dump($quartos);
 			echo json_encode($quartos);
 		}
 	}
