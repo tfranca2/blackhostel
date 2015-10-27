@@ -1,28 +1,58 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
- 
-?>
+<?php defined('BASEPATH') OR exit('No direct script access allowed') ?>
 <script>
 	$(document).ready(function(){
-		
-		$('.datetimepicker2').datetimepicker({
-		  language: 'pt-BR',
+	
+		$('.calendar').datetimepicker({	
+		  beforeShow: function(input, inst) {
+				var calendar = inst.dpDiv;
+				setTimeout(function() {
+					$('.ui_tpicker_time_label').text("Tempo");
+					$('.ui_tpicker_hour_label').text("Hora");
+					$('.ui_tpicker_minute_label').text("Minuto");
+					calendar.position({
+						my: 'left top',
+						at: 'left bottom',
+						collision: 'none',
+						of: input
+					});
+				}, 1);
+			},
+			onSelect: function(){
+				$('#tipo-quarto').prop('selectedIndex',0);
+			}
 		});
 		
-		$("#tipo-quarto").change(function(){
-            $('#selectquartos').empty();
-			$('#selectquartos').append( '<option value=""> -- Selecione --</option>' ); 
+		
+		$("#tipo-quarto").on('change', function(){
+           loadQuartos();
+		   if($("#tipo-quarto").val() == 1){
+			$("#saida").attr("required","true");
+		   }else{
+			$("#saida").removeAttr("required");
+		   }
+         });
+		 
+		 function loadQuartos(){
+			$('#selectquartos').empty();
+ 			var url =  "<?php echo site_url()."/reserva/quartos/" ;?>"+ $("#tipo-quarto").val()+"/"+<?php echo ($this->uri->segment(3))?$this->uri->segment(3):'0'; ?>;
+			console.log(url);
 			$.ajax({
-					url: "<?php echo site_url()."/reserva/quartos/" ;?>"+ $(this).val() ,
+					url: url ,
 					type: 'GET',
+					data: {entrada:$("#entrada").val(), saida:$("#saida").val()},
 					success: function(data){
+						console.log(data);
 						obj = JSON.parse(data);
+						$('#selectquartos').append( '<option> -- Selecione -- </option>' );
 						$.each(obj, function(i,quarto) {
-							$('#selectquartos').append( '<option value="' + quarto.id_quarto+ '">'+ quarto.descricao+ '</option>' ); 
+							sel = (quarto.id_quarto == <?php echo (@$reserva->id_quarto)?@$reserva->id_quarto:0; ?> )?
+								"selected":"";
+							
+							$('#selectquartos').append( '<option value="' + quarto.id_quarto+ '" '+sel+'>'+ quarto.descricao+ '</option>' ); 
 						});	
 					}
-				});
-         });
+			});
+		 }
 		
 	});
 </script>
@@ -57,29 +87,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<tr>
 				<th>ID</th>
 				<th>Quarto</th>
+				<th>Perfil</th>
 				<th>Tipo Reserva</th>
 				<th>Entrada</th>
 				<th>Saída</th>
 				<th>Situação</th>
 				<th>Opções</th>
 			</tr>
-			<?php foreach($tabledata as $reserva){ ?>
+			<?php foreach($tabledata as $reserva){?>
 			<tr>
 				<td><?php echo $reserva->id_reserva ?></td>
+				<td><?php echo $reserva->ds_quarto ?></td>
 				<td><?php echo $reserva->descricao ?></td>
 				<td><?php echo $reserva->tp_modo_reserva ==1?'Diária':'Hora'; ?></td>
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
 				<td><?php echo dateTimeToBr( $reserva->saida ) ?></td>
 				<td><?php
-				 if($reserva->situacao ==1){
-					echo 'EM USO';
-				 }else if($reserva->situacao ==2){ 
-					echo 'RESERVADO';
-				 }else if($reserva->situacao ==3){
-					echo 'LIVRE';
-				 }else if($reserva->situacao ==4){
-					echo 'MANUTENÇÃO';
-					}?>
+						 if($reserva->id_situacao ==1){
+							echo 'EM USO';
+						 }else if($reserva->id_situacao == 2){ 
+							echo 'RESERVADO';
+						 }else if($reserva->id_situacao == 3){
+							echo 'LIVRE';
+						 }else if($reserva->id_situacao == 4){
+							echo 'MANUTENÇÃO';
+						 }
+					?>
 				</td>
 				<td>
 					<a href="<?php echo site_url();?>/reserva/editing/<?php  echo $reserva->id_reserva ?>" class="btn btn-default btn-sm">Editar 
@@ -107,8 +140,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="row">
 	<div class="col-md-3 form-group">
+	  	<label>Entrada</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required>
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+	<div class="col-md-3 form-group">
+	  	<label>Saída</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="saida" id="saida" >
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3 form-group">
 	  <label>Tipo Reserva</label>
-	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto">
+	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto" required>
 			<option value=""> -- Selecione -- </option>
 			<option value="1">Diárias</option>
 			<option value="2">Horas</option>
@@ -118,23 +171,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
-	  <select name="id_quarto" class="form-control" id="selectquartos">
-			<option value=""> -- Selecione -- </option>
+	  <select name="id_quarto" class="form-control" id="selectquartos" required >
+	  	<option value=""> -- Selecione -- </option>
 	  </select>
 	</div>
 </div>
-<div class="row">
-	<div class="col-md-3 form-group">
-	  <label>Entrada</label>
-	  <div class="input-group datetimepicker2">
-            <input type="datetime" class="form-control" name="entrada" id="entrada" >
-            <span class="input-group-addon add-on">
-                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
-            </span>
-		</div>
 
-	</div>
-</div>
+
 <div class="row">
 	<div class="col-md-6 form-group">
 	  
@@ -169,12 +212,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 	echo form_open('reserva/edit');
 	echo form_hidden('id_reserva', $reserva->id_reserva);
+	
 ?>
-
+<div class="row">
+	<div class="col-md-3 form-group">
+	  <label>Entrada</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required 
+            value="<?php echo dateTimeToBr( $reserva->entrada ) ?>"
+            <?php echo ($reserva->id_situacao == 2)?'':'disabled'; ?>> 
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+	<div class="col-md-3 form-group">
+	  <label>Saída</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
+            <?php echo ($reserva->id_situacao == 2)?'':'disabled'; ?>> 
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3 form-group">
+	  <label>Tipo Reserva</label>
+	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto">
+			<option value=""> -- Selecione -- </option>
+			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
+			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
+	  </select>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
-	  <select name="id_quarto" class="form-control">
+	  <select name="id_quarto" class="form-control" id="selectquartos">
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
 			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->descricao ?> </option>
@@ -184,19 +260,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-	  <?php
-		echo form_label('Entrada');
-		echo form_input(array('name'=>'entrada','id'=>'entrada','class'=>'form-control','readonly'=>''),dateTimeToBr( $reserva->entrada ));
-	  ?>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-		<select name="situacao" class="form-control">
-				<option value=""> -- Selecione -- </option>
-				<option value="1" <?php echo $reserva->situacao == 1?'selected':''; ?>> EM USO </option>
-				<option value="2" <?php echo $reserva->situacao == 2?'selected':''; ?>> RESERVADO </option>
-	  </select>
+	<label>Situação</label>
+	    <select name="id_situacao" class="form-control">
+			<option value=""> -- Selecione -- </option>
+			<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
+			<option value="2" <?php echo $reserva->id_situacao == 2?'selected':''; ?>> RESERVADO </option>
+	    </select>
 	</div>
 </div>
 <div class="row">
@@ -220,11 +289,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	echo form_open('reserva/delete');
 	echo form_hidden('id_reserva', $reserva->id_reserva);
 ?>
-
+<div class="row">
+	<div class="col-md-3 form-group">
+	  <label>Entrada</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required value="<?php  echo dateTimeToBr( $reserva->entrada ) ?>"
+            disabled="true"> 
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+	<div class="col-md-3 form-group">
+	  <label>Saída</label>
+	  	<div class="input-group">
+            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
+            disabled="true"> 
+            <span class="input-group-addon add-on">
+                <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
+            </span>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3 form-group">
+	  <label>Tipo Reserva</label>
+	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto" disabled>
+			<option value=""> -- Selecione -- </option>
+			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
+			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
+	  </select>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <label>Quarto</label>
-	  <select name="id_quarto" class="form-control">
+	  <select name="id_quarto" class="form-control" id="selectquartos" disabled>
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
 			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->descricao ?> </option>
@@ -232,23 +332,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  </select>
 	</div>
 </div>
+
 <div class="row">
 	<div class="col-md-6 form-group">
-	  <?php
-		echo form_label('Entrada');
-		echo form_input(array('name'=>'entrada','id'=>'entrada','class'=>'form-control','readonly'=>''),dateTimeToBr( $reserva->entrada ));
-	  ?>
+	<label>Situação</label>
+	    <select name="id_situacao" class="form-control" disabled>
+			<option value=""> -- Selecione -- </option>
+			<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
+			<option value="2" <?php echo $reserva->id_situacao == 2?'selected':''; ?>> RESERVADO </option>
+	    </select>
 	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-		<select name="situacao" class="form-control">
-				<option value=""> -- Selecione -- </option>
-				<option value="1" <?php echo $reserva->situacao == 1?'selected':''; ?>> EM USO </option>
-				<option value="2" <?php echo $reserva->situacao == 2?'selected':''; ?>> RESERVADO </option>
-	  </select>
-	</div>
-</div>
+</div>	
 <div class="row">
 	<div class="col-md-6 form-group">
 	 <?php
@@ -268,7 +362,7 @@ echo form_close();
 
 <div class="row">
 	
-	<?php /* if(!empty(validation_errors())){ ?>
+	<?php  if(!empty(validation_errors())){ ?>
 	<div class="alert alert-danger">
 		<?php echo validation_errors(); ?>
 	</div>
@@ -278,5 +372,5 @@ echo form_close();
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } */ ?>
+	<?php } ?>
 </div>	
