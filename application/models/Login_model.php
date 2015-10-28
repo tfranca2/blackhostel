@@ -28,9 +28,10 @@ class Login_model extends CI_Model {
 			if($usuario->senha == md5($this->input->post("password"))){
 				
 				$newdata = array(
-					   'username'  => 'johndoe',
-					   'email'     => 'johndoe@some-site.com',
-					   'logged_in' => TRUE
+					   'id_usuario'  => $usuario->id_usuario,
+					   'nome'  => $usuario->nome,
+					   'email'     => $usuario->login,
+					   'senha'     => $usuario->senha
 				   );
 				$this->session->set_userdata('user_session',$newdata);
 				return true;
