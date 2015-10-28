@@ -40,4 +40,8 @@ function dump($var){
 	echo '</pre>';	
 }
 
+function tagAsSelected($var1, $var2){
+	echo ($var1 == $var2)?'selected':''; 
+}
+
 
