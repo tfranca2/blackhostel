@@ -16,12 +16,12 @@ function monetaryOutput($number){
 
 function dateTimeToBr($date){
 	if($date)
-	return date('d/m/Y H:i:s', strtotime($date));
+	return date('d/m/Y H:i', strtotime($date));
 }
 
 function dateTimeToUs($date){
 	if($date)
-	return date('Y-m-d H:i:s', strtotime($date));
+	return date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $date)));
 }
 
 function styleMenuActive($menu){
@@ -32,6 +32,12 @@ function styleMenuActive($menu){
 
 function containsStr($str, $src){
 	return (preg_match("/$str/",$src))?TRUE:FALSE;
+}
+
+function dump($var){
+	echo '<pre>';	
+	print_r($var);
+	echo '</pre>';	
 }
 
 

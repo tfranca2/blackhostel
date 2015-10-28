@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Reserva extends CI_Controller {
 
@@ -10,13 +9,13 @@ class Reserva extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		$this->load->model('Login_model','login');
+		$this->login->authorize();
 		$this->load->helper(array('url','form','array','app','date'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
-		$this->load->model('Login_model','login');
 		$this->load->model('Quarto_model','quarto');
 		$this->load->model('Reserva_model','reserva'); 
-		$this->login->authorize();
     }
 	 
 	public function index(){
@@ -48,39 +47,45 @@ class Reserva extends CI_Controller {
 	
 	public function editing(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
+		$reserva = $this->reserva->getFullCurrentReservation($id);
+		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id, $reserva->entrada, $reserva->saida);
 		if($id){
 			$this->load->view('index', array(
 						'page'=>'reserva'
 						,'title'=> 'Reservas'
 						,'part' => 'editing'
-						,'quartos'=> $this->quarto->getQuartosDisponiveisTipoReserva()->result()
-						,'reserva'=> $this->db->get_where('reserva', array('id_reserva' => $id))->row() ));
+						,'reserva'=> $reserva
+						,'quartos'=> $quartos));
 		}else{
 			$this->searching();
 		}
 	}
 	public function deleting(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
+		$reserva = $this->reserva->getFullCurrentReservation( $id);
+	
+		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id, $reserva->entrada, $reserva->saida);
 		if($id){
 			$this->load->view('index', array(
 						'page'=>'reserva'
 						,'title'=> 'Reservas'
 						,'part' => 'deleting'
-						,'quartos'=> $this->quarto->getQuartosDisponiveis()->result()
-						,'reserva'=> $this->db->get_where('reserva', array('id_reserva' => $id))->row() ));
+						,'quartos'=> $quartos
+						,'reserva'=> $reserva));
 		}else{
 			$this->searching();
 		}
 	}
 	
 	public function save(){
-
+		$this->form_validation->set_rules('entrada', 'Entrada', 'required');
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('id_quarto','entrada'),$this->input->post());
+			$dados = elements(array('id_quarto','entrada','saida'),$this->input->post());
 			
 			$dados['entrada'] = dateTimeToUs($dados['entrada']);
-			$dados['situacao'] =self::RESERVADO;
+			$dados['saida'] = dateTimeToUs($dados['saida']);
+			$dados['id_situacao'] =self::RESERVADO;
 			$this->db->insert('reserva', $dados); 
 			
 			$this->load->view('index',array(
@@ -90,23 +95,28 @@ class Reserva extends CI_Controller {
 			));
 			
 			$this->session->set_flashdata('msg', 'Reserva registrada com sucesso.');
-			redirect(current_url());
+			redirect('/reserva');
 			
 		}else{
-			$this->inserting();
+			$this->searching();
 		}
 	}
 	
 	public function edit(){
 		if ($this->runFormValidations() == TRUE){
+			$id = $this->input->post('id_reserva');
+			$reserva = $this->reserva->getFullCurrentReservation($id);
 			
-			$dados = elements(array('id_quarto','entrada','situacao'),$this->input->post());
-			$dados['entrada'] = dateTimeToUs($dados['entrada']);
+			$dados = elements(array('id_quarto','id_situacao'),$this->input->post());
+			if($reserva->id_situacao == 2){
+				$dados['entrada'] = dateTimeToUs($dados['entrada']);
+				$dados['saida'] = dateTimeToUs($dados['saida']);
+			}
 			
-			$this->db->where('id_reserva', $this->input->post('id_reserva'));
+			$this->db->where('id_reserva', $id);
 			$this->db->update('reserva', $dados); 
 			
-			$this->session->set_flashdata('msg', 'Reserva atualizado com sucesso.');
+			$this->session->set_flashdata('msg', 'Reserva atualizada com sucesso.');
 			$this->index();
 			
 		}else{
@@ -115,19 +125,22 @@ class Reserva extends CI_Controller {
 	}
 	
 	public function delete(){
-
+		if($this->input->post('id_reserva')){
 			$this->db->where('id_reserva', $this->input->post('id_reserva'));
 			$this->db->delete('reserva'); 
 			
-			$this->session->set_flashdata('msg', 'reserva deletado com sucesso.');
-
-			$this->deleting();
+			$this->session->set_flashdata('msg', 'Reserva deletada com sucesso.');
+			$this->index();
+		}else{
+			$this->session->set_flashdata('msg', ":(");
+			$this->index();
+		}
 		
 	}
 	
 	private function runFormValidations(){
 		
-		$this->form_validation->set_rules('entrada', 'Entrada', 'required');
+		
 		$this->form_validation->set_rules('id_quarto', 'Quarto', 'required');
 		
 		return $this->form_validation->run();
@@ -135,9 +148,13 @@ class Reserva extends CI_Controller {
 	}
 	
 	public function quartos(){
-	$tipo = $this->uri->segment(3);
+		$entrada = dateTimeToUs( $this->input->get('entrada'));
+		$saida   = dateTimeToUs( $this->input->get('saida'));
+		$tipo = $this->uri->segment(3);
+		$id = $this->uri->segment(4);
 		if($tipo){
-			$quartos = $this->quarto->getQuartosDisponiveisTipoReserva($tipo)->result();
+			$quartos = $this->quarto->getAvailableBadroomsForEdition($tipo, $id, $entrada, $saida );
+			//dump($quartos);
 			echo json_encode($quartos);
 		}
 	}
