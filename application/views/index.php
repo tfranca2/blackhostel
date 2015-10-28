@@ -82,13 +82,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">BlackHostel</a>
+          <a class="navbar-brand" href="<?php echo site_url();?>">BlackHostel</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="assets/Dashboard Template for Bootstrap.html">Relatórios</a></li>
             <li><a href="assets/Dashboard Template for Bootstrap.html">Configurações</a></li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Usuários</a></li>
+            <li><a href="<?php echo site_url()."/usuario"?>">Usuários</a></li>
             <li>
 				<a href="<?php echo site_url();?>/login/logout">
 					Sair <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> 
@@ -106,11 +106,29 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
+			<li class="<?php echo styleMenuActive('cliente') ?>">
+				<a href="<?php echo site_url()."/cliente"?>">
+				<span class="glyphicon glyphicon-user" aria-hidden="true"></span> Clientes 
+				</a>
+			</li>
 		    <li class="<?php echo styleMenuActive('reserva') ?>">
 				<a href="<?php echo site_url()."/reserva"?>">
 					<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Reservas
 				</a>
 			</li>
+			<li class="<?php echo styleMenuActive('comanda') ?>">
+				<a href="<?php echo site_url()."/comanda"?>">
+					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Comandas
+				</a>
+			</li>
+			<li class="<?php echo styleMenuActive('caixa') ?>">
+				<a href="<?php echo site_url()."/caixa"?>">
+					<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Movimento de Caixa
+				</a>
+			</li>
+		  </ul>
+		  
+          <ul class="nav nav-sidebar">
             <li class="<?php echo styleMenuActive('item') ?>">
 				<a href="<?php echo site_url()."/item"?>">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Itens
@@ -121,24 +139,19 @@
 					<span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Perfis
 				</a>
 			</li>
-			<li class="<?php echo styleMenuActive('quarto') ?>">
-				<a href="<?php echo site_url()."/quarto"?>"> 
-					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
-				</a>
-			</li>
 			<li class="<?php echo styleMenuActive('produto') ?>">
 				<a href="<?php echo site_url()."/produto"?>">
 					<span class="glyphicon glyphicon-glass" aria-hidden="true"></span> Produtos 
 				</a>
 			</li>
+			<li class="<?php echo styleMenuActive('quarto') ?>">
+				<a href="<?php echo site_url()."/quarto"?>"> 
+					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
+				</a>
+			</li>
 			<li class="<?php echo styleMenuActive('situacao') ?>">
 				<a href="<?php echo site_url()."/situacao"?>">
 					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Situações 
-				</a>
-			</li>
-			<li class="<?php echo styleMenuActive('cliente') ?>">
-				<a href="<?php echo site_url()."/cliente"?>">
-				<span class="glyphicon glyphicon-user" aria-hidden="true"></span> Cliente 
 				</a>
 			</li>
           </ul>

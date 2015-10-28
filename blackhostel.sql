@@ -109,7 +109,7 @@ DROP TABLE IF EXISTS `reserva`;
 CREATE TABLE `reserva` (
   `id_reserva` int(11) NOT NULL AUTO_INCREMENT,
   `id_quarto` int(11) NOT NULL,
-  `id_situacao` int(11) NOT NULL,
+q  `id_situacao` int(11) NOT NULL,
   `entrada` datetime NOT NULL,
   `saida` datetime DEFAULT NULL,
   `qt_pessoas` int(11) NOT NULL,
@@ -122,11 +122,12 @@ CREATE TABLE `usuario` (
   `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
   `login` varchar(255) NOT NULL,
-  `senha` varchar(255) NOT NULL
+  `senha` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `usuario` (`id_usuario`, `nome`, `login`, `senha`) VALUES
-(1, 'Jocélio Lima', 'jocelio', '202cb962ac59075b964b07152d234b70'),
-(2, 'Tiago França', 'tiago', '202cb962ac59075b964b07152d234b70'),
-(3, 'Edson Brandão', 'edson', '202cb962ac59075b964b07152d234b70');
+(1, 'Jocélio Lima', 'jocelio@blackhostel.com', '202cb962ac59075b964b07152d234b70'),
+(2, 'Tiago França', 'tiago@blackhostel.com', '202cb962ac59075b964b07152d234b70'),
+(3, 'Edson Brandão', 'edson@blackhostel.com', '202cb962ac59075b964b07152d234b70');
 

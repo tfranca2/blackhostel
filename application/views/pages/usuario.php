@@ -10,10 +10,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 
-	<form action="<?php echo site_url();?>/cliente/searching">
+	<form action="<?php echo site_url();?>/usuario/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
-			<input type="text" placeholder="Nome do cliente" name="cliente" class="form-control"/>
+			<input type="text" placeholder="Nome do usuráio" name="nome" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 	<div class="row">
 		<div class="col-md-1 col-often-11 form-group pull-right">
-			<a class="btn btn-info" href="<?php echo site_url();?>/cliente/inserting">Novo</a>
+			<a class="btn btn-info" href="<?php echo site_url();?>/usuario/inserting">Novo</a>
 		</div>
 	</div>
 	</form>
@@ -30,23 +30,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<table class="table table-responsive"> 
 			<tr>
 				<th>ID</th>
-				<th>Cliente</th>
-				<th>CPF</th>
-				<th>RG</th>
+				<th>Nome</th>
+				<th>Login</th>
 				<th>Opções</th>
 			</tr>
-			<?php foreach($tabledata as $cliente){ ?>
+			<?php foreach($tabledata as $usuario){ ?>
 			<tr>
-				<td><?php echo $cliente->id_cliente ?></td>
-				<td width="50%"><?php echo $cliente->cliente ?></td>
-				<td><?php echo $cliente->cpf ?></td>
-				<td><?php echo $cliente->rg ?></td>
+				<td><?php echo $usuario->id_usuario ?></td>
+				<td width="50%"><?php echo $usuario->nome ?></td>
+				<td><?php echo $usuario->login ?></td>
 				<td>
-					<a href="<?php echo site_url();?>/cliente/editing/<?php  echo $cliente->id_cliente ?>">Editar 
+					<a href="<?php echo site_url();?>/usuario/editing/<?php  echo $usuario->id_usuario ?>">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
 				
-					<a href="<?php echo site_url();?>/cliente/deleting/<?php  echo $cliente->id_cliente ?>">Deletar 
+					<a href="<?php echo site_url();?>/usuario/deleting/<?php  echo $usuario->id_usuario ?>">Deletar 
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</td>
@@ -62,30 +60,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 	}else if($part =="inserting"){
 		
-	echo form_open('cliente/save');	
+	echo form_open('usuario/save');	
 ?>
 
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
 		echo form_label('Nome');
-		echo form_input(array('name'=>'cliente','class'=>'form-control','placeholder'=>'Nome do cliente'),set_value('cliente'),'autofocus');
+		echo form_input(array('name'=>'nome','class'=>'form-control','placeholder'=>'Nome do usuário'),set_value('nome'),'autofocus');
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('CPF');
-		echo form_input(array('name'=>'cpf','id'=>'cpf','class'=>'form-control','placeholder'=>'CPF do cliente'),set_value('cpf'));
+		echo form_label('Login');
+		echo form_input(array('name'=>'login','id'=>'cpf','class'=>'form-control','placeholder'=>'E-mail do usuário'),set_value('login'));
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('RG');
-		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','placeholder'=>'RG do cliente'),set_value('rg'));
+		echo form_label('Senha');
+		echo form_input(array('name'=>'senha','id'=>'senha','type'=>'password','class'=>'form-control','placeholder'=>'Senha do usuario'),set_value('senha'));
 	  ?>
 	</div>
 </div>
@@ -98,7 +96,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 	</div>
 	<div class="col-md-6 form-group">
-		<a class="btn btn-info" href="<?php echo site_url();?>/cliente" class="button success">Voltar</a>  
+		<a class="btn btn-info" href="<?php echo site_url();?>/usuario" class="button success">Voltar</a>  
 	</div>
 </div>
 
@@ -109,31 +107,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 	}else if($part =="editing"){
 		
-	echo form_open('cliente/edit');
-	echo form_hidden('id_cliente', $cliente->id_cliente);
+	echo form_open('usuario/edit');
+	echo form_hidden('id_usuario', $usuario->id_usuario);
 ?>
 
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
 		echo form_label('Nome');
-		echo form_input(array('name'=>'cliente','class'=>'form-control','placeholder'=>'Nome do cliente'),$cliente->cliente ,'autofocus');
+		echo form_input(array('name'=>'nome','class'=>'form-control','placeholder'=>'Nome do usuário'),$usuario->nome ,'autofocus');
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('CPF');
-		echo form_input(array('name'=>'cpf','id'=>'cpf','class'=>'form-control','placeholder'=>'CPF do cliente'),$cliente->cpf);
+		echo form_label('Login');
+		echo form_input(array('name'=>'login','id'=>'login','class'=>'form-control','placeholder'=>'E-mail do usuário'),$usuario->login);
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('RG');
-		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','placeholder'=>'RG do cliente'),$cliente->rg);
+		echo form_label('Senha');
+		echo form_input(array('name'=>'senha','id'=>'senha','type'=>'password','class'=>'form-control','placeholder'=>'Senha do usuário'),$usuario->senha);
 	  ?>
 	</div>
 </div>
@@ -145,7 +143,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  ?>	
 	</div>
 	<div class="col-md-6 form-group">
-		<a class="btn btn-info" href="<?php echo site_url();?>/cliente" class="button success">Voltar</a>  
+		<a class="btn btn-info" href="<?php echo site_url();?>/usuario" class="button success">Voltar</a>  
 	</div>
 </div>
 
@@ -155,31 +153,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 	}else if($part =="deleting"){
 		
-	echo form_open('cliente/delete');
-	echo form_hidden('id_cliente', $cliente->id_cliente);
+	echo form_open('usuario/delete');
+	echo form_hidden('id_usuario', $usuario->id_usuario);
+	echo form_hidden('senha', true);
 ?>
 
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
 		echo form_label('Nome');
-		echo form_input(array('name'=>'cliente','class'=>'form-control','readonly'=>'readonly'),$cliente->cliente);
+		echo form_input(array('name'=>'nome','class'=>'form-control','readonly'=>'readonly'),$usuario->nome);
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('CPF');
-		echo form_input(array('name'=>'cpf','id'=>'cpf','class'=>'form-control','readonly'=>'readonly'),$cliente->cpf);
-	  ?>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	  <?php
-		echo form_label('RG');
-		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','readonly'=>'readonly'),$cliente->rg);
+		echo form_label('Login');
+		echo form_input(array('name'=>'login','id'=>'login','class'=>'form-control','readonly'=>'readonly'),$usuario->login);
 	  ?>
 	</div>
 </div>
@@ -190,7 +181,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  ?>	
 	</div>
 	<div class="col-md-6 form-group">
-		<a class="btn btn-info" href="<?php echo site_url();?>/cliente" class="button success">Voltar</a>  
+		<a class="btn btn-info" href="<?php echo site_url();?>/usuario" class="button success">Voltar</a>  
 	</div>
 </div>
 

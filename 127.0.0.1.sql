@@ -48,24 +48,6 @@ INSERT INTO `cliente` (`id_cliente`, `cliente`, `cpf`, `rg`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `conta`
---
-
-DROP TABLE IF EXISTS `conta`;
-CREATE TABLE IF NOT EXISTS `conta` (
-  `id_conta` int(11) NOT NULL AUTO_INCREMENT,
-  `id_reserva` int(11) NOT NULL,
-  `id_produto` int(11) NOT NULL,
-  `id_cliente` int(11) NOT NULL,
-  PRIMARY KEY (`id_conta`),
-  KEY `id_reserva` (`id_reserva`,`id_produto`,`id_cliente`),
-  KEY `id_produto` (`id_produto`),
-  KEY `id_cliente` (`id_cliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `item`
 --
 
@@ -205,6 +187,34 @@ CREATE TABLE IF NOT EXISTS `reserva` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `reserva_cliente`
+--
+
+DROP TABLE IF EXISTS `reserva_cliente`;
+CREATE TABLE IF NOT EXISTS `reserva_cliente` (
+  `id_reserva` int(11) NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  KEY `id_reserva` (`id_reserva`),
+  KEY `id_cliente` (`id_cliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `reserva_produto`
+--
+
+DROP TABLE IF EXISTS `reserva_produto`;
+CREATE TABLE IF NOT EXISTS `reserva_produto` (
+  `id_reserva` int(11) NOT NULL,
+  `id_produto` int(11) NOT NULL,
+  KEY `id_reserva` (`id_reserva`),
+  KEY `id_produto` (`id_produto`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `situacao`
 --
 
@@ -238,26 +248,20 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `login` varchar(255) NOT NULL,
   `senha` varchar(255) NOT NULL,
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Extraindo dados da tabela `usuario`
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nome`, `login`, `senha`) VALUES
-(1, 'Tiago França', 'tiago', '202cb962ac59075b964b07152d234b70');
+(1, 'Jocélio Lima', 'jocelio@blackhostel.com', '202cb962ac59075b964b07152d234b70'),
+(2, 'Tiago França', 'tiago@blackhostel.com', '202cb962ac59075b964b07152d234b70'),
+(3, 'Edson Brandão', 'edson@blackhostel.com', '202cb962ac59075b964b07152d234b70');
 
 --
 -- Restrições para as tabelas dumpadas
 --
-
---
--- Restrições para a tabela `conta`
---
-ALTER TABLE `conta`
-  ADD CONSTRAINT `conta_ibfk_3` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
-  ADD CONSTRAINT `conta_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `reserva` (`id_reserva`),
-  ADD CONSTRAINT `conta_ibfk_2` FOREIGN KEY (`id_produto`) REFERENCES `produto` (`id_produto`);
 
 --
 -- Restrições para a tabela `perfil_item`
@@ -278,6 +282,20 @@ ALTER TABLE `quarto`
 ALTER TABLE `reserva`
   ADD CONSTRAINT `reserva_ibfk_2` FOREIGN KEY (`id_quarto`) REFERENCES `quarto` (`id_quarto`),
   ADD CONSTRAINT `reserva_ibfk_1` FOREIGN KEY (`id_situacao`) REFERENCES `situacao` (`id_situacao`);
+
+--
+-- Restrições para a tabela `reserva_cliente`
+--
+ALTER TABLE `reserva_cliente`
+  ADD CONSTRAINT `reserva_cliente_ibfk_2` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`),
+  ADD CONSTRAINT `reserva_cliente_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `reserva` (`id_reserva`);
+
+--
+-- Restrições para a tabela `reserva_produto`
+--
+ALTER TABLE `reserva_produto`
+  ADD CONSTRAINT `reserva_produto_ibfk_2` FOREIGN KEY (`id_produto`) REFERENCES `produto` (`id_produto`),
+  ADD CONSTRAINT `reserva_produto_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `reserva` (`id_reserva`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
