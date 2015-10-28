@@ -42,6 +42,7 @@ class Reserva extends CI_Controller {
 					'page'=>'reserva'
 					,'title'=> 'Reservas'
 					,'part' => 'inserting'
+					,'clientes'=>$this->db->get('cliente')->result()
 					));
 	}
 	
@@ -49,13 +50,15 @@ class Reserva extends CI_Controller {
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
 		$reserva = $this->reserva->getFullCurrentReservation($id);
 		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id, $reserva->entrada, $reserva->saida);
+		$clientes = $this->db->get('cliente')->result();
 		if($id){
 			$this->load->view('index', array(
 						'page'=>'reserva'
 						,'title'=> 'Reservas'
 						,'part' => 'editing'
 						,'reserva'=> $reserva
-						,'quartos'=> $quartos));
+						,'quartos'=> $quartos
+						,'clientes'=>$clientes));
 		}else{
 			$this->searching();
 		}
@@ -81,7 +84,7 @@ class Reserva extends CI_Controller {
 		$this->form_validation->set_rules('entrada', 'Entrada', 'required');
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('id_quarto','entrada','saida'),$this->input->post());
+			$dados = elements(array('id_quarto','entrada','saida','id_cliente'),$this->input->post());
 			
 			$dados['entrada'] = dateTimeToUs($dados['entrada']);
 			$dados['saida'] = dateTimeToUs($dados['saida']);
@@ -107,10 +110,13 @@ class Reserva extends CI_Controller {
 			$id = $this->input->post('id_reserva');
 			$reserva = $this->reserva->getFullCurrentReservation($id);
 			
-			$dados = elements(array('id_quarto','id_situacao'),$this->input->post());
+			$dados = elements(array('id_quarto','id_situacao','entrada','saida','id_cliente'),$this->input->post());
 			if($reserva->id_situacao == 2){
 				$dados['entrada'] = dateTimeToUs($dados['entrada']);
 				$dados['saida'] = dateTimeToUs($dados['saida']);
+			}else{
+				unset($dados['entrada']);
+				unset($dados['saida']);
 			}
 			
 			$this->db->where('id_reserva', $id);

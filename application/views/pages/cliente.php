@@ -42,11 +42,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td><?php echo $cliente->cpf ?></td>
 				<td><?php echo $cliente->rg ?></td>
 				<td>
-					<a href="<?php echo site_url();?>/cliente/editing/<?php  echo $cliente->id_cliente ?>">Editar 
+					<a href="<?php echo site_url();?>/cliente/editing/<?php  echo $cliente->id_cliente ?>"
+					class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
 				
-					<a href="<?php echo site_url();?>/cliente/deleting/<?php  echo $cliente->id_cliente ?>">Deletar 
+					<a href="<?php echo site_url();?>/cliente/deleting/<?php  echo $cliente->id_cliente ?>"
+					class="btn btn-default btn-sm">Deletar 
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</td>

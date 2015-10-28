@@ -87,6 +87,7 @@
 			<tr>
 				<th>ID</th>
 				<th>Quarto</th>
+				<th>Cliente</th>
 				<th>Perfil</th>
 				<th>Tipo Reserva</th>
 				<th>Entrada</th>
@@ -98,6 +99,7 @@
 			<tr>
 				<td><?php echo $reserva->id_reserva ?></td>
 				<td><?php echo $reserva->ds_quarto ?></td>
+				<td><?php echo $reserva->cliente ?></td>
 				<td><?php echo $reserva->descricao ?></td>
 				<td><?php echo $reserva->tp_modo_reserva ==1?'Diária':'Hora'; ?></td>
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
@@ -176,7 +178,17 @@
 	  </select>
 	</div>
 </div>
-
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <label>Quarto</label>
+	  <select name="id_cliente" class="form-control" id="selectclientes" >
+	  	<option value=""> -- Selecione -- </option>
+	  	<?php foreach ($clientes as $cliente){?>
+	  		<option value="<?php echo $cliente->id_cliente?>"> <?php echo $cliente->cliente?> </option>	
+	  	<?php }?>
+	  </select>
+	</div>
+</div>
 
 <div class="row">
 	<div class="col-md-6 form-group">
@@ -229,7 +241,7 @@
 	<div class="col-md-3 form-group">
 	  <label>Saída</label>
 	  	<div class="input-group">
-            <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
+            <input type="datetime" class="form-control calendar" name="saida" id="saida" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
             <?php echo ($reserva->id_situacao == 2)?'':'disabled'; ?>> 
             <span class="input-group-addon add-on">
                 <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
@@ -253,11 +265,23 @@
 	  <select name="id_quarto" class="form-control" id="selectquartos">
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
-			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->descricao ?> </option>
+			<option value="<?php echo $quarto->id_quarto ?>" <?php tagAsSelected($quarto->id_quarto , $reserva->id_quarto ) ?> ><?php echo $quarto->descricao ?> </option>
 			<?php } ?>
 	  </select>
 	</div>
 </div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <label>Quarto</label>
+	  <select name="id_cliente" class="form-control" id="selectclientes" >
+	  	<option value=""> -- Selecione -- </option>
+	  	<?php foreach ($clientes as $cliente){?>
+	  		<option value="<?php echo $cliente->id_cliente?>" <?php tagAsSelected($cliente->id_cliente, $reserva->id_cliente  )?> > <?php echo $cliente->cliente?> </option>	
+	  	<?php }?>
+	  </select>
+	</div>
+</div>
+<?php dump($reserva)?>
 <div class="row">
 	<div class="col-md-6 form-group">
 	<label>Situação</label>
@@ -332,7 +356,12 @@
 	  </select>
 	</div>
 </div>
-
+<div class="row">
+	<div class="col-md-6 form-group">
+	<label>Cliente</label>
+	  <input type="text" value="<?php echo $reserva->cliente?>" class="form-control" disabled/>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	<label>Situação</label>

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class caixa extends CI_Controller {
+class Caixa extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
@@ -12,7 +12,7 @@ class caixa extends CI_Controller {
 	 
 	public function index(){
 		$this->load->view('index', array(
-					'page'=>'Caixa'
+					'page'=>'caixa'
 					,'title'=> 'Movimento de Caixa'
 					,'part' => 'show'
 					,'tabledata'=>$this->db->get_where('caixa', 'DATE(data) = DATE(CURDATE())')->result()
@@ -21,7 +21,7 @@ class caixa extends CI_Controller {
 	
 	public function show(){
 		$this->load->view('index',array(
-					'page'=>'Caixa'
+					'page'=>'caixa'
 					,'title'=> 'Movimento de Caixa'
 					,'part' => 'show'
 					,'tabledata'=>$this->db->get('caixa')->result()
@@ -30,7 +30,7 @@ class caixa extends CI_Controller {
 	
 	public function inserting(){
 		$this->load->view('index', array(
-					'page'=>'Caixa'
+					'page'=>'caixa'
 					,'title'=> 'Movimento de Caixa'
 					,'part' => 'inserting'));
 	}
@@ -39,7 +39,7 @@ class caixa extends CI_Controller {
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_caixa');
 		if($id){
 			$this->load->view('index', array(
-						'page'=>'Caixa'
+						'page'=>'caixa'
 						,'title'=> 'Movimento de Caixa'
 						,'part' => 'editing'
 						,'caixa'=> $this->db->get_where('caixa', array('id_caixa' => $id))->row() ));
@@ -51,7 +51,7 @@ class caixa extends CI_Controller {
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_caixa');
 		if($id){
 			$this->load->view('index', array(
-						'page'=>'Caixa'
+						'page'=>'caixa'
 						,'title'=> 'Movimento de Caixa'
 						,'part' => 'deleting'
 						,'caixa'=> $this->db->get_where('caixa', array('id_caixa' => $id))->row() ));
@@ -70,11 +70,12 @@ class caixa extends CI_Controller {
 			$dados = elements(array('operacao','valor','observacao'),$this->input->post());
 			$dados['id_usuario'] = $id_usuario;
 			$dados['data'] = $data;
+			$dados['valor'] = monetaryInput($dados['valor']);
 			
 			$this->db->insert('caixa', $dados); 
 			
 			$this->load->view('index',array(
-					'page'=>'Caixa'
+					'page'=>'caixa'
 					,'title'=> 'Movimento de Caixa'
 					,'part' => 'inserting'
 			));

@@ -46,10 +46,10 @@ $operacoes = array (
 			?>
 			<tr>
 				<td><?php echo $operacoes[$caixa->operacao]; ?></td>
-				<td><?php echo "R$ ".$caixa->valor; ?></td>
+				<td><?php echo "R$ ".monetaryOutput($caixa->valor); ?></td>
 				<td><?php echo $caixa->observacao; ?></td>
 				<td><?php echo $usuario->nome; ?></td>
-				<td><?php echo $caixa->data; ?></td>
+				<td><?php echo dateTimeToBr($caixa->data); ?></td>
 				
 				<?php if(false){  ?>
 					<td>
