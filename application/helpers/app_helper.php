@@ -44,4 +44,25 @@ function tagAsSelected($var1, $var2){
 	echo ($var1 == $var2)?'selected':''; 
 }
 
+function month($idx){
+	$meses = array(1 => 'Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
+	return $meses[$idx]; 
+}
+
+function extractMonths($data){
+	$months ="";
+	foreach ($data as $d){
+		$months .= '\''.month($d->mes).'\', ';
+	}
+	return rtrim($months,', ');
+}
+function extractValues($data, $tipo){
+	$values ='';
+	foreach ($data as $d){
+		if($tipo == $d->tipo_reserva ){	
+			$values .=  $d->qtdmes.', ';
+		}
+	}
+	return rtrim($values,', ');
+}
 

@@ -9,6 +9,7 @@ class Main extends CI_Controller {
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
 		$this->load->model('Login_model','login');
+		$this->load->model('Reserva_model','reserva');
 		$this->login->authorize();
     }
 	
@@ -16,6 +17,7 @@ class Main extends CI_Controller {
 	{
 		$this->load->view('index', array(
 					'page'=>'reports'
+					,'data' => $this->reserva->getSumReservationMonths()
 					,'title'=> 'Relatórios'
 		));
 	}

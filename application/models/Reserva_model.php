@@ -27,6 +27,17 @@ class Reserva_model extends CI_Model {
 		return $this->db->query($sql)->row();
 	}
 	
+	public function getSumReservationMonths(){
+		$sql = 'select "Diária" tipo_reserva, count(EXTRACT(MONTH FROM r.entrada)) AS qtdmes, EXTRACT(MONTH FROM r.entrada)
+			mes from reserva r inner join quarto q on r.id_quarto = q.id_quarto inner 
+			join perfil p on p.id_perfil = q.id_perfil where p.tp_modo_reserva = 1 group by EXTRACT(MONTH FROM r.entrada)
+			union 
+			select "Hora" tipo_reserva, count(EXTRACT(MONTH FROM r.entrada)) AS qtdmes, EXTRACT(MONTH FROM r.entrada) 
+			mes from reserva r inner join quarto q on r.id_quarto = q.id_quarto inner 
+			join perfil p on p.id_perfil = q.id_perfil where p.tp_modo_reserva = 2 group by EXTRACT(MONTH FROM r.entrada)';
+		return $this->db->query($sql)->result();
+	}
+	
 }
 
 ?>
