@@ -8,11 +8,16 @@ class Reserva_model extends CI_Model {
 		
     }
 	
-	public function getReservas(){
+	public function getReservas($situacao = 0){
+		$fil = ($situacao != 0)?' and r.id_situacao ='.$situacao:'';
+		if ($situacao != 6){
+			$fil .=	"and r.id_situacao != 6";
+		}
 		return $this->db->query("select r.*, q.id_quarto, q.numero, q.descricao ds_quarto, p.*,c.* from reserva r 
 						inner join quarto q on r.id_quarto = q.id_quarto
 						inner join perfil p on p.id_perfil = q.id_perfil
 						left join cliente c on c.id_cliente = r.id_cliente
+						where 1=1 ".$fil."  
 						order by r.id_reserva desc");
 	}
 	

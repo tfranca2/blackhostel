@@ -74,11 +74,23 @@
 */
 	if($part =="searching"){
 ?>
-	<form action="<?php echo site_url();?>/reserva/searching">
+	<form action="<?php echo site_url();?>/reserva/searching" method="post">
 	<div class="row">
 		<div class="col-md-5 form-group">
 			<label>Descrição</label>
-			<input type="text" placeholder="DescriÃ§Ã£o do Reserva" name="descricao" class="form-control"/>
+			<input type="text" placeholder="Descrição do Reserva" name="descricao" class="form-control"/>
+		</div>
+		<div class="col-md-3 form-group">
+		<label>Situação</label>
+		    <select name="id_sit" class="form-control">
+				<option value=""> -- Selecione -- </option>
+				<option value="1"> EM USO </option>
+				<option value="2"> RESERVADO </option>
+				<option value="3"> MANUTENCAO </option>
+				<option value="4"> FINALIZADO </option>
+				<option value="5"> FECHADO </option>
+				<option value="6"> CANCELADO </option>
+		    </select>
 		</div>
 	</div>
 	<div class="row">
@@ -112,7 +124,7 @@
 				<td><?php echo $reserva->ds_quarto ?></td>
 				<td><?php echo $reserva->cliente ?></td>
 				<td><?php echo $reserva->descricao ?></td>
-				<td><?php echo $reserva->tp_modo_reserva ==1?'DiÃ¡ria':'Hora'; ?></td>
+				<td><?php echo $reserva->tp_modo_reserva ==1?'Diária':'Hora'; ?></td>
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
 				<td><?php echo dateTimeToBr( $reserva->saida ) ?></td>
 				<td><?php
@@ -120,10 +132,12 @@
 							echo 'EM USO';
 						 }else if($reserva->id_situacao == 2){ 
 							echo 'RESERVADO';
-						 }else if($reserva->id_situacao == 3){
-							echo 'LIVRE';
-						 }else if($reserva->id_situacao == 4){
-							echo 'MANUTENÇÃO';
+						 }
+						 else if($reserva->id_situacao == 4){
+						 	echo 'FINALIZADO';
+						 }
+						 else if($reserva->id_situacao == 6){
+						 	echo 'CANCELADO';
 						 }
 					?>
 				</td>
@@ -200,6 +214,12 @@
 	  </select>
 	</div>
 </div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	<label>Ocupantes</label>
+	<input type="number" name="qt_pessoas" min="1" class="form-control" value="1">
+	</div>
+</div>
 
 <div class="row">
 	<div class="col-md-6 form-group">
@@ -207,9 +227,6 @@
 	</div>
 </div>
 <br/><br/>
-<br/><br/>
-<br/>
-<br/>
 <br/>
 <br/>
 
@@ -276,30 +293,37 @@
 	  <select name="id_quarto" class="form-control" id="selectquartos">
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
-			<option value="<?php echo $quarto->id_quarto ?>" <?php tagAsSelected($quarto->id_quarto , $reserva->id_quarto ) ?> ><?php echo $quarto->descricao ?> </option>
+			<option value="<?php echo $quarto->id_quarto ?>" <?php tagAs('selected',$quarto->id_quarto , $reserva->id_quarto ) ?> ><?php echo $quarto->descricao ?> </option>
 			<?php } ?>
 	  </select>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-	  <label>Quarto</label>
+	  <label>Cliente</label>
 	  <select name="id_cliente" class="form-control" id="selectclientes" >
 	  	<option value=""> -- Selecione -- </option>
 	  	<?php foreach ($clientes as $cliente){?>
-	  		<option value="<?php echo $cliente->id_cliente?>" <?php tagAsSelected($cliente->id_cliente, $reserva->id_cliente  )?> > <?php echo $cliente->cliente?> </option>	
+	  		<option value="<?php echo $cliente->id_cliente?>" <?php tagAs('selected',$cliente->id_cliente, $reserva->id_cliente  )?> > <?php echo $cliente->cliente?> </option>	
 	  	<?php }?>
 	  </select>
 	</div>
 </div>
-<?php dump($reserva)?>
 <div class="row">
 	<div class="col-md-6 form-group">
-	<label>SituaÃ§Ã£o</label>
+	<label>Ocupantes</label>
+	<input type="number" name="qt_pessoas" min="1" class="form-control" value="<?php echo $reserva->qt_pessoas?>">
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	<label>Situação</label>
 	    <select name="id_situacao" class="form-control">
 			<option value=""> -- Selecione -- </option>
-			<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
-			<option value="2" <?php echo $reserva->id_situacao == 2?'selected':''; ?>> RESERVADO </option>
+			<option value="1" <?php tagAs('selected',$reserva->id_situacao, 1) ?>> EM USO </option>
+			<option value="2" <?php tagAs('selected',$reserva->id_situacao, 2) ?>> RESERVADO </option>
+			<option value="4" <?php tagAs('selected',$reserva->id_situacao, 4) ?>> FINALIZADO </option>
+			<option value="6" <?php tagAs('selected',$reserva->id_situacao, 6) ?>> CANCELADO </option>
 	    </select>
 	</div>
 </div>
@@ -336,7 +360,7 @@
 		</div>
 	</div>
 	<div class="col-md-3 form-group">
-	  <label>SaÃ­da</label>
+	  <label>Saída</label>
 	  	<div class="input-group">
             <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
             disabled="true"> 
@@ -351,7 +375,7 @@
 	  <label>Tipo Reserva</label>
 	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto" disabled>
 			<option value=""> -- Selecione -- </option>
-			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>DiÃ¡rias</option>
+			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
 			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
 	  </select>
 	</div>
@@ -375,7 +399,13 @@
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-	<label>SituaÃ§Ã£o</label>
+	<label>Ocupantes</label>
+	<input type="number" name="qt_pessoas" min="1" class="form-control" value="<?php echo $reserva->qt_pessoas?>" disabled>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	<label>Situação</label>
 	    <select name="id_situacao" class="form-control" disabled>
 			<option value=""> -- Selecione -- </option>
 			<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>

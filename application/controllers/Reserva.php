@@ -4,8 +4,10 @@ class Reserva extends CI_Controller {
 
 	const EM_USO = 1;
 	const RESERVADO = 2;
-	const LIVRE = 3;
-	const MANUTENCAO = 4;
+	const MANUTENCAO = 3;
+	const FINALIZADO = 4;
+	const FECHADO = 5;
+	const CANCELADO = 6;
 
 	public function __construct(){
 		parent::__construct();
@@ -33,7 +35,7 @@ class Reserva extends CI_Controller {
 					'page'=>'reserva'
 					,'title'=> 'Reservas'
 					,'part' => 'searching'
-					,'tabledata'=>$this->reserva->getReservas()->result()
+					,'tabledata'=>$this->reserva->getReservas($this->input->post('id_sit'))->result()
 				));
 	}
 	
@@ -84,7 +86,7 @@ class Reserva extends CI_Controller {
 		$this->form_validation->set_rules('entrada', 'Entrada', 'required');
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('id_quarto','entrada','saida','id_cliente'),$this->input->post());
+			$dados = elements(array('id_quarto','entrada','saida','id_cliente','qt_pessoas'),$this->input->post());
 			
 			$dados['entrada'] = dateTimeToUs($dados['entrada']);
 			$dados['saida'] = dateTimeToUs($dados['saida']);
@@ -110,7 +112,7 @@ class Reserva extends CI_Controller {
 			$id = $this->input->post('id_reserva');
 			$reserva = $this->reserva->getFullCurrentReservation($id);
 			
-			$dados = elements(array('id_quarto','id_situacao','entrada','saida','id_cliente'),$this->input->post());
+			$dados = elements(array('id_quarto','id_situacao','entrada','saida','id_cliente','qt_pessoas'),$this->input->post());
 			if($reserva->id_situacao == 2){
 				$dados['entrada'] = dateTimeToUs($dados['entrada']);
 				$dados['saida'] = dateTimeToUs($dados['saida']);

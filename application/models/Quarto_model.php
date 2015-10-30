@@ -16,12 +16,12 @@ class Quarto_model extends CI_Model {
 						and (r.saida is null or r.saida not between '".$entrada."' and '".$saida."')";
 		}
 		
-		$sql ="select q.* from quarto q 
+		$sql ="select distinct * from ( select q.* from quarto q 
 				left join reserva r on r.id_quarto = q.id_quarto
 				left join perfil p on p.id_perfil = q.id_perfil
 				where (r.id_situacao in (2,3,4) or r.id_reserva is null)
-				".$filter;
-	 			
+				".$filter.") a";
+			 
 		return $this->db->query($sql);
 	}
 	
@@ -34,9 +34,10 @@ class Quarto_model extends CI_Model {
 				left join reserva r on r.id_quarto = q.id_quarto
 				left join perfil p on p.id_perfil = q.id_perfil
 				where r.id_reserva = ".$idCurrentReservation ." and p.tp_modo_reserva = ".$tipoReserva ;
-				
-		$currentReservedRoom = $this->db->query($sql)->row();
 		
+		
+		$currentReservedRoom = $this->db->query($sql)->row();
+	
 		foreach($quartos as $key => $quarto){
 			if( isset($currentReservedRoom) and ($quarto->id_quarto == $currentReservedRoom->id_quarto )){
 				unset($quartos[$key]);

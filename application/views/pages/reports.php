@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $(function () {
     $('#container').highcharts({
         title: {
-            text: 'Quantidade de Reservas por Mês',
+            text: 'Quantidade de Reservas por',
             x: -20 //center
         },
         subtitle: {
@@ -19,7 +19,7 @@ $(function () {
             x: -20
         },
         xAxis: {
-            categories: [<?php echo extractMonths($data); ?>]
+            categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',]
         },
         yAxis: {
             title: {
@@ -32,7 +32,7 @@ $(function () {
             }]
         },
         tooltip: {
-            valueSuffix: '°C'
+            valueSuffix: ''
         },
         legend: {
             layout: 'vertical',
@@ -41,20 +41,20 @@ $(function () {
             borderWidth: 0
         },
         series: [{
-            name: 'Diária',
-            data: [<?php echo extractValues($data,"Diária"); ?>]
-        }, {
             name: 'Hora',
             data: [<?php echo extractValues($data,"Hora"); ?>]
+        },{
+            name: 'Diária',
+            data: [<?php echo extractValues($data,"Diária"); ?>]
         }]
     });
 });
 </script>
 <?php 
 //dump($data);
-echo extractValues($data,"Diária");
+echo extractValues($data,"Di�ria");
 echo '<br>';
-echo extractValues($data,"Hora");
+//echo extractValues($data,"Hora");
 ?>
 
 
