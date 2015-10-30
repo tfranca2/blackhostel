@@ -16,11 +16,22 @@
 						of: input
 					});
 				}, 1);
+				customRange(input);
 			},
 			onSelect: function(){
 				$('#tipo-quarto').prop('selectedIndex',0);
 			}
 		});
+
+		function customRange(input) {   
+			if (input.id == 'entrada'){     
+				var x = $('#saida').datepicker("getDate");
+				$( "#entrada" ).datepicker( "option", "maxDate",x ); 
+			}else if (input.id == 'saida') {     
+				var x=$('#entrada').datepicker("getDate");
+				$( "#saida" ).datepicker( "option", "minDate",x ); 
+			} 
+		}
 		
 		
 		$("#tipo-quarto").on('change', function(){
@@ -59,15 +70,27 @@
 
 <?php 
 /**
-* Área da tela responsável pela pesquisa e exibição da lista de resultados
+* Ã�rea da tela responsÃ¡vel pela pesquisa e exibiÃ§Ã£o da lista de resultados
 */
 	if($part =="searching"){
 ?>
-	<form action="<?php echo site_url();?>/reserva/searching">
+	<form action="<?php echo site_url();?>/reserva/searching" method="post">
 	<div class="row">
 		<div class="col-md-5 form-group">
 			<label>Descrição</label>
 			<input type="text" placeholder="Descrição do Reserva" name="descricao" class="form-control"/>
+		</div>
+		<div class="col-md-3 form-group">
+		<label>Situação</label>
+		    <select name="id_sit" class="form-control">
+				<option value=""> -- Selecione -- </option>
+				<option value="1"> EM USO </option>
+				<option value="2"> RESERVADO </option>
+				<option value="3"> MANUTENCAO </option>
+				<option value="4"> FINALIZADO </option>
+				<option value="5"> FECHADO </option>
+				<option value="6"> CANCELADO </option>
+		    </select>
 		</div>
 	</div>
 	<div class="row">
@@ -109,10 +132,12 @@
 							echo 'EM USO';
 						 }else if($reserva->id_situacao == 2){ 
 							echo 'RESERVADO';
-						 }else if($reserva->id_situacao == 3){
-							echo 'LIVRE';
-						 }else if($reserva->id_situacao == 4){
-							echo 'MANUTENÇÃO';
+						 }
+						 else if($reserva->id_situacao == 4){
+						 	echo 'FINALIZADO';
+						 }
+						 else if($reserva->id_situacao == 6){
+						 	echo 'CANCELADO';
 						 }
 					?>
 				</td>
@@ -133,7 +158,7 @@
 	
 <?php 
 /**
-* Área da tela responsável pelo formulário de inserção de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de inserÃ§Ã£o de dados
 */
 	}else if($part =="inserting"){
 		
@@ -180,13 +205,19 @@
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-	  <label>Quarto</label>
+	  <label>Cliente</label>
 	  <select name="id_cliente" class="form-control" id="selectclientes" >
 	  	<option value=""> -- Selecione -- </option>
 	  	<?php foreach ($clientes as $cliente){?>
 	  		<option value="<?php echo $cliente->id_cliente?>"> <?php echo $cliente->cliente?> </option>	
 	  	<?php }?>
 	  </select>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	<label>Ocupantes</label>
+	<input type="number" name="qt_pessoas" min="1" class="form-control" value="1">
 	</div>
 </div>
 
@@ -196,9 +227,6 @@
 	</div>
 </div>
 <br/><br/>
-<br/><br/>
-<br/>
-<br/>
 <br/>
 <br/>
 
@@ -218,7 +246,7 @@
 <?php 
 
 /**
-* Área da tela responsável pelo formulário de edição de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de ediÃ§Ã£o de dados
 */
 	}else if($part =="editing"){
 		
@@ -265,30 +293,37 @@
 	  <select name="id_quarto" class="form-control" id="selectquartos">
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
-			<option value="<?php echo $quarto->id_quarto ?>" <?php tagAsSelected($quarto->id_quarto , $reserva->id_quarto ) ?> ><?php echo $quarto->descricao ?> </option>
+			<option value="<?php echo $quarto->id_quarto ?>" <?php tagAs('selected',$quarto->id_quarto , $reserva->id_quarto ) ?> ><?php echo $quarto->descricao ?> </option>
 			<?php } ?>
 	  </select>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-	  <label>Quarto</label>
+	  <label>Cliente</label>
 	  <select name="id_cliente" class="form-control" id="selectclientes" >
 	  	<option value=""> -- Selecione -- </option>
 	  	<?php foreach ($clientes as $cliente){?>
-	  		<option value="<?php echo $cliente->id_cliente?>" <?php tagAsSelected($cliente->id_cliente, $reserva->id_cliente  )?> > <?php echo $cliente->cliente?> </option>	
+	  		<option value="<?php echo $cliente->id_cliente?>" <?php tagAs('selected',$cliente->id_cliente, $reserva->id_cliente  )?> > <?php echo $cliente->cliente?> </option>	
 	  	<?php }?>
 	  </select>
 	</div>
 </div>
-<?php dump($reserva)?>
+<div class="row">
+	<div class="col-md-6 form-group">
+	<label>Ocupantes</label>
+	<input type="number" name="qt_pessoas" min="1" class="form-control" value="<?php echo $reserva->qt_pessoas?>">
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	<label>Situação</label>
 	    <select name="id_situacao" class="form-control">
 			<option value=""> -- Selecione -- </option>
-			<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
-			<option value="2" <?php echo $reserva->id_situacao == 2?'selected':''; ?>> RESERVADO </option>
+			<option value="1" <?php tagAs('selected',$reserva->id_situacao, 1) ?>> EM USO </option>
+			<option value="2" <?php tagAs('selected',$reserva->id_situacao, 2) ?>> RESERVADO </option>
+			<option value="4" <?php tagAs('selected',$reserva->id_situacao, 4) ?>> FINALIZADO </option>
+			<option value="6" <?php tagAs('selected',$reserva->id_situacao, 6) ?>> CANCELADO </option>
 	    </select>
 	</div>
 </div>
@@ -306,7 +341,7 @@
 
 <?php
 /**
-* Área da tela responsável pela confirmação de deleção dos dados
+* Ã�rea da tela responsÃ¡vel pela confirmaÃ§Ã£o de deleÃ§Ã£o dos dados
 */
 	}else if($part =="deleting"){
 		
@@ -360,6 +395,12 @@
 	<div class="col-md-6 form-group">
 	<label>Cliente</label>
 	  <input type="text" value="<?php echo $reserva->cliente?>" class="form-control" disabled/>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	<label>Ocupantes</label>
+	<input type="number" name="qt_pessoas" min="1" class="form-control" value="<?php echo $reserva->qt_pessoas?>" disabled>
 	</div>
 </div>
 <div class="row">
