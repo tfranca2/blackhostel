@@ -66,11 +66,8 @@
 	<form action="<?php echo site_url();?>/reserva/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
-			<label>Descrição</label>
 			<input type="text" placeholder="Descrição do Reserva" name="descricao" class="form-control"/>
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
 		</div>
@@ -391,7 +388,7 @@ echo form_close();
 
 <div class="row">
 	
-	<?php  if(!empty(validation_errors())){ ?>
+	<?php /* if(!empty(validation_errors())){ ?>
 	<div class="alert alert-danger">
 		<?php echo validation_errors(); ?>
 	</div>
@@ -401,5 +398,5 @@ echo form_close();
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } ?>
+	<?php } */ ?>
 </div>	
