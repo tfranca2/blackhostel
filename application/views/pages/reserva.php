@@ -16,11 +16,22 @@
 						of: input
 					});
 				}, 1);
+				customRange(input);
 			},
 			onSelect: function(){
 				$('#tipo-quarto').prop('selectedIndex',0);
 			}
 		});
+
+		function customRange(input) {   
+			if (input.id == 'entrada'){     
+				var x = $('#saida').datepicker("getDate");
+				$( "#entrada" ).datepicker( "option", "maxDate",x ); 
+			}else if (input.id == 'saida') {     
+				var x=$('#entrada').datepicker("getDate");
+				$( "#saida" ).datepicker( "option", "minDate",x ); 
+			} 
+		}
 		
 		
 		$("#tipo-quarto").on('change', function(){
@@ -59,7 +70,7 @@
 
 <?php 
 /**
-* Área da tela responsável pela pesquisa e exibição da lista de resultados
+* Ã�rea da tela responsÃ¡vel pela pesquisa e exibiÃ§Ã£o da lista de resultados
 */
 	if($part =="searching"){
 ?>
@@ -67,7 +78,7 @@
 	<div class="row">
 		<div class="col-md-5 form-group">
 			<label>Descrição</label>
-			<input type="text" placeholder="Descrição do Reserva" name="descricao" class="form-control"/>
+			<input type="text" placeholder="DescriÃ§Ã£o do Reserva" name="descricao" class="form-control"/>
 		</div>
 	</div>
 	<div class="row">
@@ -101,7 +112,7 @@
 				<td><?php echo $reserva->ds_quarto ?></td>
 				<td><?php echo $reserva->cliente ?></td>
 				<td><?php echo $reserva->descricao ?></td>
-				<td><?php echo $reserva->tp_modo_reserva ==1?'Diária':'Hora'; ?></td>
+				<td><?php echo $reserva->tp_modo_reserva ==1?'DiÃ¡ria':'Hora'; ?></td>
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
 				<td><?php echo dateTimeToBr( $reserva->saida ) ?></td>
 				<td><?php
@@ -133,7 +144,7 @@
 	
 <?php 
 /**
-* Área da tela responsável pelo formulário de inserção de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de inserÃ§Ã£o de dados
 */
 	}else if($part =="inserting"){
 		
@@ -180,7 +191,7 @@
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-	  <label>Quarto</label>
+	  <label>Cliente</label>
 	  <select name="id_cliente" class="form-control" id="selectclientes" >
 	  	<option value=""> -- Selecione -- </option>
 	  	<?php foreach ($clientes as $cliente){?>
@@ -218,7 +229,7 @@
 <?php 
 
 /**
-* Área da tela responsável pelo formulário de edição de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de ediÃ§Ã£o de dados
 */
 	}else if($part =="editing"){
 		
@@ -284,7 +295,7 @@
 <?php dump($reserva)?>
 <div class="row">
 	<div class="col-md-6 form-group">
-	<label>Situação</label>
+	<label>SituaÃ§Ã£o</label>
 	    <select name="id_situacao" class="form-control">
 			<option value=""> -- Selecione -- </option>
 			<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
@@ -306,7 +317,7 @@
 
 <?php
 /**
-* Área da tela responsável pela confirmação de deleção dos dados
+* Ã�rea da tela responsÃ¡vel pela confirmaÃ§Ã£o de deleÃ§Ã£o dos dados
 */
 	}else if($part =="deleting"){
 		
@@ -325,7 +336,7 @@
 		</div>
 	</div>
 	<div class="col-md-3 form-group">
-	  <label>Saída</label>
+	  <label>SaÃ­da</label>
 	  	<div class="input-group">
             <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
             disabled="true"> 
@@ -340,7 +351,7 @@
 	  <label>Tipo Reserva</label>
 	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto" disabled>
 			<option value=""> -- Selecione -- </option>
-			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
+			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>DiÃ¡rias</option>
 			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
 	  </select>
 	</div>
@@ -364,7 +375,7 @@
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-	<label>Situação</label>
+	<label>SituaÃ§Ã£o</label>
 	    <select name="id_situacao" class="form-control" disabled>
 			<option value=""> -- Selecione -- </option>
 			<option value="1" <?php echo $reserva->id_situacao == 1?'selected':''; ?>> EM USO </option>
