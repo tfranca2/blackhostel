@@ -99,6 +99,7 @@ class Comanda extends CI_Controller {
 		//fazer lista de produtos para a view
 		$s = "SELECT produto, preco FROM produto pt LEFT JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto WHERE rpt.id_reserva = ".$id;
 		$res = $this->db->query($s)->result();
+		$produtos[] = array();
 		foreach($res as $r){
 			$produtos[] = array( 
 							'produto' => $r->produto,
@@ -106,7 +107,7 @@ class Comanda extends CI_Controller {
 						);
 		}
 		
-		echo json_encode( array("id"=>$id,"numero"=> $quarto,"perfil"=>$perfil,"entrada"=>$entrada,"saida"=>$saida,"produtos"=>$produtos,"precoQuarto"=>$precoQuarto,"valorProdutos"=>$valorProdutos,"total"=>$total) );
+		echo json_encode( array("id"=>$id,"numero"=> $quarto,"perfil"=>$perfil,"entrada"=>dateTimeToBr($entrada),"saida"=>dateTimeToBr($saida),"produtos"=>$produtos,"precoQuarto"=>$precoQuarto,"valorProdutos"=>$valorProdutos,"total"=>$total) );
 	}
 	
 	public function nada(){}
