@@ -40,11 +40,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td width="50%"><?php echo $usuario->nome ?></td>
 				<td><?php echo $usuario->login ?></td>
 				<td>
-					<a href="<?php echo site_url();?>/usuario/editing/<?php  echo $usuario->id_usuario ?>">Editar 
+					<a href="<?php echo site_url();?>/usuario/editing/<?php  echo $usuario->id_usuario ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
 				
-					<a href="<?php echo site_url();?>/usuario/deleting/<?php  echo $usuario->id_usuario ?>">Deletar 
+					<a href="<?php echo site_url();?>/usuario/deleting/<?php  echo $usuario->id_usuario ?>" class="btn btn-default btn-sm">Deletar 
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</td>

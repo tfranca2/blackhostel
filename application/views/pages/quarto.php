@@ -48,11 +48,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<form action="<?php echo site_url();?>/quarto/searching">
 	<div class="row">
-		<div class="col-md-5 form-group">
+		<div class="col-md-3 form-group">
 			<label>Descrição</label>
 			<input type="text" placeholder="Descrição do quarto" name="descricao" class="form-control"/>
 		</div>
-		<div class="col-md-5 form-group">
+		<div class="col-md-3 form-group">
 			<label>Perfil</label>
 			<select name="id_per" class="form-control">
 					<option value="" > -- Selecione -- </option>
@@ -61,10 +61,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php } ?>
 			</select>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+		<div class="col-md-3 form-group">
+			<label>&nbsp;</label>
+			<input type="submit" name="submit" value="Buscar" style="display: block; border: 1px solid #ccc;" class="btn btn-sucess">
 		</div>
 	</div>
 	<div class="row">

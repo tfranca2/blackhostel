@@ -77,7 +77,6 @@
 	<form action="<?php echo site_url();?>/reserva/searching" method="post">
 	<div class="row">
 		<div class="col-md-5 form-group">
-			<label>Descrição</label>
 			<input type="text" placeholder="Descrição do Reserva" name="descricao" class="form-control"/>
 		</div>
 		<div class="col-md-3 form-group">
@@ -432,7 +431,7 @@ echo form_close();
 
 <div class="row">
 	
-	<?php  if(!empty(validation_errors())){ ?>
+	<?php /* if(!empty(validation_errors())){ ?>
 	<div class="alert alert-danger">
 		<?php echo validation_errors(); ?>
 	</div>
@@ -442,5 +441,5 @@ echo form_close();
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } ?>
+	<?php } */ ?>
 </div>	

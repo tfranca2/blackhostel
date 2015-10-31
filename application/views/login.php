@@ -27,7 +27,7 @@
         
 </head>
 
-    <body>
+    <body style="background: url('<?php echo base_url();?>assets/img/1.jpg') center no-repeat #4E4E4E; overflow:hidden;">
 
         <!-- Top content -->
         <div class="top-content">
@@ -82,9 +82,5 @@
         <!--[if lt IE 10]>
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
-
-    
-
-<div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 650px; width: 1349px; z-index: -999999; position: fixed;">
-<img src="<?php echo base_url();?>assets/img/1.jpg" style="position: absolute; margin: 0px; padding: 0px; border: none; width: 1349px; height: 899.333px; max-height: none; max-width: none; z-index: -999999; left: 0px; top: -150.167px;"></div>
+		
 <img src="<?php echo base_url();?>assets/img/x.gif" style="position: absolute; top: -9999px; left: -9999px;"></body></html>
