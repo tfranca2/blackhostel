@@ -11,9 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					url: $(this).attr('href'),
 					type: 'GET',
 					success: function(data){
-						console.log(data)
-						obj = JSON.parse(data);
-						console.log(obj);
+						obj = JSON.parse(data);	
 						$('#reserva').val(obj.id);
 						$('#numero').val(obj.numero);
 						$('#perfil').val(obj.perfil);
@@ -23,11 +21,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						$('#valorProdutos').val(obj.valorProdutos);
 						$('#total').val(obj.total);
 						
-						
-						$.each(obj.produtos, function(i,produto) {
-							$('#produtos').append( 
-							'<div class="row"> <div class="col-md-4 form-group"> <label>Produto</label> <input text="text" disabled value="'+produto.produto+'" class="form-control"/> </div> <div class="col-md-4 form-group"> <label>	Preço Unit. </label> <div class="input-group"> <div class="input-group-addon">R$</div> <input type="text" class="form-control" value="'+produto.preco+'" disabled /> </div> </div> </div>'); 
-						});
+						$('#produtos').empty();
+						if(obj.produtos != null){
+							$.each(obj.produtos, function(i,produto) {
+								
+								$('#produtos').append( 
+								'<div class="row" style="padding: 0px 8px;">'+
+									'<div class="col-md-6 form-group">'+
+									 '<label>Produto</label>'+
+									 '<input text="text" disabled value="'+produto.produto+'" class="form-control"/>'+
+									 '</div>'+
+									 '<div class="col-md-4 form-group">'+
+									 '<label>	Preço Unit. </label>'+
+									 '<div class="input-group">'+
+									 '<div class="input-group-addon">R$</div>'+
+									 '<input type="text" class="form-control" value="'+produto.preco+'" disabled />'+
+									 '</div>'+
+									 '</div>'+
+								 '</div><hr style="padding: 0px 8px;margin: 0px;"/>'); 
+							});
+						}else{
+							$('#produtos').append('<div class="alert alert-success">Nenhum produto adicionado a essa comanda.</div>');
+						}
 							
 						
 						
@@ -39,13 +54,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 	});
 </script>
-<<style>
-<!--
+<style>
 .modal-dialog {
     width: 830px;
     margin: 30px auto;
 }
--->
 </style>
 <?php
 	if($part =="searching"){
@@ -60,17 +73,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-5 form-group">
-			&nbsp;
-		</div>
-	</div>
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
 		<table class="table table-responsive"> 
 			<tr>
-				<th>ID Reserva</th>
+				<th>Cod. Reserva</th>
 				<th>Quarto</th>
 				<th>Total</th>
 				<th>Opções</th>
@@ -79,7 +87,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<tr>
 				<td width="20%"><?php echo $comanda->id_reserva ?></td>
 				<td width="20%"><?php echo $comanda->numero; ?></td>
-				<td width="20%"><?php echo $comanda->valor_perfil+$comanda->valor_itens+$comanda->valor_produtos; ?></td>
+				<td width="20%">R$ <?php echo monetaryOutput($comanda->valor_perfil+$comanda->valor_itens+$comanda->valor_produtos) ?></td>
 				<td>
 					<a href="<?php echo site_url();?>/comanda/detail/<?php  echo $comanda->id_reserva ?>" class="btn btn-default btn-sm detail">Detalhar 
 						<span class="glyphicon glyphicon-search"></span>
@@ -104,61 +112,76 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<h4 class="modal-title" id="myModalLabel">Detalhamento de Comanda</h4>
 		  </div>
 		  <div class="modal-body">
-				<div class="row">
-					<div class="col-md-2 form-group">
-						<label> Reserva </label>
-						<input text="text" disabled id="reserva" class="form-control"/>	
-					</div>
-					<div class="col-md-3 form-group">
-						<label>	Número do Quarto </label>
-						<input text="text" disabled id="numero" class="form-control"/>	
-					</div>
-					<div class="col-md-4 form-group">
-						<label>	Quarto </label>
-						<input text="text" disabled id="perfil" class="form-control"/>	
-					</div>
+				
+				<div class="panel panel-primary">
+				  <div class="panel-heading">Reserva</div>
+				  <div class="panel-body">
+					  <div class="row">
+							<div class="col-md-2 form-group">
+								<label> Cod. Reserva </label>
+								<input text="text" disabled id="reserva" class="form-control"/>	
+							</div>
+							<div class="col-md-2 form-group">
+								<label>	N° do Quarto </label>
+								<input text="text" disabled id="numero" class="form-control"/>	
+							</div>
+							<div class="col-md-4 form-group">
+								<label>	Perfil </label>
+								<input text="text" disabled id="perfil" class="form-control"/>	
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4 form-group">
+								<label>	Entrada </label>
+								<input text="text" disabled id="entrada" class="form-control"/>	
+							</div>
+							<div class="col-md-4 form-group">
+								<label>	Saída </label>
+								<input text="text" disabled id="saida" class="form-control"/>	
+							</div>
+						</div>
+				  
+				  </div>
 				</div>
-				<div class="row">
-					<div class="col-md-4 form-group">
-						<label>	Entrada </label>
-						<input text="text" disabled id="entrada" class="form-control"/>	
+				<div class="panel panel-primary">
+				  <div class="panel-heading">Produtos</div>
+				  <div class="panel-body">
+					<div id="produtos">
 					</div>
-					<div class="col-md-4 form-group">
-						<label>	Saída </label>
-						<input text="text" disabled id="saida" class="form-control"/>	
-					</div>
+				  </div>
 				</div>
-
-				<div id="produtos">
+				<div class="panel panel-primary">
+				  <div class="panel-heading">Totalização</div>
+				  <div class="panel-body">
+						<div class="row">
+							<div class="col-md-4 form-group">
+								<label>	Soma dos produtos </label>	
+								<div class="input-group">
+								  <div class="input-group-addon">R$</div>
+								  <input type="text" class="form-control" id="valorProdutos" disabled />
+								</div>	
+							</div>
+						
+							<div class="col-md-3 form-group">
+								<label>	Preço do quarto </label>	
+								<div class="input-group">
+								  <div class="input-group-addon">R$</div>
+								  <input type="text" class="form-control" id="precoQuarto" disabled />
+								</div>
+							</div>
+						
+							<div class="col-md-3 form-group">
+								<label>	Total </label>	
+								<div class="input-group">
+								  <div class="input-group-addon">R$</div>
+								  <input type="text" class="form-control" id="total" disabled />
+								</div>
+							</div>
+						</div>
+					
+				  </div>
 				</div>
 				
-				<div class="row">
-					<div class="col-md-4 form-group">
-						<label>	Soma dos produtos </label>	
-						<div class="input-group">
-						  <div class="input-group-addon">R$</div>
-						  <input type="text" class="form-control" id="valorProdutos" disabled />
-						</div>	
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3 form-group">
-						<label>	Preço do quarto </label>	
-						<div class="input-group">
-						  <div class="input-group-addon">R$</div>
-						  <input type="text" class="form-control" id="precoQuarto" disabled />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3 form-group">
-						<label>	Total </label>	
-						<div class="input-group">
-						  <div class="input-group-addon">R$</div>
-						  <input type="text" class="form-control" id="total" disabled />
-						</div>
-					</div>
-				</div>
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>

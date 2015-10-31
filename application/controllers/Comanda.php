@@ -31,10 +31,11 @@ class Comanda extends CI_Controller {
 
 				FROM reserva re
 
-				LEFT JOIN quarto qt 
+				inner JOIN quarto qt 
 					ON re.id_quarto = qt.id_quarto
-				LEFT JOIN perfil pf 
-					ON qt.id_perfil = pf.id_perfil";
+				inner JOIN perfil pf 
+					ON qt.id_perfil = pf.id_perfil
+				where re.id_situacao not in (2,3,5,6)";
 		
 		$this->load->view('index', array(
 					'page'=>'comanda'
@@ -56,7 +57,7 @@ class Comanda extends CI_Controller {
 	}
 	
 	public function detail(){
-		$id = $this->uri->segment(3);
+		$id = (int) $this->uri->segment(3);
 		
 		$sql = "SELECT 
 					re.id_reserva ,
@@ -97,9 +98,9 @@ class Comanda extends CI_Controller {
 		$total = $precoQuarto+$result->valor_produtos;
 		
 		//fazer lista de produtos para a view
-		$s = "SELECT produto, preco FROM produto pt LEFT JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto WHERE rpt.id_reserva = ".$id;
+		$s = "SELECT produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto WHERE rpt.id_reserva = ".$id;
 		$res = $this->db->query($s)->result();
-		$produtos[] = array();
+		
 		foreach($res as $r){
 			$produtos[] = array( 
 							'produto' => $r->produto,
@@ -107,7 +108,19 @@ class Comanda extends CI_Controller {
 						);
 		}
 		
-		echo json_encode( array("id"=>$id,"numero"=> $quarto,"perfil"=>$perfil,"entrada"=>dateTimeToBr($entrada),"saida"=>dateTimeToBr($saida),"produtos"=>$produtos,"precoQuarto"=>$precoQuarto,"valorProdutos"=>$valorProdutos,"total"=>$total) );
+		echo json_encode( 
+					 array(
+						"id"=>$id
+						,"numero"=> $quarto
+						,"perfil"=>$perfil
+						,"entrada"=>dateTimeToBr($entrada)
+						,"saida"=>dateTimeToBr($saida)
+						,"produtos"=>@$produtos
+						,"precoQuarto"=> monetaryOutput($precoQuarto)
+						,"valorProdutos"=> monetaryOutput($valorProdutos)
+						,"total"=>monetaryOutput($total) 
+						   )
+						);
 	}
 	
 	public function nada(){}
