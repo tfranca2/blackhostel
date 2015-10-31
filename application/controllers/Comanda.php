@@ -42,6 +42,7 @@ class Comanda extends CI_Controller {
 					,'title'=> 'Comandas'
 					,'part' => 'searching'
 					,'tabledata'=>$this->db->query($sql)->result()
+					,'produtos'=>$this->db->get('produto')->result()
 				));
 	}
 	

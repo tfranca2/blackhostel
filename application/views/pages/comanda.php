@@ -51,7 +51,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				});
                         return false;
          });
-		
+
+		$(".adcproduto").click(function(){
+         
+			$.ajax({
+					url: '<?php echo site_url();?>/reserva/adicionar/',
+					data: {'reserva':$('#reserva').val(), 'produto':$('#newproduto').val()},
+					type: 'POST',
+					success: function(data){
+						$('#myModal').modal('hide');
+						window.location.href ='<?php echo site_url();?>/comanda/';	
+					}
+					
+			});
+
+		});
 	});
 </script>
 <style>
@@ -146,8 +160,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="panel panel-primary">
 				  <div class="panel-heading">Produtos</div>
 				  <div class="panel-body">
-					<div id="produtos">
-					</div>
+				  	<div class="row">
+				  		<div class="col-md-6 form-group">
+				  		<label>Produto</label>
+						  <select class="form-control" id="newproduto" >
+						  	<option value=""> -- Selecione -- </option>
+						  	<?php foreach ($produtos as $produto){?>
+						  		<option value="<?php echo $produto->id_produto?>"> <?php echo $produto->produto ?> </option>	
+						  	<?php }?>
+						  </select>
+						  </div>
+						  <div class="col-md-6 form-group">
+						  	<input type="button" value="Adicioinar" class="btn btn-primary adcproduto " style="margin-top:24px;"/>
+						  </div>
+				  	</div>
+				  	<hr>
+					<div id="produtos"></div>
 				  </div>
 				</div>
 				<div class="panel panel-primary">
