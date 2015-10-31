@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <?php 
 /**
-* Área da tela responsável pela pesquisa e exibição da lista de resultados
+* Ã�rea da tela responsÃ¡vel pela pesquisa e exibiÃ§Ã£o da lista de resultados
 */
 	if($part =="searching"){
 	
@@ -74,7 +74,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 <?php 
 /**
-* Área da tela responsável pelo formulário de inserção de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de inserÃ§Ã£o de dados
 */
 	}else if($part =="inserting"){
 		
@@ -139,7 +139,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php 
 
 /**
-* Área da tela responsável pelo formulário de edição de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de ediÃ§Ã£o de dados
 */
 	}else if($part =="editing"){
 		
@@ -168,14 +168,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<label>Modalidade de Reserva</label>
 		<select name="tp_modo_reserva" class="form-control" required="true">
 				<option value=""> -- Selecione --</option>
-				<option value="1" <?php echo ($perfil->tp_modo_reserva ==1)?'selected="true"':'' ?> >Diária </option>
-				<option value="2" <?php echo ($perfil->tp_modo_reserva ==2)?'selected="true"':'' ?>>Hora </option>
+				<option value="1" <?php echo tagAs('selected', $perfil->tp_modo_reserva , 1) ?> >Diária </option>
+				<option value="2" <?php echo tagAs('selected', $perfil->tp_modo_reserva , 2) ?>>Hora </option>
 		
 		</select>
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-6 form-group">
+	<div class="col-md-8 form-group">
 		<select name="itens[]" class="form-control" id="duallist" multiple="true">
 			<?php echo ($perfilItens)?>
 			<?php foreach($itens as $item){ ?>
@@ -198,7 +198,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <?php
 /**
-* Área da tela responsável pela confirmação de deleção dos dados
+* Ã�rea da tela responsÃ¡vel pela confirmaÃ§Ã£o de deleÃ§Ã£o dos dados
 */
 	}else if($part =="deleting"){
 		
@@ -241,7 +241,7 @@ echo form_close();
 
 <div class="row">
 	
-	<?php /* if(!empty(validation_errors())){ ?>
+	<?php  if(!empty(validation_errors())){ ?>
 	<div class="alert alert-success">
 		<?php echo validation_errors(); ?>
 	</div>
@@ -252,5 +252,5 @@ echo form_close();
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } */ ?>
+	<?php } ?>
 </div>	

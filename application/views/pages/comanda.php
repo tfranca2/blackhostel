@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					url: $(this).attr('href'),
 					type: 'GET',
 					success: function(data){
+						console.log(data)
 						obj = JSON.parse(data);
 						console.log(obj);
 						$('#reserva').val(obj.id);
@@ -32,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						});
 						
 						$('#produtos').append('<tr><th>Total de Produtos</th><th> R$ '+obj.valorProdutos+'</th></tr>');					
-							
+
 						$('#myModal').modal('show');
 					}
 				});
@@ -41,7 +42,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 	});
 </script>
-
+<style>
+<!--
+.modal-dialog {
+    width: 830px;
+    margin: 30px auto;
+}
+-->
+</style>
 <?php
 	if($part =="searching"){
 ?>
@@ -131,7 +139,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<input text="text" disabled id="permanencia" class="form-control"/>	
 					</div>
 				</div>
-				
 				<div class="row">
 					<div class="col-md-5 form-group">
 						&nbsp;
