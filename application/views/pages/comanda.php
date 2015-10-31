@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					url: $(this).attr('href'),
 					type: 'GET',
 					success: function(data){
+						console.log(data)
 						obj = JSON.parse(data);
 						console.log(obj);
 						$('#reserva').val(obj.id);
@@ -25,11 +26,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						
 						$.each(obj.produtos, function(i,produto) {
 							$('#produtos').append( 
-							'<div class="row"> <div class="col-md-3 form-group"> <label>Produto</label> <input text="text" disabled value="'+produto.produto+'" class="form-control"/> </div> <div class="col-md-3 form-group"> <label>	Preço Unit. </label> <div class="input-group"> <div class="input-group-addon">R$</div> <input type="text" class="form-control" value="'+produto.preco+'" disabled /> </div> </div> </div>'); 
+							'<div class="row"> <div class="col-md-4 form-group"> <label>Produto</label> <input text="text" disabled value="'+produto.produto+'" class="form-control"/> </div> <div class="col-md-4 form-group"> <label>	Preço Unit. </label> <div class="input-group"> <div class="input-group-addon">R$</div> <input type="text" class="form-control" value="'+produto.preco+'" disabled /> </div> </div> </div>'); 
 						});
 							
 						
-							
+						
 						$('#myModal').modal('show');
 					}
 				});
@@ -38,7 +39,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 	});
 </script>
-
+<<style>
+<!--
+.modal-dialog {
+    width: 830px;
+    margin: 30px auto;
+}
+-->
+</style>
 <?php
 	if($part =="searching"){
 ?>
@@ -97,15 +105,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  </div>
 		  <div class="modal-body">
 				<div class="row">
-					<div class="col-md-3 form-group">
-						<label>	Id Reserva </label>
+					<div class="col-md-2 form-group">
+						<label> Reserva </label>
 						<input text="text" disabled id="reserva" class="form-control"/>	
 					</div>
 					<div class="col-md-3 form-group">
 						<label>	Número do Quarto </label>
 						<input text="text" disabled id="numero" class="form-control"/>	
 					</div>
-					<div class="col-md-3 form-group">
+					<div class="col-md-4 form-group">
 						<label>	Quarto </label>
 						<input text="text" disabled id="perfil" class="form-control"/>	
 					</div>
@@ -120,21 +128,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<input text="text" disabled id="saida" class="form-control"/>	
 					</div>
 				</div>
-				
-				
-				
-				
-				
-				
+
 				<div id="produtos">
 				</div>
 				
-				
-				
-				
-				
 				<div class="row">
-					<div class="col-md-3 form-group">
+					<div class="col-md-4 form-group">
 						<label>	Soma dos produtos </label>	
 						<div class="input-group">
 						  <div class="input-group-addon">R$</div>
