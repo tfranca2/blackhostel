@@ -62,6 +62,28 @@ class Comanda extends CI_Controller {
 					re.id_reserva ,
 					re.entrada ,
 					re.saida ,
+					
+					TIMESTAMPDIFF
+					(
+					DAY, 
+					re.entrada + INTERVAL TIMESTAMPDIFF(MONTH, re.entrada, re.saida) MONTH, 
+					re.saida
+					) AS dias ,
+					
+					TIMESTAMPDIFF
+					(
+					HOUR, 
+					re.entrada + INTERVAL TIMESTAMPDIFF(DAY,  re.entrada, re.saida) DAY, 
+					re.saida
+					) AS hora,
+					
+					TIMESTAMPDIFF
+					(
+					MINUTE, 
+					re.entrada + INTERVAL TIMESTAMPDIFF(HOUR,  re.entrada, re.saida) HOUR, 
+					re.saida
+					) AS minutos,
+					
 					qt.numero ,
 					pf.descricao AS perfil ,
 					pf.preco_base AS valor_perfil ,
@@ -92,6 +114,8 @@ class Comanda extends CI_Controller {
 		$perfil = $result->perfil;
 		$entrada = $result->entrada;
 		$saida = $result->saida;
+		$permanencia = $result->hora.':'.$result->minutos;
+		$diarias = $result->dias;
 		$precoQuarto = $result->valor_perfil+$result->valor_itens;
 		$valorProdutos = $result->valor_produtos;
 		$total = $precoQuarto+$result->valor_produtos;
@@ -106,7 +130,7 @@ class Comanda extends CI_Controller {
 						);
 		}
 		
-		echo json_encode( array("id"=>$id,"numero"=> $quarto,"perfil"=>$perfil,"entrada"=>$entrada,"saida"=>$saida,"produtos"=>$produtos,"precoQuarto"=>$precoQuarto,"valorProdutos"=>$valorProdutos,"total"=>$total) );
+		echo json_encode( array("id"=>$id,"numero"=> $quarto,"perfil"=>$perfil,"entrada"=>$entrada,"saida"=>$saida,"permanencia"=>$permanencia,"diarias"=>$diarias,"produtos"=>$produtos,"precoQuarto"=>$precoQuarto,"valorProdutos"=>$valorProdutos,"total"=>$total) );
 	}
 	
 	public function nada(){}

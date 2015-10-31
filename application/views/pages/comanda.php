@@ -18,17 +18,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						$('#perfil').val(obj.perfil);
 						$('#entrada').val(obj.entrada);
 						$('#saida').val(obj.saida);
+						$('#permanencia').val(obj.permanencia+' Hr');
 						$('#precoQuarto').val(obj.precoQuarto);
 						$('#valorProdutos').val(obj.valorProdutos);
 						$('#total').val(obj.total);
 						
+						$('#produtos').append('<tr><th>Produto</th><th>Valor</th></tr>');
 						
 						$.each(obj.produtos, function(i,produto) {
 							$('#produtos').append( 
-							'<div class="row"> <div class="col-md-3 form-group"> <label>Produto</label> <input text="text" disabled value="'+produto.produto+'" class="form-control"/> </div> <div class="col-md-3 form-group"> <label>	Preço Unit. </label> <div class="input-group"> <div class="input-group-addon">R$</div> <input type="text" class="form-control" value="'+produto.preco+'" disabled /> </div> </div> </div>'); 
+							'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> </tr>'
+							); 
 						});
-							
 						
+						$('#produtos').append('<tr><th>Total de Produtos</th><th> R$ '+obj.valorProdutos+'</th></tr>');					
 							
 						$('#myModal').modal('show');
 					}
@@ -98,48 +101,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  <div class="modal-body">
 				<div class="row">
 					<div class="col-md-3 form-group">
-						<label>	Id Reserva </label>
+						<label>	Reserva </label>
 						<input text="text" disabled id="reserva" class="form-control"/>	
 					</div>
-					<div class="col-md-3 form-group">
-						<label>	Número do Quarto </label>
-						<input text="text" disabled id="numero" class="form-control"/>	
-					</div>
-					<div class="col-md-3 form-group">
+					<div class="col-md-6 form-group">
 						<label>	Quarto </label>
 						<input text="text" disabled id="perfil" class="form-control"/>	
 					</div>
+					<div class="col-md-3 form-group">
+						<label>	Número </label>
+						<input text="text" disabled id="numero" class="form-control"/>	
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-4 form-group">
-						<label>	Entrada </label>
+						<label>	Entrada: </label>
 						<input text="text" disabled id="entrada" class="form-control"/>	
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-4 form-group">
-						<label>	Saída </label>
+						<label>	Saída: </label>
 						<input text="text" disabled id="saida" class="form-control"/>	
+					</div>
+					
+					<div class="col-md-5 form-group"> &nbsp; </div>
+					<div class="col-md-3 form-group">
+						<label>	Permanência: </label>
+						<input text="text" disabled id="permanencia" class="form-control"/>	
 					</div>
 				</div>
 				
-				
-				
-				
-				
-				
-				<div id="produtos">
+				<div class="row">
+					<div class="col-md-5 form-group">
+						&nbsp;
+					</div>
 				</div>
 				
-				
-				
-				
-				
 				<div class="row">
-					<div class="col-md-3 form-group">
-						<label>	Soma dos produtos </label>	
-						<div class="input-group">
-						  <div class="input-group-addon">R$</div>
-						  <input type="text" class="form-control" id="valorProdutos" disabled />
-						</div>	
+					<div class="col-md-12 form-group">
+						<h4>Produtos consumidos</h4>
+						<table class="table" id="produtos">
+						</table>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 form-group">
+						&nbsp;
 					</div>
 				</div>
 				<div class="row">
@@ -150,8 +159,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						  <input type="text" class="form-control" id="precoQuarto" disabled />
 						</div>
 					</div>
-				</div>
-				<div class="row">
+
+					<div class="col-md-3 form-group">
+					</div>
+					<div class="col-md-3 form-group">
+					</div>
+					
 					<div class="col-md-3 form-group">
 						<label>	Total </label>	
 						<div class="input-group">
