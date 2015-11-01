@@ -31,16 +31,18 @@ class Comanda extends CI_Controller {
 
 				FROM reserva re
 
-				LEFT JOIN quarto qt 
+				inner JOIN quarto qt 
 					ON re.id_quarto = qt.id_quarto
-				LEFT JOIN perfil pf 
-					ON qt.id_perfil = pf.id_perfil";
+				inner JOIN perfil pf 
+					ON qt.id_perfil = pf.id_perfil
+				where re.id_situacao not in (2,3,5,6)";
 		
 		$this->load->view('index', array(
 					'page'=>'comanda'
 					,'title'=> 'Comandas'
 					,'part' => 'searching'
 					,'tabledata'=>$this->db->query($sql)->result()
+					,'produtos'=>$this->db->get('produto')->result()
 				));
 	}
 	
@@ -56,7 +58,7 @@ class Comanda extends CI_Controller {
 	}
 	
 	public function detail(){
-		$id = $this->uri->segment(3);
+		$id = (int) $this->uri->segment(3);
 		
 		$sql = "SELECT 
 					re.id_reserva ,
@@ -116,22 +118,37 @@ class Comanda extends CI_Controller {
 		$saida = $result->saida;
 		$permanencia = $result->hora.':'.$result->minutos;
 		$diarias = $result->dias;
-		$precoQuarto = $result->valor_perfil+$result->valor_itens;
+		$precoPerfil = $result->valor_perfil+$result->valor_itens;
+		$precoQuarto = $precoPerfil;
 		$valorProdutos = $result->valor_produtos;
 		$total = $precoQuarto+$result->valor_produtos;
 		
 		//fazer lista de produtos para a view
-		$s = "SELECT produto, preco FROM produto pt LEFT JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto WHERE rpt.id_reserva = ".$id;
+		$s = "SELECT produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto WHERE rpt.id_reserva = ".$id;
 		$res = $this->db->query($s)->result();
-		$produtos[] = array();
+		
 		foreach($res as $r){
 			$produtos[] = array( 
 							'produto' => $r->produto,
 							'preco' => $r->preco
 						);
 		}
-
-		echo json_encode( array("id"=>$id,"numero"=> $quarto,"perfil"=>$perfil,"entrada"=>$entrada,"saida"=>$saida,"permanencia"=>$permanencia,"diarias"=>$diarias,"produtos"=>$produtos,"precoQuarto"=>$precoQuarto,"valorProdutos"=>$valorProdutos,"total"=>$total) );
+		
+		echo json_encode( 
+					 array(
+						"id"=>$id
+						,"numero"=> $quarto
+						,"perfil"=>$perfil
+						,"entrada"=>dateTimeToBr($entrada)
+						,"saida"=>dateTimeToBr($saida)
+						,"permanencia"=>$permanencia
+						,"produtos"=>@$produtos
+						,"precoPerfil"=> monetaryOutput($precoPerfil)
+						,"precoQuarto"=> monetaryOutput($precoQuarto)
+						,"valorProdutos"=> monetaryOutput($valorProdutos)
+						,"total"=>monetaryOutput($total) 
+						   )
+						);
 	}
 	
 	public function nada(){}
