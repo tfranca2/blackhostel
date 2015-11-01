@@ -162,7 +162,6 @@ class Reserva extends CI_Controller {
 		$id = $this->uri->segment(4);
 		if($tipo){
 			$quartos = $this->quarto->getAvailableBadroomsForEdition($tipo, $id, $entrada, $saida );
-			//dump($quartos);
 			echo json_encode($quartos);
 		}
 	}
@@ -170,10 +169,17 @@ class Reserva extends CI_Controller {
 	public function adicionar(){
 		$dados['id_reserva'] = $this->input->post('reserva');
 		$dados['id_produto'] = $this->input->post('produto');
+		$dados['ativo'] = 1;
 		if(isset($dados['id_reserva']) and isset($dados['id_reserva'])){
 			$this->db->insert('reserva_produto',$dados);
 		}
-		
+	}
+	
+	public function remover(){
+		$id = (int) $this->uri->segment(3);
+		$dados['ativo'] = 0;
+		$this->db->where('id_reserva_produto', $id);
+		$this->db->update('reserva_produto', $dados);
 	}
 	
 }

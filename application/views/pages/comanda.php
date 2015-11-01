@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					url: $(this).attr('href'),
 					type: 'GET',
 					success: function(data){
+						console.log(data)
 						obj = JSON.parse(data);	
 						$('#reserva').val(obj.id);
 						$('#numero').val(obj.numero);
@@ -25,15 +26,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						
 						$('#produtos').empty();
 
-						$('#produtos').append('<tr><th>Produto</th><th>Valor</th></tr>');
+						$('#produtos').append('<tr><th>Produto</th><th>Valor</th><th>Opções</th></tr>');
 						
-						if(obj.produtos != null){
+						if(obj.produtos.length > 0){
 							$.each(obj.produtos, function(i,produto) {
 								$('#produtos').append( 
-								'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> </tr>'
+								'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> <td> <a href="<?php echo site_url();?>/reserva/remover/'+produto.id_reserva_produto+' " class="btn btn-danger btn-sm remove-produto">Remover <span class="glyphicon glyphicon-remove"></span></a> </td> </tr>'
 								); 
 							});
 						}else{
+							$('#produtos').empty();
 							$('#produtos').append('<div class="alert alert-success">Nenhum produto adicionado a essa comanda.</div>');
 						}				
 
@@ -57,6 +59,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 
 		});
+
+		$(document).on("click", ".remove-produto", function(){
+			$.ajax({
+				url: $(this).href,
+				type: 'POST',
+				success: function(data){
+					$('#myModal').modal('hide');
+					window.location.href ='<?php echo site_url();?>/comanda/';	
+				}
+			});
+
+		});
+
+		
 	});
 </script>
 <style>
@@ -204,9 +220,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								  <input type="text" class="form-control" id="precoQuarto" disabled />
 								</div>
 							</div>
-							<div class="col-md-3 form-group">
-							</div>
-							<div class="col-md-3 form-group">
+							
+							<div class="col-md-3 col-md-offset-3 form-group">
 								<label>	Total </label>	
 								<div class="input-group">
 								  <div class="input-group-addon">R$</div>
