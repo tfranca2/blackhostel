@@ -114,6 +114,8 @@ class Produto extends CI_Controller {
 		}
 	}
 	
+
+	
 	private function runFormValidations(){
 	
 		$this->form_validation->set_message('monetary',"%s não corresponde a um padrão de moeda.");

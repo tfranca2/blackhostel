@@ -76,9 +76,6 @@
 ?>
 	<form action="<?php echo site_url();?>/reserva/searching" method="post">
 	<div class="row">
-		<div class="col-md-5 form-group">
-			<input type="text" placeholder="Descrição do Reserva" name="descricao" class="form-control"/>
-		</div>
 		<div class="col-md-3 form-group">
 		<label>Situação</label>
 		    <select name="id_sit" class="form-control">

@@ -167,4 +167,13 @@ class Reserva extends CI_Controller {
 		}
 	}
 	
+	public function adicionar(){
+		$dados['id_reserva'] = $this->input->post('reserva');
+		$dados['id_produto'] = $this->input->post('produto');
+		if(isset($dados['id_reserva']) and isset($dados['id_reserva'])){
+			$this->db->insert('reserva_produto',$dados);
+		}
+		
+	}
+	
 }
