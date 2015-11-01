@@ -25,7 +25,7 @@ class Comanda extends CI_Controller {
 						AS valor_itens,		
 					(SELECT SUM(pt.preco) FROM reserva_produto rpt 
 						LEFT JOIN produto pt 
-							ON rpt.id_produto = pt.id_produto 
+							ON rpt.id_produto = pt.id_produto and rpt.ativo = 1
 						WHERE re.id_reserva = rpt.id_reserva) 
 						AS valor_produtos
 
@@ -97,7 +97,7 @@ class Comanda extends CI_Controller {
 						AS valor_itens,		
 					(SELECT SUM(pt.preco) FROM reserva_produto rpt 
 						LEFT JOIN produto pt 
-							ON rpt.id_produto = pt.id_produto 
+							ON rpt.id_produto = pt.id_produto and rpt.ativo = 1
 						WHERE re.id_reserva = rpt.id_reserva) 
 						AS valor_produtos
 
@@ -136,15 +136,8 @@ class Comanda extends CI_Controller {
 		$total = $precoQuarto+$result->valor_produtos;
 				
 		//fazer lista de produtos para a view
-		$s = "SELECT produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto WHERE rpt.id_reserva = ".$id;
-		$res = $this->db->query($s)->result();
-		
-		foreach($res as $r){
-			$produtos[] = array( 
-							'produto' => $r->produto,
-							'preco' => $r->preco
-						);
-		}
+		$s = "SELECT rpt.id_reserva_produto, produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto and rpt.ativo = 1 WHERE rpt.id_reserva = ".$id;
+		$produtos = $this->db->query($s)->result_array();
 		
 		echo json_encode( 
 					 array(
@@ -154,7 +147,7 @@ class Comanda extends CI_Controller {
 						,"entrada"=>dateTimeToBr($entrada)
 						,"saida"=>dateTimeToBr($saida)
 						,"permanencia"=>$permanencia
-						,"produtos"=>@$produtos
+						,"produtos"=>$produtos
 						,"precoPerfil"=> monetaryOutput($precoPerfil)
 						,"precoQuarto"=> monetaryOutput($precoQuarto)
 						,"valorProdutos"=> monetaryOutput($valorProdutos)
