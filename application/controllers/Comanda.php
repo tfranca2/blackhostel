@@ -88,6 +88,7 @@ class Comanda extends CI_Controller {
 					
 					qt.numero ,
 					pf.descricao AS perfil ,
+					pf.tp_modo_reserva AS tipo ,
 					pf.preco_base AS valor_perfil ,
 					(SELECT SUM(it.preco) FROM perfil_item pit 
 						LEFT JOIN item it 
@@ -117,12 +118,23 @@ class Comanda extends CI_Controller {
 		$entrada = $result->entrada;
 		$saida = $result->saida;
 		$permanencia = $result->hora.':'.$result->minutos;
-		$diarias = $result->dias;
+		$diarias = (!$result->dias)?1:$result->dias;
 		$precoPerfil = $result->valor_perfil+$result->valor_itens;
-		$precoQuarto = $precoPerfil;
 		$valorProdutos = $result->valor_produtos;
-		$total = $precoQuarto+$result->valor_produtos;
+	
+		if( $result->tipo == 1 ){
+			// diaria
+			$precoQuarto = $precoPerfil*$diarias;
+		} elseif( $result->tipo==2 ) {
+			// hora
+			if($result->minutos>15) // tolerancia
+				$precoQuarto = $precoPerfil*($result->hora.',5');
+			else
+				$precoQuarto = $precoPerfil*$result->hora;
+		}
 		
+		$total = $precoQuarto+$result->valor_produtos;
+				
 		//fazer lista de produtos para a view
 		$s = "SELECT produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto WHERE rpt.id_reserva = ".$id;
 		$res = $this->db->query($s)->result();
