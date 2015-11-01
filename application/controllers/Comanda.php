@@ -64,8 +64,31 @@ class Comanda extends CI_Controller {
 					re.id_reserva ,
 					re.entrada ,
 					re.saida ,
+					
+					TIMESTAMPDIFF
+					(
+					DAY, 
+					re.entrada + INTERVAL TIMESTAMPDIFF(MONTH, re.entrada, re.saida) MONTH, 
+					re.saida
+					) AS dias ,
+					
+					TIMESTAMPDIFF
+					(
+					HOUR, 
+					re.entrada + INTERVAL TIMESTAMPDIFF(DAY,  re.entrada, re.saida) DAY, 
+					re.saida
+					) AS hora,
+					
+					TIMESTAMPDIFF
+					(
+					MINUTE, 
+					re.entrada + INTERVAL TIMESTAMPDIFF(HOUR,  re.entrada, re.saida) HOUR, 
+					re.saida
+					) AS minutos,
+					
 					qt.numero ,
 					pf.descricao AS perfil ,
+					pf.tp_modo_reserva AS tipo ,
 					pf.preco_base AS valor_perfil ,
 					(SELECT SUM(it.preco) FROM perfil_item pit 
 						LEFT JOIN item it 
@@ -94,10 +117,24 @@ class Comanda extends CI_Controller {
 		$perfil = $result->perfil;
 		$entrada = $result->entrada;
 		$saida = $result->saida;
-		$precoQuarto = $result->valor_perfil+$result->valor_itens;
+		$permanencia = $result->hora.':'.$result->minutos;
+		$diarias = (!$result->dias)?1:$result->dias;
+		$precoPerfil = $result->valor_perfil+$result->valor_itens;
 		$valorProdutos = $result->valor_produtos;
-		$total = $precoQuarto+$result->valor_produtos;
+	
+		if( $result->tipo == 1 ){
+			// diaria
+			$precoQuarto = $precoPerfil*$diarias;
+		} elseif( $result->tipo==2 ) {
+			// hora
+			if($result->minutos>15) // tolerancia
+				$precoQuarto = $precoPerfil*($result->hora.',5');
+			else
+				$precoQuarto = $precoPerfil*$result->hora;
+		}
 		
+		$total = $precoQuarto+$result->valor_produtos;
+				
 		//fazer lista de produtos para a view
 		$s = "SELECT produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto WHERE rpt.id_reserva = ".$id;
 		$res = $this->db->query($s)->result();
@@ -116,7 +153,9 @@ class Comanda extends CI_Controller {
 						,"perfil"=>$perfil
 						,"entrada"=>dateTimeToBr($entrada)
 						,"saida"=>dateTimeToBr($saida)
+						,"permanencia"=>$permanencia
 						,"produtos"=>@$produtos
+						,"precoPerfil"=> monetaryOutput($precoPerfil)
 						,"precoQuarto"=> monetaryOutput($precoQuarto)
 						,"valorProdutos"=> monetaryOutput($valorProdutos)
 						,"total"=>monetaryOutput($total) 

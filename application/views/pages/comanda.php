@@ -17,35 +17,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						$('#perfil').val(obj.perfil);
 						$('#entrada').val(obj.entrada);
 						$('#saida').val(obj.saida);
+						$('#permanencia').val(obj.permanencia+' Hr');
+						$('#precoPerfil').val(obj.precoPerfil);
 						$('#precoQuarto').val(obj.precoQuarto);
 						$('#valorProdutos').val(obj.valorProdutos);
 						$('#total').val(obj.total);
 						
 						$('#produtos').empty();
+
+						$('#produtos').append('<tr><th>Produto</th><th>Valor</th></tr>');
+						
 						if(obj.produtos != null){
 							$.each(obj.produtos, function(i,produto) {
-								
 								$('#produtos').append( 
-								'<div class="row" style="padding: 0px 8px;">'+
-									'<div class="col-md-6 form-group">'+
-									 '<label>Produto</label>'+
-									 '<input text="text" disabled value="'+produto.produto+'" class="form-control"/>'+
-									 '</div>'+
-									 '<div class="col-md-4 form-group">'+
-									 '<label>	Preço Unit. </label>'+
-									 '<div class="input-group">'+
-									 '<div class="input-group-addon">R$</div>'+
-									 '<input type="text" class="form-control" value="'+produto.preco+'" disabled />'+
-									 '</div>'+
-									 '</div>'+
-								 '</div><hr style="padding: 0px 8px;margin: 0px;"/>'); 
+								'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> </tr>'
+								); 
 							});
 						}else{
 							$('#produtos').append('<div class="alert alert-success">Nenhum produto adicionado a essa comanda.</div>');
-						}
-							
-						
-						
+						}				
+
 						$('#myModal').modal('show');
 					}
 				});
@@ -126,7 +117,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<h4 class="modal-title" id="myModalLabel">Detalhamento de Comanda</h4>
 		  </div>
 		  <div class="modal-body">
-				
 				<div class="panel panel-primary">
 				  <div class="panel-heading">Reserva</div>
 				  <div class="panel-body">
@@ -139,9 +129,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<label>	N° do Quarto </label>
 								<input text="text" disabled id="numero" class="form-control"/>	
 							</div>
-							<div class="col-md-4 form-group">
+							<div class="col-md-5 form-group">
 								<label>	Perfil </label>
 								<input text="text" disabled id="perfil" class="form-control"/>	
+							</div>
+							<div class="col-md-3 form-group">
+								<label>	Preço do perfil </label>
+								<div class="input-group">
+								  <div class="input-group-addon">R$</div>
+								  <input type="text" class="form-control" id="precoPerfil" disabled />
+								</div>	
 							</div>
 						</div>
 						<div class="row">
@@ -153,6 +150,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<label>	Saída </label>
 								<input text="text" disabled id="saida" class="form-control"/>	
 							</div>
+							<div class="col-md-4 form-group">
+								<label>	Permanência: </label>
+								<input text="text" disabled id="permanencia" class="form-control"/>	
+							</div>
 						</div>
 				  
 				  </div>
@@ -161,28 +162,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				  <div class="panel-heading">Produtos</div>
 				  <div class="panel-body">
 				  	<div class="row">
-				  		<div class="col-md-6 form-group">
+				  		<div class="col-md-3 form-group">
+						</div>
+				  		<div class="col-md-4 form-group">
 				  		<label>Produto</label>
 						  <select class="form-control" id="newproduto" >
 						  	<option value=""> -- Selecione -- </option>
 						  	<?php foreach ($produtos as $produto){?>
-						  		<option value="<?php echo $produto->id_produto?>"> <?php echo $produto->produto ?> </option>	
+						  		<option value="<?php echo $produto->id_produto?>"> <?php echo $produto->produto.'- R$ '.$produto->preco ?> </option>	
 						  	<?php }?>
 						  </select>
 						  </div>
-						  <div class="col-md-6 form-group">
+						  <div class="col-md-3 form-group">
 						  	<input type="button" value="Adicioinar" class="btn btn-primary adcproduto " style="margin-top:24px;"/>
 						  </div>
+						  <div class="col-md-4 form-group">
+						  </div>
 				  	</div>
-				  	<hr>
-					<div id="produtos"></div>
+					<div class="row">
+						<h4>&nbsp;Consumo:</h4>
+						<table class="table" id="produtos"></table>
+					</div>
 				  </div>
 				</div>
 				<div class="panel panel-primary">
 				  <div class="panel-heading">Totalização</div>
 				  <div class="panel-body">
 						<div class="row">
-							<div class="col-md-4 form-group">
+							<div class="col-md-3 form-group">
 								<label>	Soma dos produtos </label>	
 								<div class="input-group">
 								  <div class="input-group-addon">R$</div>
@@ -197,7 +204,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								  <input type="text" class="form-control" id="precoQuarto" disabled />
 								</div>
 							</div>
-						
+							<div class="col-md-3 form-group">
+							</div>
 							<div class="col-md-3 form-group">
 								<label>	Total </label>	
 								<div class="input-group">
