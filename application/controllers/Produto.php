@@ -8,6 +8,8 @@ class Produto extends CI_Controller {
 		$this->load->helper(array('url','form','array','app'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
+		$this->load->model('Login_model','login');
+		$this->login->authorize();
     }
 	 
 	public function index(){
