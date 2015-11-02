@@ -173,6 +173,10 @@ class Comanda extends CI_Controller {
 		$dados['id_situacao'] = 5; //finalizado
 		$this->db->where('id_reserva', $id);
 		$this->db->update('reserva', $dados);
+		
+		unset($dados);
+		
+		
 	}
 	
 	public function calcularPreco($id){

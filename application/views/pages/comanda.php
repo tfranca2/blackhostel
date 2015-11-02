@@ -253,7 +253,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="row">
 	
-	<?php /* if(! (validation_errors())){ ?>
+	<?php if(! (validation_errors())){ ?>
 	<div class="alert alert-success">
 		<?php echo validation_errors(); ?>
 	</div>
@@ -264,5 +264,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="alert alert-success">
 	  <?php echo $this->session->flashdata('msg'); ?>	
 	</div>
-	<?php } */ ?>
+	<?php } ?>
 </div>	
