@@ -43,13 +43,21 @@ class Perfil extends CI_Controller {
 	public function editing(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_perfil');
 		if($id){
+			
+			$this->db->where('id_perfil', $id);
+			$pessoaspreco = $this->db->get('perfil_preco')->result_array();
+			$this->session->set_userdata('pessoaspreco',$pessoaspreco);
+			
 			$this->load->view('index', array(
 						'page'=>'perfil'
 						,'title'=> 'Perfis'
 						,'part' => 'editing'
 						,'perfil'=> $this->db->get_where('perfil', array('id_perfil' => $id))->row() 
 						,'itens'=> $this->db->get('item')->result()
-						,'perfilItens'=> $this->itensPerfil($id) ));
+						,'perfilItens'=> $this->itensPerfil($id) 
+						,'pessoaspreco'=>$pessoaspreco
+					
+			));
 						
 					
 		}else{
@@ -113,6 +121,7 @@ class Perfil extends CI_Controller {
 	}
 	
 	public function edit(){
+		
 		if ($this->runFormValidations() == TRUE){
 			
 			$dados = elements(array('descricao','preco_base','tp_modo_reserva'),$this->input->post());
@@ -129,10 +138,28 @@ class Perfil extends CI_Controller {
 				   'id_item' => $item
 				 );
 				$this->db->insert('perfil_item', $data); 	
+				
 			}
 			
+			$pessoaspreco = $this->session->userdata('pessoaspreco');
+			
+			$this->db->where('id_perfil', $this->input->post('id_perfil'));
+			$this->db->delete('perfil_preco');
+			foreach($pessoaspreco as $pp){
+				$data = array(
+						'id_perfil' =>$this->input->post('id_perfil'),
+						'qt_pessoas' => $pp['qt_pessoas'],
+						'preco' => $pp['preco']
+				);
+				$this->db->insert('perfil_preco', $data);
+			}
+			
+			$this->session->unset_userdata('pessoaspreco');
+				
+			
+			
 			$this->session->set_flashdata('msg', 'Perfil atualizado com sucesso.');
-			redirect(current_url());
+			redirect(base_url().'index.php/perfil');
 			
 		}else{
 			$this->editing();
@@ -162,13 +189,54 @@ class Perfil extends CI_Controller {
 		
 		
 		$this->form_validation->set_rules('descricao', 'Descrição', 'trim|required|min_length[5]|max_length[60]|ucwords');
-		$this->form_validation->set_rules('preco_base', 'Preço', 'required');
+		
 		
 		return $this->form_validation->run();
 	
 	}
 	
+	public function addpersonprice(){
+		
+		$pessoaspreco = $this->session->userdata('pessoaspreco');
+		if(!is_array($pessoaspreco))
+			$pessoaspreco = array();
+		sort($pessoaspreco, 3);
+		$dados['qt_pessoas'] = $this->input->post('qt_pessoas');
+		$dados['preco'] = $this->input->post('preco');
+		$dados['id_perfil'] = $this->input->post('id_perfil');
+		
+		if($dados['qt_pessoas'] > 0 and $dados['preco'] > 0 ){
+			$contains = false;
+			
+			foreach ($pessoaspreco as $pp){
+				if($pp['qt_pessoas'] == $dados['qt_pessoas']){
+					$contains = true;
+					break;
+				}
+			}
+			
+			if(!$contains){
+				array_push($pessoaspreco, $dados);
+			}
+			
+			$this->session->set_userdata('pessoaspreco',$pessoaspreco);
+		
+		}
+		echo json_encode($pessoaspreco);
+	}
 
-	
-	
+	public function removepersonprice(){
+		$qt_pessoas = $this->uri->segment(3);
+		$pessoaspreco = $this->session->userdata('pessoaspreco');
+		
+		
+		for ($i =0; $i <= count($pessoaspreco) ; $i++){
+			if(@$pessoaspreco[$i]['qt_pessoas'] == $qt_pessoas){
+				unset($pessoaspreco[$i]);
+			}
+		} 
+		
+		$this->session->set_userdata('pessoaspreco',$pessoaspreco);
+		echo json_encode($pessoaspreco);
+	}
 }

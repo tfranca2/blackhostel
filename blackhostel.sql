@@ -1,5 +1,5 @@
 # Host: localhost  (Version: 5.6.25)
-# Date: 2015-11-01 11:14:12
+# Date: 2015-11-02 14:24:40
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES latin1 */;
@@ -74,7 +74,7 @@ CREATE TABLE `perfil` (
 # Data for table "perfil"
 #
 
-INSERT INTO `perfil` VALUES (1,'Suite Master',80.01,1),(2,'Suite Premium',200.00,2),(3,'Suite Gold',25.00,1);
+INSERT INTO `perfil` VALUES (1,'Suite Master',80.01,1),(2,'Suite Premium',200.00,2),(3,'Suite Gold',0.00,1);
 
 #
 # Structure for table "perfil_item"
@@ -89,7 +89,26 @@ CREATE TABLE `perfil_item` (
 # Data for table "perfil_item"
 #
 
-INSERT INTO `perfil_item` VALUES (3,1),(3,17),(3,18),(3,2),(2,1),(2,17),(2,18),(2,2),(1,1),(1,18);
+INSERT INTO `perfil_item` VALUES (2,1),(2,17),(2,18),(2,2),(1,1),(1,18),(3,17),(3,18),(3,2);
+
+#
+# Structure for table "perfil_preco"
+#
+
+CREATE TABLE `perfil_preco` (
+  `id_perfil_perco` int(11) NOT NULL AUTO_INCREMENT,
+  `id_perfil` int(11) DEFAULT NULL,
+  `qt_pessoas` int(11) DEFAULT NULL,
+  `preco` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id_perfil_perco`),
+  UNIQUE KEY `unique` (`id_perfil`,`qt_pessoas`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
+
+#
+# Data for table "perfil_preco"
+#
+
+INSERT INTO `perfil_preco` VALUES (57,1,2,80.00),(58,1,1,50.00),(59,1,3,100.00),(61,3,1,70.00),(62,3,2,110.00);
 
 #
 # Structure for table "produto"

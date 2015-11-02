@@ -6,12 +6,55 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(document).ready(function(){
 		$('#preco').mask('000.000.000.000.000,00', {reverse: true});
 		$('#duallist').DualListBox({json:false, available:'Disponiveis', selected:'Selecionados',showing:'mostrando',filterLabel:'Filtro'});
+
+		$(".addpersonprice").click(function(){
+			$.ajax({
+					url: '<?php echo site_url();?>/perfil/addpersonprice/',
+					data: {'qt_pessoas':$('#qt_pessoas').val(), 'preco':$('#ppreco').val() ,'perfil': $("#id_perfil").val() },
+					type: 'POST',
+					success: function(data){fillData(data)}
+			});
+		});
+		
+		$(document).on("click", ".remove-preco", function(event){
+			event.preventDefault();
+			console.log($(this).attr('href'))
+			$.ajax({
+				url: $(this).attr('href'),
+				type: 'POST',
+				success: function(data){
+					
+					fillData(data)
+					}
+			});
+
+		});
+
+		function fillData(data){
+			data = JSON.parse(data);
+			$('#bodytable').empty();
+			
+			$.each(data, function(i,pp) {
+				$('#bodytable').append( 
+				'<tr>'+
+				 	'<td>'+pp.qt_pessoas+'</td>'+
+				 	 '<td> R$ '+pp.preco+'</td>'+
+				 	 '<td> <a href="<?php echo site_url();?>/perfil/removepersonprice/'+pp.qt_pessoas+'" class="btn btn-danger btn-sm remove-preco">Remover <span class="glyphicon glyphicon-remove"></span></a>'+ 
+				 	 '</td>'+ 
+			 	 '</tr>'
+				); 
+
+			});
+			
+			$('#qt_pessoas').val('');
+			$('#ppreco').val('');
+		}
 	});
 </script>
 
 <?php 
 /**
-* Ã�rea da tela responsÃ¡vel pela pesquisa e exibiÃ§Ã£o da lista de resultados
+* Área da tela responsável pela pesquisa e exibição da lista de resultados
 */
 	if($part =="searching"){
 	
@@ -144,22 +187,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}else if($part =="editing"){
 		
 	echo form_open('perfil/edit');
-	echo form_hidden('id_perfil', $perfil->id_perfil);
 ?>
-
+<input type="hidden" name="id_perfil" value="<?php echo $perfil->id_perfil ?>" id="id_perfil">
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
 		echo form_label('Descrição');
 		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'Descrição do perfil'),$perfil->descricao ,'autofocus');
-	  ?>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	  <?php
-		echo form_label('Preço');
-		echo form_input(array('name'=>'preco_base','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do perfil'),$perfil->preco_base);
 	  ?>
 	</div>
 </div>
@@ -174,10 +208,74 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</select>
 	</div>
 </div>
+<?php if($perfil->tp_modo_reserva == 2){?>
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('Preço');
+		echo form_input(array('name'=>'preco_base','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do perfil'),$perfil->preco_base);
+	  ?>
+</div>
+</div>
+<?php }else{ ?>
+<div class="row">
+	<div class="col-md-6 form-group">
+
+<div class="panel panel-primary">
+  <div class="panel-heading">Hóspedes</div>
+  <div class="panel-body">
+	<div class="row">
+	<div class="col-md-12 form-group">
+	
+		<div class="row">
+			<div class="col-md-5 form-group">
+				<label>Quantidade de Hóspedes</label>
+				<input type="number" id="qt_pessoas" class="form-control" min="1">
+			</div>
+			<div class="col-md-4 form-group">
+				<label>Preço</label>
+				<input type="text" id="ppreco" class="form-control" >
+			</div>
+			<div class="col-md-3 form-group">
+				<input type="button" value="Adicionar" class="btn btn-success addpersonprice" style="margin-top: 24px;"/>
+			</div>
+		</div>
+			
+		<div class="row">
+			<div class="col-md-12 form-group">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Quantidade de Hóspedes</th>
+							<th>Preço</th>
+							<th>Opções</th>
+						</tr>
+					</thead>
+					<tbody id="bodytable">
+						<?php foreach ($pessoaspreco as $pp){?>
+							<tr>
+								<td><?php echo $pp['qt_pessoas'] ?></td>
+								<td>R$ <?php echo monetaryOutput( $pp['preco'] )?></td>
+								<td> <a href="<?php echo site_url().'/perfil/removepersonprice/'.$pp['qt_pessoas'] ?>" class="btn btn-danger btn-sm remove-preco">Remover <span class="glyphicon glyphicon-remove"></span></a></td>
+							</tr>
+						<?php }?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+	</div>
+	</div>				 
+				  
+  </div>
+</div>
+
+	</div>
+</div>
+<?php }?>
 <div class="row">
 	<div class="col-md-8 form-group">
 		<select name="itens[]" class="form-control" id="duallist" multiple="true">
-			<?php echo ($perfilItens)?>
 			<?php foreach($itens as $item){ ?>
 				<option value="<?php echo $item->id_item ?>" <?php echo (@in_array($item->id_item, $perfilItens))?'selected="true"':'' ?> ><?php echo $item->descricao.' - '.$item->preco ?> </option>
 			<?php } ?>
