@@ -18,11 +18,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						$('#perfil').val(obj.perfil);
 						$('#entrada').val(obj.entrada);
 						$('#saida').val(obj.saida);
-						$('#permanencia').val(obj.permanencia+' Hr');
+						$('#permanencia').val(obj.permanencia);
 						$('#precoPerfil').val(obj.precoPerfil);
 						$('#precoQuarto').val(obj.precoQuarto);
 						$('#valorProdutos').val(obj.valorProdutos);
 						$('#total').val(obj.total);
+						
+						$('#print').attr('href', '<?php echo site_url();?>/comanda/print/'+obj.id);
 						
 						$('#produtos').empty();
 
@@ -106,16 +108,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</tr>
 			<?php foreach($tabledata as $comanda){ ?>
 			<tr>
-				<td width="20%"><?php echo $comanda->id_reserva ?></td>
-				<td width="20%"><?php echo $comanda->numero; ?></td>
-				<td width="20%">R$ <?php echo monetaryOutput($comanda->valor_perfil+$comanda->valor_itens+$comanda->valor_produtos) ?></td>
+				<td><?php echo $comanda->id_reserva ?></td>
+				<td><?php echo $comanda->numero; ?></td>
+				<td>R$ <?php echo monetaryOutput($comanda->valor_perfil+$comanda->valor_itens+$comanda->valor_produtos) ?></td>
 				<td>
 					<a href="<?php echo site_url();?>/comanda/detail/<?php  echo $comanda->id_reserva ?>" class="btn btn-default btn-sm detail">Detalhar 
 						<span class="glyphicon glyphicon-search"></span>
-					</a>
-				
-					<a href="<?php echo site_url();?>/comanda/print/<?php  echo $comanda->id_reserva ?>" class="btn btn-default btn-sm">Imprimir 
-						<span class="glyphicon glyphicon-print"></span>
 					</a>
 				</td>
 			</tr>
@@ -235,6 +233,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				
 		  </div>
 		  <div class="modal-footer">
+			<a href="#" id="print" class="btn btn-default">Imprimir 
+				<span class="glyphicon glyphicon-print"></span>
+			</a>
 			<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
 		  </div>
 		</div>
