@@ -117,20 +117,30 @@ class Comanda extends CI_Controller {
 		$perfil = $result->perfil;
 		$entrada = $result->entrada;
 		$saida = $result->saida;
-		$permanencia = $result->hora.':'.$result->minutos;
 		$diarias = (!$result->dias)?1:$result->dias;
 		$precoPerfil = $result->valor_perfil+$result->valor_itens;
 		$valorProdutos = $result->valor_produtos;
 	
-		if( $result->tipo == 1 ){
-			// diaria
-			$precoQuarto = $precoPerfil*$diarias;
-		} elseif( $result->tipo==2 ) {
-			// hora
-			if($result->minutos>15) // tolerancia
-				$precoQuarto = $precoPerfil*($result->hora.',5');
+		if( $result->tipo == 1 ){ // diaria 
+			$permanencia = $diarias.' Diárias';
+			// TOLERANCIAS
+			if( $result->hora>=14 and $result->minutos>30 ) // tolerancia diaria
+				$precoQuarto = $precoPerfil*($diarias+1);
+			// else
+			else
+				$precoQuarto = $precoPerfil*$diarias;
+		} elseif( $result->tipo == 2 ){ // hora
+			$permanencia = $result->hora.':'.$result->minutos.' Hrs';
+			// TOLERANCIAS
+			if( $result->minutos>30 )  
+				$precoQuarto = $precoPerfil*($result->hora+1);
+			elseif( $result->minutos>15 )
+				$precoQuarto = $precoPerfil*($result->hora+0.5);
 			else
 				$precoQuarto = $precoPerfil*$result->hora;
+		} elseif( $result->tipo == 3 ){ // pernoite
+			if( $result->hora>=22 and $result->minutos>30 ) // tolerancia pernoite
+				$precoQuarto = $precoPerfil*($diarias+1);
 		}
 		
 		$total = $precoQuarto+$result->valor_produtos;
@@ -163,5 +173,9 @@ class Comanda extends CI_Controller {
 						);
 	}
 	
-	public function nada(){}
+	// FUNCAO SEPARADA PARA CALCULAR PRECO, PARA EXIBIR NA TELA DE COMANDAS SEM OS DETALHES	
+	
+	public function calcularPreco(){
+		
+	}
 }
