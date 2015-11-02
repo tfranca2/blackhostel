@@ -24,7 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						$('#valorProdutos').val(obj.valorProdutos);
 						$('#total').val(obj.total);
 						
-						$('#print').attr('href', '<?php echo site_url();?>/comanda/print/'+obj.id);
+						$('.print').attr('href', '<?php echo site_url();?>/comanda/print/'+obj.id);
+						$('.finalizar').attr('href', '<?php echo site_url();?>/comanda/finalizar/'+obj.id);
 						
 						$('#produtos').empty();
 
@@ -90,7 +91,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<form action="<?php echo site_url();?>/comanda/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
-			<input type="text" placeholder="Nome do cliente" name="nome" class="form-control" />
+			<input type="text" placeholder="Numero do quarto" name="numero" class="form-control" />
 		</div>
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
@@ -102,15 +103,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<table class="table table-responsive"> 
 			<tr>
 				<th>Cod. Reserva</th>
-				<th>Quarto</th>
-				<th>Total</th>
+				<th>Num. Quarto</th>
+				<th>Tipo</th>
 				<th>Opções</th>
 			</tr>
 			<?php foreach($tabledata as $comanda){ ?>
 			<tr>
-				<td><?php echo $comanda->id_reserva ?></td>
-				<td><?php echo $comanda->numero; ?></td>
-				<td>R$ <?php echo monetaryOutput($comanda->valor_perfil+$comanda->valor_itens+$comanda->valor_produtos) ?></td>
+				<td>&nbsp;&nbsp;<?php echo $comanda->id_reserva ?></td>
+				<td>&nbsp;&nbsp;<?php echo $comanda->numero; ?></td>
+				<td>&nbsp;&nbsp;<?php echo $comanda->tipo; ?></td>
 				<td>
 					<a href="<?php echo site_url();?>/comanda/detail/<?php  echo $comanda->id_reserva ?>" class="btn btn-default btn-sm detail">Detalhar 
 						<span class="glyphicon glyphicon-search"></span>
@@ -233,10 +234,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				
 		  </div>
 		  <div class="modal-footer">
-			<a href="#" id="print" class="btn btn-default">Imprimir 
+			<a href="" style="float:left;" id="" class="print btn btn-default">Imprimir 
 				<span class="glyphicon glyphicon-print"></span>
 			</a>
-			<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+			<a href="" id="" class="finalizar btn btn-default">Finalizar 
+				<span class="print glyphicon glyphicon-usd"></span>
+			</a>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Fechar<span class="glyphicon glyphicon-remove"></span></button>
 		  </div>
 		</div>
 	  </div>
