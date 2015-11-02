@@ -226,7 +226,7 @@ class Comanda extends CI_Controller {
 
 				WHERE
 				1 = 1
-				AND re.qt_pessoas = pfp.pessoas
+				AND re.qt_pessoas = pfp.qt_pessoas
 				AND re.id_reserva = ".$id;
 				
 		$result = $this->db->query($sql)->row();
