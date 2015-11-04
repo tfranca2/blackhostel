@@ -253,16 +253,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="row">
 	
-	<?php if(! (validation_errors())){ ?>
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
 	<div class="alert alert-success">
-		<?php echo validation_errors(); ?>
+		<?php echo $a; ?>
 	</div>
-	<?php } ?>
-	
-	
-	<?php  if(!empty($this->session->flashdata('msg'))){ ?>
+	<?php } 
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
 	<div class="alert alert-success">
-	  <?php echo $this->session->flashdata('msg'); ?>	
+	  <?php echo $b; ?>	
 	</div>
 	<?php } ?>
 </div>	

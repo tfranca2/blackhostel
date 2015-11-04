@@ -428,15 +428,18 @@ echo form_close();
 
 <div class="row">
 	
-	<?php if(!empty(validation_errors())){ ?>
-	<div class="alert alert-danger">
-		<?php echo validation_errors(); ?>
-	</div>
-	<?php } ?>
-	
-	<?php  if(!empty($this->session->flashdata('msg'))){ ?>
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
 	<div class="alert alert-success">
-	  <?php echo $this->session->flashdata('msg'); ?>	
+		<?php echo $a; ?>
+	</div>
+	<?php } 
+	
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
+	<div class="alert alert-success">
+	  <?php echo $b; ?>	
 	</div>
 	<?php } ?>
 </div>	
