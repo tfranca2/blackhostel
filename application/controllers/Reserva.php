@@ -113,13 +113,8 @@ class Reserva extends CI_Controller {
 			$reserva = $this->reserva->getFullCurrentReservation($id);
 			
 			$dados = elements(array('id_quarto','id_situacao','entrada','saida','id_cliente','qt_pessoas'),$this->input->post());
-			if($reserva->id_situacao == 2){
-				$dados['entrada'] = dateTimeToUs($dados['entrada']);
-				$dados['saida'] = dateTimeToUs($dados['saida']);
-			}else{
-				unset($dados['entrada']);
-				unset($dados['saida']);
-			}
+			$dados['entrada'] = dateTimeToUs($dados['entrada']);
+			$dados['saida'] = dateTimeToUs($dados['saida']);
 			
 			$this->db->where('id_reserva', $id);
 			$this->db->update('reserva', $dados); 

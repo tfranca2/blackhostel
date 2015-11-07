@@ -132,6 +132,9 @@
 						 else if($reserva->id_situacao == 4){
 						 	echo 'FINALIZADO';
 						 }
+						 else if($reserva->id_situacao == 5){
+						 	echo 'FECHADO';
+						 }
 						 else if($reserva->id_situacao == 6){
 						 	echo 'CANCELADO';
 						 }
