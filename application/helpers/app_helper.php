@@ -69,3 +69,13 @@ function extractValues($data, $tipo){
 	return rtrim($values,', ');
 }
 
+function descModoReserva($id){
+	if($id ==1){
+		return 'Diárias';
+	}else if($id == 2){
+		return 'Horas';
+	}else if($id == 3){
+		return 'Pernoite';
+	}
+}
+

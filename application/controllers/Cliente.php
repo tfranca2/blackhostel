@@ -67,7 +67,7 @@ class Cliente extends CI_Controller {
 	public function save(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('cliente','cpf','rg'),$this->input->post());
+			$dados = elements(array('cliente','cpf','rg','endereco','cep','telefone','observacao'),$this->input->post());
 			$this->db->insert('cliente', $dados); 
 			
 			$this->load->view('index',array(
@@ -87,7 +87,7 @@ class Cliente extends CI_Controller {
 	public function edit(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('cliente','cpf','rg'),$this->input->post());
+			$dados = elements(array('cliente','cpf','rg','endereco','cep','telefone','observacao'),$this->input->post());
 			$this->db->where('id_cliente', $this->input->post('id_cliente'));
 			$this->db->update('cliente', $dados); 
 			

@@ -120,7 +120,7 @@
 				<td><?php echo $reserva->ds_quarto ?></td>
 				<td><?php echo $reserva->cliente ?></td>
 				<td><?php echo $reserva->descricao ?></td>
-				<td><?php echo $reserva->tp_modo_reserva ==1?'Diária':'Hora'; ?></td>
+				<td><?php echo descModoReserva($reserva->tp_modo_reserva); ?></td>
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
 				<td><?php echo dateTimeToBr( $reserva->saida ) ?></td>
 				<td><?php
@@ -191,6 +191,7 @@
 			<option value=""> -- Selecione -- </option>
 			<option value="1">Diárias</option>
 			<option value="2">Horas</option>
+			<option value="3">Pernoite</option>
 	  </select>
 	</div>
 </div>
@@ -281,8 +282,9 @@
 	  <label>Tipo Reserva</label>
 	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto">
 			<option value=""> -- Selecione -- </option>
-			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
-			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
+			<option value="1" <?php tagAs('selected',$reserva->tp_modo_reserva , 1 ) ?>>Diárias</option>
+			<option value="2" <?php tagAs('selected',$reserva->tp_modo_reserva , 2 ) ?>>Horas</option>
+			<option value="2" <?php tagAs('selected',$reserva->tp_modo_reserva , 3 ) ?>>Pernoite</option>
 	  </select>
 	</div>
 </div>
