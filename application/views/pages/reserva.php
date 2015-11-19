@@ -132,6 +132,9 @@
 						 else if($reserva->id_situacao == 4){
 						 	echo 'FINALIZADO';
 						 }
+						 else if($reserva->id_situacao == 5){
+						 	echo 'FECHADO';
+						 }
 						 else if($reserva->id_situacao == 6){
 						 	echo 'CANCELADO';
 						 }
@@ -256,7 +259,7 @@
 	  	<div class="input-group">
             <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required 
             value="<?php echo dateTimeToBr( $reserva->entrada ) ?>"
-            <?php echo ($reserva->id_situacao == 2)?'':'disabled'; ?>> 
+            > 
             <span class="input-group-addon add-on">
                 <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
             </span>
@@ -266,7 +269,7 @@
 	  <label>Saída</label>
 	  	<div class="input-group">
             <input type="datetime" class="form-control calendar" name="saida" id="saida" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
-            <?php echo ($reserva->id_situacao == 2)?'':'disabled'; ?>> 
+            > 
             <span class="input-group-addon add-on">
                 <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
             </span>

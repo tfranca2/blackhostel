@@ -109,9 +109,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</tr>
 			<?php foreach($tabledata as $comanda){ ?>
 			<tr>
-				<td>&nbsp;&nbsp;<?php echo $comanda->id_reserva ?></td>
-				<td>&nbsp;&nbsp;<?php echo $comanda->numero; ?></td>
-				<td>&nbsp;&nbsp;<?php echo $comanda->tipo; ?></td>
+				<td><?php echo $comanda->id_reserva ?></td>
+				<td><?php echo $comanda->numero; ?></td>
+				<td><?php 
+					if ($comanda->tipo ==1){
+						echo 'Diária';
+					}elseif($comanda->tipo ==2){
+						echo 'Hora';
+					}elseif($comanda->tipo ==3){
+						echo 'Pernoite';
+					} 
+				?></td>
 				<td>
 					<a href="<?php echo site_url();?>/comanda/detail/<?php  echo $comanda->id_reserva ?>" class="btn btn-default btn-sm detail">Detalhar 
 						<span class="glyphicon glyphicon-search"></span>
@@ -253,7 +261,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="row">
 	
-	<?php if(! (validation_errors())){ ?>
+	<?php if(!empty(validation_errors())){ ?>
 	<div class="alert alert-success">
 		<?php echo validation_errors(); ?>
 	</div>
