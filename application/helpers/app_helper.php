@@ -37,15 +37,17 @@ function containsStr($str, $src){
 function dump($var){
 	echo '<pre>';	
 	print_r($var);
-	echo '</pre>';	
+	echo '</pre>';
 }
+
+
 
 function tagAs($tag, $var1, $var2){
 	echo ($var1 == $var2)?$tag:''; 
 }
 
 function month($idx){
-	$meses = array(1 => 'Janeiro','Fevereiro','MarÁo','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
+	$meses = array(1 => 'Janeiro','Fevereiro','Mar√ßo','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
 	return $meses[$idx]; 
 }
 
