@@ -45,7 +45,9 @@ class Comanda extends CI_Controller {
 					ON re.id_quarto = qt.id_quarto
 				inner JOIN perfil pf 
 					ON qt.id_perfil = pf.id_perfil
-				where re.id_situacao not in (2,3,5,6)";
+				where re.id_situacao not in (2,3,5,6)
+				ORDER BY re.id_reserva DESC
+				";
 		
 		$tabledata = $this->db->query($sql)->result();
 		

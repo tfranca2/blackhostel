@@ -59,7 +59,7 @@
 							sel = (quarto.id_quarto == <?php echo (@$reserva->id_quarto)?@$reserva->id_quarto:0; ?> )?
 								"selected":"";
 							
-							$('#selectquartos').append( '<option value="' + quarto.id_quarto+ '" '+sel+'>'+ quarto.descricao+ '</option>' ); 
+							$('#selectquartos').append( '<option value="' + quarto.id_quarto+ '" '+sel+'>'+ quarto.perfil +' - '+ quarto.numero + '</option>' ); 
 						});	
 					}
 			});
@@ -76,7 +76,7 @@
 ?>
 	<form action="<?php echo site_url();?>/reserva/searching" method="post">
 	<div class="row">
-		<div class="col-md-3 form-group">
+		<div class="col-md-4 form-group">
 		<label>Situação</label>
 		    <select name="id_sit" class="form-control">
 				<option value=""> -- Selecione -- </option>
@@ -88,10 +88,8 @@
 				<option value="6"> CANCELADO </option>
 		    </select>
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" style="margin-top: 25px;" class="btn btn-success"/>
 		</div>
 	</div>
 	<div class="row">
@@ -105,9 +103,9 @@
 		<table class="table table-responsive"> 
 			<tr>
 				<th>ID</th>
-				<th>Quarto</th>
 				<th>Cliente</th>
 				<th>Perfil</th>
+				<th>Quarto</th>
 				<th>Tipo Reserva</th>
 				<th>Entrada</th>
 				<th>Saída</th>
@@ -117,10 +115,10 @@
 			<?php foreach($tabledata as $reserva){?>
 			<tr>
 				<td><?php echo $reserva->id_reserva ?></td>
-				<td><?php echo $reserva->ds_quarto ?></td>
 				<td><?php echo $reserva->cliente ?></td>
 				<td><?php echo $reserva->descricao ?></td>
-				<td><?php echo $reserva->tp_modo_reserva ==1?'Diária':'Hora'; ?></td>
+				<td><?php echo $reserva->numero ?></td>
+				<td><?php echo ($reserva->tp_modo_reserva ==1?'Diária':(($reserva->tp_modo_reserva == 2)?'Hora': 'Pernoite')); ?></td>
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
 				<td><?php echo dateTimeToBr( $reserva->saida ) ?></td>
 				<td><?php
@@ -188,6 +186,7 @@
 			<option value=""> -- Selecione -- </option>
 			<option value="1">Diárias</option>
 			<option value="2">Horas</option>
+			<option value="3">Pernoites</option>
 	  </select>
 	</div>
 </div>
@@ -280,6 +279,7 @@
 			<option value=""> -- Selecione -- </option>
 			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
 			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
+			<option value="3" <?php echo ($reserva->tp_modo_reserva ==3 )?'selected':''; ?>>Pernoites</option>
 	  </select>
 	</div>
 </div>
@@ -289,7 +289,7 @@
 	  <select name="id_quarto" class="form-control" id="selectquartos">
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
-			<option value="<?php echo $quarto->id_quarto ?>" <?php tagAs('selected',$quarto->id_quarto , $reserva->id_quarto ) ?> ><?php echo $quarto->descricao ?> </option>
+			<option value="<?php echo $quarto->id_quarto ?>" <?php tagAs('selected',$quarto->id_quarto , $reserva->id_quarto ) ?> ><?php echo $quarto->id_perfil.' - '.$quarto->numero ?> </option>
 			<?php } ?>
 	  </select>
 	</div>
@@ -373,6 +373,7 @@
 			<option value=""> -- Selecione -- </option>
 			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
 			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
+			<option value="3" <?php echo ($reserva->tp_modo_reserva ==3 )?'selected':''; ?>>Pernoites</option>
 	  </select>
 	</div>
 </div>
@@ -382,7 +383,7 @@
 	  <select name="id_quarto" class="form-control" id="selectquartos" disabled>
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
-			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->descricao ?> </option>
+			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->id_perfil.' - '.$quarto->numero ?> </option>
 			<?php } ?>
 	  </select>
 	</div>

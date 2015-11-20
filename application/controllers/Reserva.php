@@ -180,6 +180,9 @@ class Reserva extends CI_Controller {
 		$dados['ativo'] = 0;
 		$this->db->where('id_reserva_produto', $id);
 		$this->db->update('reserva_produto', $dados);
+		
+		$comanda = new Comanda();
+		$comanda->index();
 	}
 	
 }

@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="text" placeholder="Nome do cliente" name="cliente" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
 		</div>
 	</div>
 	<div class="row">
@@ -33,14 +33,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th>Cliente</th>
 				<th>CPF</th>
 				<th>RG</th>
+				<th>OBS.</th>
 				<th>Opções</th>
 			</tr>
 			<?php foreach($tabledata as $cliente){ ?>
 			<tr>
 				<td><?php echo $cliente->id_cliente ?></td>
-				<td width="50%"><?php echo $cliente->cliente ?></td>
+				<td><?php echo $cliente->cliente ?></td>
 				<td><?php echo $cliente->cpf ?></td>
 				<td><?php echo $cliente->rg ?></td>
+				<td><?php echo $cliente->obs ?></td>
 				<td>
 					<a href="<?php echo site_url();?>/cliente/editing/<?php  echo $cliente->id_cliente ?>"
 					class="btn btn-default btn-sm">Editar 
@@ -76,19 +78,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-6 form-group">
+	<div class="col-md-3 form-group">
 	  <?php
 		echo form_label('CPF');
 		echo form_input(array('name'=>'cpf','id'=>'cpf','class'=>'form-control','placeholder'=>'CPF do cliente'),set_value('cpf'));
+	  ?>
+	</div>
+	<div class="col-md-3 form-group">
+	  <?php
+		echo form_label('RG');
+		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','placeholder'=>'RG do cliente'),set_value('rg'));
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('RG');
-		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','placeholder'=>'RG do cliente'),set_value('rg'));
+		echo form_label('Endereço');
+		echo form_input(array('name'=>'endereco','id'=>'endereco','class'=>'form-control','placeholder'=>'Endereço do cliente'),set_value('endereco'));
 	  ?>
+	</div>
+	
+</div>
+<div class="row">
+	<div class="col-md-2 form-group">
+	  <?php
+		echo form_label('CEP');
+		echo form_input(array('name'=>'cep','id'=>'cep','class'=>'form-control','placeholder'=>'CEP do cliente'),set_value('cep'));
+	  ?>
+	</div>
+	<div class="col-md-2 form-group">
+		<?php 
+			echo form_label('Cidade');
+			echo form_input(array('name'=>'cidade','id'=>'cidade','class'=>'form-control','placeholder'=>'Cidade do cliente'),set_value('cidade'));
+		?>
+	</div>
+	<div class="col-md-2 form-group">
+		<?php 
+			echo form_label('UF');
+			echo form_input(array('name'=>'uf','id'=>'uf','class'=>'form-control','placeholder'=>'UF do cliente'),set_value('uf'));
+		?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	<?php
+		echo form_label('Observações');
+		echo form_textarea(array('name'=>'obs','id'=>'obs','class'=>'form-control','placeholder'=>'Observações sobre o cliente'),set_value('obs'));
+	?>
 	</div>
 </div>
 <div class="row">
@@ -124,19 +161,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-6 form-group">
+	<div class="col-md-3 form-group">
 	  <?php
 		echo form_label('CPF');
 		echo form_input(array('name'=>'cpf','id'=>'cpf','class'=>'form-control','placeholder'=>'CPF do cliente'),$cliente->cpf);
+	  ?>
+	</div>
+	<div class="col-md-3 form-group">
+	  <?php
+		echo form_label('RG');
+		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','placeholder'=>'RG do cliente'),$cliente->rg);
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('RG');
-		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','placeholder'=>'RG do cliente'),$cliente->rg);
+		echo form_label('Endereço');
+		echo form_input(array('name'=>'endereco','id'=>'endereco','class'=>'form-control','placeholder'=>'Endereço do cliente'),$cliente->endereco);
 	  ?>
+	</div>
+	
+</div>
+<div class="row">
+	<div class="col-md-2 form-group">
+	  <?php
+		echo form_label('CEP');
+		echo form_input(array('name'=>'cep','id'=>'cep','class'=>'form-control','placeholder'=>'CEP do cliente'),$cliente->cep);
+	  ?>
+	</div>
+	<div class="col-md-2 form-group">
+		<?php 
+			echo form_label('Cidade');
+			echo form_input(array('name'=>'cidade','id'=>'cidade','class'=>'form-control','placeholder'=>'Cidade do cliente'),$cliente->cidade);
+		?>
+	</div>
+	<div class="col-md-2 form-group">
+		<?php 
+			echo form_label('UF');
+			echo form_input(array('name'=>'uf','id'=>'uf','class'=>'form-control','placeholder'=>'UF do cliente'),$cliente->uf);
+		?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	<?php
+		echo form_label('Observações');
+		echo form_textarea(array('name'=>'obs','id'=>'obs','class'=>'form-control','placeholder'=>'Observações sobre o cliente'),$cliente->obs);
+	?>
 	</div>
 </div>
 <div class="row">
@@ -170,19 +242,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-6 form-group">
+	<div class="col-md-3 form-group">
 	  <?php
 		echo form_label('CPF');
 		echo form_input(array('name'=>'cpf','id'=>'cpf','class'=>'form-control','readonly'=>'readonly'),$cliente->cpf);
+	  ?>
+	</div>
+	<div class="col-md-3 form-group">
+	  <?php
+		echo form_label('RG');
+		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','readonly'=>'readonly'),$cliente->rg);
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('RG');
-		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','readonly'=>'readonly'),$cliente->rg);
+		echo form_label('Endereço');
+		echo form_input(array('name'=>'endereco','id'=>'endereco','class'=>'form-control','readonly'=>'readonly'),$cliente->endereco);
 	  ?>
+	</div>
+	
+</div>
+<div class="row">
+	<div class="col-md-2 form-group">
+	  <?php
+		echo form_label('CEP');
+		echo form_input(array('name'=>'cep','id'=>'cep','class'=>'form-control','readonly'=>'readonly'),$cliente->cep);
+	  ?>
+	</div>
+	<div class="col-md-2 form-group">
+		<?php 
+			echo form_label('Cidade');
+			echo form_input(array('name'=>'cidade','id'=>'cidade','class'=>'form-control','readonly'=>'readonly'),$cliente->cidade);
+		?>
+	</div>
+	<div class="col-md-2 form-group">
+		<?php 
+			echo form_label('UF');
+			echo form_input(array('name'=>'uf','id'=>'uf','class'=>'form-control','readonly'=>'readonly'),$cliente->uf);
+		?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	<?php
+		echo form_label('Observações');
+		echo form_textarea(array('name'=>'obs','id'=>'obs','class'=>'form-control','readonly'=>'readonly'),$cliente->obs);
+	?>
 	</div>
 </div>
 <div class="row">

@@ -1,0 +1,15 @@
+.circle { 
+	display: inline-table;
+	margin-right: 5px;
+	border-radius: 1em;
+	width: 10px;
+	height: 10px;
+	}
+
+.green { background-color: #32CD32; }
+.red { background-color: #FF4500; }
+.yellow { background-color: #FFD700; }
+.orange { background-color: #FF7F50; }
+.blue { background-color: #8470FF; }
+.black { background-color: #000000; }
+.white { border:1px solid #000000; border-collapse: separate; }

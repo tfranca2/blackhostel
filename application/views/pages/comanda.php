@@ -1,5 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
+$user = $this->session->get_userdata();
+$gerente = $user['user_session']['gerente'];
+$admin = $user['user_session']['admin'];
 ?>
 
 <script>
@@ -29,12 +33,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						
 						$('#produtos').empty();
 
-						$('#produtos').append('<tr><th>Produto</th><th>Valor</th><th>Opções</th></tr>');
+						$('#produtos').append('<tr><th>Produto</th><th>Valor</th><?php if($gerente) { ?><th>Opções</th><?php } ?></tr>');
 						
 						if(obj.produtos.length > 0){
 							$.each(obj.produtos, function(i,produto) {
 								$('#produtos').append( 
-								'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> <td> <a href="<?php echo site_url();?>/reserva/remover/'+produto.id_reserva_produto+' " class="btn btn-danger btn-sm remove-produto">Remover <span class="glyphicon glyphicon-remove"></span></a> </td> </tr>'
+							'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> <?php if($gerente) { ?> <td> <a href="<?php echo site_url();?>/reserva/remover/'+produto.id_reserva_produto+' " class="btn btn-danger btn-sm remove-produto">Remover <span class="glyphicon glyphicon-remove"></span></a> </td> <?php } ?> </tr>'
 								); 
 							});
 						}else{
@@ -94,7 +98,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="text" placeholder="Numero do quarto" name="numero" class="form-control" />
 		</div>
 		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
 		</div>
 	</div>
 	</form>

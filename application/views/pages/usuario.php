@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="text" placeholder="Nome do usuráio" name="nome" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
 		</div>
 	</div>
 	<div class="row">

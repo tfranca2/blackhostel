@@ -17,7 +17,8 @@ class Caixa extends CI_Controller {
 					'page'=>'caixa'
 					,'title'=> 'Movimento de Caixa'
 					,'part' => 'show'
-					,'tabledata'=>$this->db->get_where('caixa', 'DATE(data) = DATE(CURDATE())')->result()
+					// ,'tabledata'=>$this->db->get_where('caixa', 'DATE(data) = DATE(CURDATE())')->result()
+					,'tabledata'=>$this->db->get('caixa')->result()
 				));
 	}
 	
@@ -132,10 +133,7 @@ class Caixa extends CI_Controller {
 	private function runFormValidations(){
 	
 		$this->form_validation->set_message('operacao',"%s é um campo obrigatório.");
-		$this->form_validation->set_message('valor',"%s é um campo obrigatório.");
-		
 		$this->form_validation->set_rules('operacao', 'Operacao', 'required');
-		$this->form_validation->set_rules('valor', 'Valor', 'required');
 		
 		return $this->form_validation->run();
 	

@@ -4,16 +4,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $operacoes = array (
 					1 => "Abertura de Caixa",
 					2 => "Sangria",
-					3 => "Ressuprimento",
-					4 => "Fechamento de Caixa",
 					5 => "Venda",
-					6 => "Compra"
+					3 => "Ressuprimento",
+					6 => "Compra",
+					4 => "Fechamento de Caixa"
 				);
 				
 ?>
 <script>
 	$(document).ready(function(){
 		$('#valor').mask('000.000.000.000.000,00', {reverse: true});
+		
+		$('label > input').click( function( event ){
+			if( event.target.value == 1 || event.target.value == 4 ){
+				$('#valor').val("");
+				$('#valor').attr("disabled", "disabled");
+			} else {
+				$('#valor').removeAttr("disabled");
+			}
+		});
+		
 	});
 </script>
 <?php
@@ -38,15 +48,24 @@ $operacoes = array (
 				<th>Data</th>
 				<!-- <th>Opções</th> -->
 			</tr>
-			<?php 			
+			<?php 	
+			$total = 0; 
+			
 			foreach($tabledata as $caixa){ 
 						
-			$usuario = $this->db->get_where('usuario', array('id_usuario' => $caixa->id_usuario))->row();
-		
+				$usuario = $this->db->get_where('usuario', array('id_usuario' => $caixa->id_usuario))->row();
+				
+				if( $caixa->operacao == 3 || $caixa->operacao == 5 ) 
+					// ressuprimento ou venda
+					$total += $caixa->valor;
+				if( $caixa->operacao == 2 || $caixa->operacao == 6 ) 
+					// sangria ou compra
+					$total -= $caixa->valor;
+				
 			?>
 			<tr>
-				<td><?php echo $operacoes[$caixa->operacao]; ?></td>
-				<td><?php echo "R$ ".monetaryOutput($caixa->valor); ?></td>
+				<td><?php echo ((($caixa->operacao==1)?'<span class="circle green"></span>':(($caixa->operacao==2)?'<span class="circle red"></span>':(($caixa->operacao==4)?'<span class="circle yellow"></span>':'')))). $operacoes[$caixa->operacao]; ?></td>
+				<td><?php echo ( $caixa->operacao==1 || $caixa->operacao==4 )?"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-":"R$ ".(($caixa->operacao==2 || $caixa->operacao==6)?'- ':"&nbsp;&nbsp;&nbsp;" ).monetaryOutput($caixa->valor); ?></td>
 				<td><?php echo $caixa->observacao; ?></td>
 				<td><?php echo $usuario->nome; ?></td>
 				<td><?php echo dateTimeToBr($caixa->data); ?></td>
@@ -64,6 +83,20 @@ $operacoes = array (
 				<?php }  ?>
 			</tr>
 			<?php }  ?>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<th>Total</th>
+				<th><?php echo "R$ ".monetaryOutput($total); ?></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
 		</table> 
 		</div>
 	</div>
@@ -72,7 +105,7 @@ $operacoes = array (
 /**
 * Área da tela responsável pelo formulário de inserção de dados
 */
-	}else if($part =="inserting"){
+	} else if( $part =="inserting" ) {
 		
 	echo form_open('caixa/save');
 	

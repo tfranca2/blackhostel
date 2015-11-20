@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
+$user = $this->session->get_userdata();
+$gerente = $user['user_session']['gerente'];
+$admin = $user['user_session']['admin'];
+ 
 ?>
 <script>
 	$(document).ready(function(){
@@ -24,12 +28,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="text" placeholder="Descrição do item" name="descricao" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-1 col-often-11 form-group pull-right">
-			<a class="btn btn-info" href="<?php echo site_url();?>/item/inserting">Novo</a>
+			<?php if($gerente) { ?><a class="btn btn-info" href="<?php echo site_url();?>/item/inserting">Novo</a><?php } ?>
 		</div>
 	</div>
 	</form>
@@ -40,14 +44,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th>ID</th>
 				<th>Descrição</th>
 				<th>Preço</th>
-				<th>Opções</th>
+				<?php if($gerente) { ?><th>Opções</th><?php } ?>
 			</tr>
 			<?php foreach($tabledata as $item){ ?>
 			<tr>
 				<td><?php echo $item->id_item ?></td>
 				<td width="70%"><?php echo $item->descricao ?></td>
 				<td><?php echo monetaryOutput($item->preco) ?></td>
-				<td>
+				<?php if($gerente) { ?><td>
 					<a href="<?php echo site_url();?>/item/editing/<?php  echo $item->id_item ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
@@ -55,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<a href="<?php echo site_url();?>/item/deleting/<?php  echo $item->id_item ?>" class="btn btn-default btn-sm">Deletar 
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
-				</td>
+				</td><?php } ?>
 			</tr>
 			<?php } ?>
 		</table> 
