@@ -37,15 +37,17 @@ function containsStr($str, $src){
 function dump($var){
 	echo '<pre>';	
 	print_r($var);
-	echo '</pre>';	
+	echo '</pre>';
 }
+
+
 
 function tagAs($tag, $var1, $var2){
 	echo ($var1 == $var2)?$tag:''; 
 }
 
 function month($idx){
-	$meses = array(1 => 'Janeiro','Fevereiro','Mar�o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
+	$meses = array(1 => 'Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
 	return $meses[$idx]; 
 }
 
@@ -65,5 +67,15 @@ function extractValues($data, $tipo){
 		}
 	}
 	return rtrim($values,', ');
+}
+
+function descModoReserva($id){
+	if($id ==1){
+		return 'Diárias';
+	}else if($id == 2){
+		return 'Horas';
+	}else if($id == 3){
+		return 'Pernoite';
+	}
 }
 

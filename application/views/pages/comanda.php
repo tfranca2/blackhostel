@@ -113,9 +113,17 @@ $admin = $user['user_session']['admin'];
 			</tr>
 			<?php foreach($tabledata as $comanda){ ?>
 			<tr>
-				<td>&nbsp;&nbsp;<?php echo $comanda->id_reserva ?></td>
-				<td>&nbsp;&nbsp;<?php echo $comanda->numero; ?></td>
-				<td>&nbsp;&nbsp;<?php echo $comanda->tipo; ?></td>
+				<td><?php echo $comanda->id_reserva ?></td>
+				<td><?php echo $comanda->numero; ?></td>
+				<td><?php 
+					if ($comanda->tipo ==1){
+						echo 'Diária';
+					}elseif($comanda->tipo ==2){
+						echo 'Hora';
+					}elseif($comanda->tipo ==3){
+						echo 'Pernoite';
+					} 
+				?></td>
 				<td>
 					<a href="<?php echo site_url();?>/comanda/detail/<?php  echo $comanda->id_reserva ?>" class="btn btn-default btn-sm detail">Detalhar 
 						<span class="glyphicon glyphicon-search"></span>

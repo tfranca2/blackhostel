@@ -23,10 +23,7 @@ class Comanda extends CI_Controller {
 		$sql = "SELECT 
 					re.id_reserva ,
 					qt.numero ,
-					IF(pf.tp_modo_reserva=1,'D',
-						IF(pf.tp_modo_reserva=2,'H',
-						IF(pf.tp_modo_reserva=3,'P',
-						pf.tp_modo_reserva))) AS tipo ,
+					pf.tp_modo_reserva AS tipo ,
 					pf.preco_base AS valor_perfil ,
 					(SELECT SUM(it.preco) FROM perfil_item pit 
 						LEFT JOIN item it 
@@ -133,6 +130,7 @@ class Comanda extends CI_Controller {
 	}
 	
 	public function finalizar(){
+		
 		$id = (int) $this->uri->segment(3);
 		
 		$user = $this->session->get_userdata();
@@ -190,10 +188,11 @@ class Comanda extends CI_Controller {
 					ON re.id_quarto = qt.id_quarto
 				LEFT JOIN perfil pf 
 					ON qt.id_perfil = pf.id_perfil
-				
+				LEFT JOIN perfil_preco pfp 
+					ON pfp.id_perfil = pf.id_perfil and re.qt_pessoas = pfp.qt_pessoas
+
 				WHERE
-					1 = 1
-					AND re.id_reserva = ".$id;
+				1 = 1 AND re.id_reserva = ".$id;
 				
 		$result = $this->db->query($sql)->row();
 		

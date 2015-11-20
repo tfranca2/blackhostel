@@ -83,7 +83,7 @@ class Caixa extends CI_Controller {
 					,'part' => 'inserting'
 			));
 			
-			$this->session->set_flashdata('msg', 'UsuÃ¡rio cadastrado com sucesso.');
+			$this->session->set_flashdata('msg', 'Movimentação cadastrado com sucesso.');
 			redirect(current_url());
 			
 		}else{
