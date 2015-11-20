@@ -107,14 +107,14 @@ $admin = $user['user_session']['admin'];
 		<table class="table table-responsive"> 
 			<tr>
 				<th>Cod. Reserva</th>
-				<th>Num. Quarto</th>
+				<th>Quarto</th>
 				<th>Tipo</th>
 				<th>Opções</th>
 			</tr>
 			<?php foreach($tabledata as $comanda){ ?>
 			<tr>
 				<td><?php echo $comanda->id_reserva ?></td>
-				<td><?php echo $comanda->numero; ?></td>
+				<td><?php echo $comanda->perfil." - Nº ".$comanda->numero; ?></td>
 				<td><?php 
 					if ($comanda->tipo ==1){
 						echo 'Diária';
@@ -152,13 +152,13 @@ $admin = $user['user_session']['admin'];
 								<label> Cod. Reserva </label>
 								<input text="text" disabled id="reserva" class="form-control"/>	
 							</div>
-							<div class="col-md-2 form-group">
-								<label>	N° do Quarto </label>
-								<input text="text" disabled id="numero" class="form-control"/>	
-							</div>
 							<div class="col-md-5 form-group">
 								<label>	Perfil </label>
 								<input text="text" disabled id="perfil" class="form-control"/>	
+							</div>
+							<div class="col-md-2 form-group">
+								<label>	N° do Quarto </label>
+								<input text="text" disabled id="numero" class="form-control"/>	
 							</div>
 							<div class="col-md-3 form-group">
 								<label>	Preço do perfil </label>

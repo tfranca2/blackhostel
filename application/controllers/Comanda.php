@@ -23,6 +23,7 @@ class Comanda extends CI_Controller {
 		$sql = "SELECT 
 					re.id_reserva ,
 					qt.numero ,
+					pf.descricao as perfil ,
 					pf.tp_modo_reserva AS tipo ,
 					pf.preco_base AS valor_perfil ,
 					(SELECT SUM(it.preco) FROM perfil_item pit 
