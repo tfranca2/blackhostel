@@ -130,6 +130,9 @@
 						 else if($reserva->id_situacao == 4){
 						 	echo 'FINALIZADO';
 						 }
+						 else if($reserva->id_situacao == 5){
+						 	echo 'FECHADO';
+						 }
 						 else if($reserva->id_situacao == 6){
 						 	echo 'CANCELADO';
 						 }
@@ -255,7 +258,7 @@
 	  	<div class="input-group">
             <input type="datetime" class="form-control calendar" name="entrada" id="entrada" required 
             value="<?php echo dateTimeToBr( $reserva->entrada ) ?>"
-            <?php echo ($reserva->id_situacao == 2)?'':'disabled'; ?>> 
+            > 
             <span class="input-group-addon add-on">
                 <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
             </span>
@@ -265,7 +268,7 @@
 	  <label>Saída</label>
 	  	<div class="input-group">
             <input type="datetime" class="form-control calendar" name="saida" id="saida" required value="<?php  echo dateTimeToBr( $reserva->saida ) ?>"
-            <?php echo ($reserva->id_situacao == 2)?'':'disabled'; ?>> 
+            > 
             <span class="input-group-addon add-on">
                 <span class="glyphicon glyphicon-calendar" data-time-icon="icon-time"></span>
             </span>
@@ -277,9 +280,9 @@
 	  <label>Tipo Reserva</label>
 	  <select name="id_tipo_reserva" class="form-control" id="tipo-quarto">
 			<option value=""> -- Selecione -- </option>
-			<option value="1" <?php echo ($reserva->tp_modo_reserva ==1 )?'selected':''; ?>>Diárias</option>
-			<option value="2" <?php echo ($reserva->tp_modo_reserva ==2 )?'selected':''; ?>>Horas</option>
-			<option value="3" <?php echo ($reserva->tp_modo_reserva ==3 )?'selected':''; ?>>Pernoites</option>
+			<option value="1" <?php tagAs('selected',$reserva->tp_modo_reserva , 1 ) ?>>Diárias</option>
+			<option value="2" <?php tagAs('selected',$reserva->tp_modo_reserva , 2 ) ?>>Horas</option>
+			<option value="2" <?php tagAs('selected',$reserva->tp_modo_reserva , 3 ) ?>>Pernoites</option>
 	  </select>
 	</div>
 </div>

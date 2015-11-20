@@ -33,15 +33,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th>Cliente</th>
 				<th>CPF</th>
 				<th>RG</th>
+				<th>Telefone</th>
+				<th>Endereço</th>
 				<th>OBS.</th>
 				<th>Opções</th>
 			</tr>
 			<?php foreach($tabledata as $cliente){ ?>
 			<tr>
 				<td><?php echo $cliente->id_cliente ?></td>
-				<td><?php echo $cliente->cliente ?></td>
+				<td width="30%"><?php echo $cliente->cliente ?></td>
 				<td><?php echo $cliente->cpf ?></td>
 				<td><?php echo $cliente->rg ?></td>
+				<td><?php echo $cliente->telefone ?></td>
+				<td><?php echo $cliente->endereco .' - '.$cliente->cep ?></td>
 				<td><?php echo $cliente->obs ?></td>
 				<td>
 					<a href="<?php echo site_url();?>/cliente/editing/<?php  echo $cliente->id_cliente ?>"
@@ -128,6 +132,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	?>
 	</div>
 </div>
+
+
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('Endereço');
+		echo form_input(array('name'=>'endereco','id'=>'endereco','class'=>'form-control','placeholder'=>'Endereço do cliente'),set_value('endereco'));
+	  ?>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('CEP');
+		echo form_input(array('name'=>'cep','id'=>'cep','class'=>'form-control','placeholder'=>'CEP do cliente'),set_value('cep'));
+	  ?>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('Telefone');
+		echo form_input(array('name'=>'telefone','id'=>'telefone','class'=>'form-control','placeholder'=>'Telefone do cliente'),set_value('telefone'));
+	  ?>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('Observação');
+		echo form_input(array('name'=>'observacao','id'=>'observacao','class'=>'form-control','placeholder'=>'Observacao'),set_value('observacao'));
+	  ?>
+	</div>
+</div>
+
 <div class="row">
 	<div class="col-md-6 form-group">
 	 <?php
@@ -209,6 +251,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		echo form_label('Observações');
 		echo form_textarea(array('name'=>'obs','id'=>'obs','class'=>'form-control','placeholder'=>'Observações sobre o cliente'),$cliente->obs);
 	?>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('Endereço');
+		echo form_input(array('name'=>'endereco','id'=>'endereco','class'=>'form-control','placeholder'=>'Endereço do cliente'),$cliente->endereco);
+	  ?>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('CEP');
+		echo form_input(array('name'=>'cep','id'=>'cep','class'=>'form-control','placeholder'=>'CEP do cliente'),$cliente->cep);
+	  ?>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('Telefone');
+		echo form_input(array('name'=>'telefone','id'=>'telefone','class'=>'form-control','placeholder'=>'Telefone do cliente'),$cliente->telefone);
+	  ?>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('Observação');
+		echo form_input(array('name'=>'observacao','id'=>'observacao','class'=>'form-control','placeholder'=>'Observacao'),$cliente->observacao);
+	  ?>
 	</div>
 </div>
 <div class="row">
