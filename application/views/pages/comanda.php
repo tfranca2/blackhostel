@@ -1,5 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
+$user = $this->session->get_userdata();
+$gerente = $user['user_session']['gerente'];
+$admin = $user['user_session']['admin'];
 ?>
 
 <script>
@@ -29,12 +33,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						
 						$('#produtos').empty();
 
-						$('#produtos').append('<tr><th>Produto</th><th>Valor</th><th>Opções</th></tr>');
+						$('#produtos').append('<tr><th>Produto</th><th>Valor</th><?php if($gerente) { ?><th>Opções</th><?php } ?></tr>');
 						
 						if(obj.produtos.length > 0){
 							$.each(obj.produtos, function(i,produto) {
 								$('#produtos').append( 
-								'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> <td> <a href="<?php echo site_url();?>/reserva/remover/'+produto.id_reserva_produto+' " class="btn btn-danger btn-sm remove-produto">Remover <span class="glyphicon glyphicon-remove"></span></a> </td> </tr>'
+							'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> <?php if($gerente) { ?> <td> <a href="<?php echo site_url();?>/reserva/remover/'+produto.id_reserva_produto+' " class="btn btn-danger btn-sm remove-produto">Remover <span class="glyphicon glyphicon-remove"></span></a> </td> <?php } ?> </tr>'
 								); 
 							});
 						}else{
@@ -94,7 +98,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="text" placeholder="Numero do quarto" name="numero" class="form-control" />
 		</div>
 		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
 		</div>
 	</div>
 	</form>
@@ -103,14 +107,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<table class="table table-responsive"> 
 			<tr>
 				<th>Cod. Reserva</th>
-				<th>Num. Quarto</th>
+				<th>Quarto</th>
 				<th>Tipo</th>
 				<th>Opções</th>
 			</tr>
 			<?php foreach($tabledata as $comanda){ ?>
 			<tr>
 				<td><?php echo $comanda->id_reserva ?></td>
-				<td><?php echo $comanda->numero; ?></td>
+				<td><?php echo $comanda->perfil." - Nº ".$comanda->numero; ?></td>
 				<td><?php 
 					if ($comanda->tipo ==1){
 						echo 'Diária';
@@ -148,13 +152,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<label> Cod. Reserva </label>
 								<input text="text" disabled id="reserva" class="form-control"/>	
 							</div>
-							<div class="col-md-2 form-group">
-								<label>	N° do Quarto </label>
-								<input text="text" disabled id="numero" class="form-control"/>	
-							</div>
 							<div class="col-md-5 form-group">
 								<label>	Perfil </label>
 								<input text="text" disabled id="perfil" class="form-control"/>	
+							</div>
+							<div class="col-md-2 form-group">
+								<label>	N° do Quarto </label>
+								<input text="text" disabled id="numero" class="form-control"/>	
 							</div>
 							<div class="col-md-3 form-group">
 								<label>	Preço do perfil </label>
@@ -261,16 +265,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="row">
 	
-	<?php if(!empty(validation_errors())){ ?>
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
 	<div class="alert alert-success">
-		<?php echo validation_errors(); ?>
+		<?php echo $a; ?>
 	</div>
-	<?php } ?>
-	
-	
-	<?php  if(!empty($this->session->flashdata('msg'))){ ?>
+	<?php } 
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
 	<div class="alert alert-success">
-	  <?php echo $this->session->flashdata('msg'); ?>	
+	  <?php echo $b; ?>	
 	</div>
 	<?php } ?>
 </div>	

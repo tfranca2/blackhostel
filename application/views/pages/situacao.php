@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="text" placeholder="Descrição da situacao" name="situacao" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
 		</div>
 	</div>
 	<div class="row">
@@ -149,16 +149,18 @@ echo form_close();
 
 <div class="row">
 	
-	<?php if(!empty(validation_errors())){ ?>
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
 	<div class="alert alert-success">
-		<?php echo validation_errors(); ?>
+		<?php echo $a; ?>
 	</div>
-	<?php } ?>
+	<?php } 
 	
-	
-	<?php  if(!empty($this->session->flashdata('msg'))){ ?>
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
 	<div class="alert alert-success">
-	  <?php echo $this->session->flashdata('msg'); ?>	
+	  <?php echo $b; ?>	
 	</div>
 	<?php } ?>
 </div>	

@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+<?php
+
+$user = $this->session->get_userdata();
+$gerente = $user['user_session']['gerente'];
+$admin = $user['user_session']['admin'];
+
+?><!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -26,6 +32,7 @@
 		<!---
 		<link href="<?php echo base_url();?>assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 		-->
+	    <link href="<?php echo base_url();?>assets/css/custom.css" rel="stylesheet">
 	    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
 	    <!--[if lt IE 9]><script src="<?php echo base_url();?>assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 	    <script src="<?php echo base_url();?>assets/js/ie-emulation-modes-warning.js"></script>
@@ -84,8 +91,8 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="<?php echo site_url().'/main/reports'?>" > Relatórios</a></li>
             <li><a href="<?php echo site_url().'/main/manual'?>" > Manual</a></li>
-            <li><a href="assets/Dashboard Template for Bootstrap.html">Configurações</a></li>
-            <li><a href="<?php echo site_url()."/usuario"?>">Usuários</a></li>
+            <!-- <li><a href="assets/Dashboard Template for Bootstrap.html">Configurações</a></li> -->
+            <?php if($admin) { ?><li><a href="<?php echo site_url()."/usuario"?>">Usuários</a></li><?php } ?>
             <li>
 				<a href="<?php echo site_url();?>/login/logout">
 					Sair <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> 
@@ -144,11 +151,6 @@
 			<li class="<?php echo styleMenuActive('quarto') ?>">
 				<a href="<?php echo site_url()."/quarto"?>"> 
 					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
-				</a>
-			</li>
-			<li class="<?php echo styleMenuActive('situacao') ?>">
-				<a href="<?php echo site_url()."/situacao"?>">
-					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Situações 
 				</a>
 			</li>
           </ul>

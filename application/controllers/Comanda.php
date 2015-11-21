@@ -23,6 +23,7 @@ class Comanda extends CI_Controller {
 		$sql = "SELECT 
 					re.id_reserva ,
 					qt.numero ,
+					pf.descricao as perfil ,
 					pf.tp_modo_reserva AS tipo ,
 					pf.preco_base AS valor_perfil ,
 					(SELECT SUM(it.preco) FROM perfil_item pit 
@@ -42,7 +43,9 @@ class Comanda extends CI_Controller {
 					ON re.id_quarto = qt.id_quarto
 				inner JOIN perfil pf 
 					ON qt.id_perfil = pf.id_perfil
-				where re.id_situacao not in (2,3,5,6) order by id_reserva desc";
+				where re.id_situacao not in (2,3,5,6)
+				ORDER BY re.id_reserva DESC
+				";
 		
 		$tabledata = $this->db->query($sql)->result();
 		
@@ -56,8 +59,6 @@ class Comanda extends CI_Controller {
 	}
 	
 	public function searching(){
-		//$this->db->like('numero', $this->input->get('numero'));
-		
 		$sql = "SELECT re.id_reserva as id_reserva, qt.numero as numero, IF(pf.tp_modo_reserva=1,'D', IF(pf.tp_modo_reserva=2,'H', IF(pf.tp_modo_reserva=3,'P',	pf.tp_modo_reserva))) AS tipo  FROM reserva re LEFT JOIN quarto qt ON re.id_quarto = qt.id_quarto inner JOIN perfil pf ON qt.id_perfil = pf.id_perfil WHERE re.id_situacao not in (2,3,5,6) AND qt.numero like '%".$this->input->get('numero')."%'";
 		
 		$this->load->view('index',array(
@@ -76,28 +77,9 @@ class Comanda extends CI_Controller {
 		$sql = "SELECT 
 					re.entrada ,
 					re.saida ,
-					
-					TIMESTAMPDIFF
-					(
-					DAY, 
-					re.entrada + INTERVAL TIMESTAMPDIFF(MONTH, re.entrada, re.saida) MONTH, 
-					re.saida
-					) AS dias ,
-					
-					TIMESTAMPDIFF
-					(
-					HOUR, 
-					re.entrada + INTERVAL TIMESTAMPDIFF(DAY,  re.entrada, re.saida) DAY, 
-					re.saida
-					) AS hora,
-					
-					TIMESTAMPDIFF
-					(
-					MINUTE, 
-					re.entrada + INTERVAL TIMESTAMPDIFF(HOUR,  re.entrada, re.saida) HOUR, 
-					re.saida
-					) AS minutos,
-					
+					TIMESTAMPDIFF( DAY, re.entrada + INTERVAL TIMESTAMPDIFF(MONTH, re.entrada, re.saida) MONTH, re.saida ) AS dias ,	
+					TIMESTAMPDIFF( HOUR, re.entrada + INTERVAL TIMESTAMPDIFF(DAY, re.entrada, re.saida) DAY, re.saida ) AS horas,			
+					TIMESTAMPDIFF( MINUTE, re.entrada + INTERVAL TIMESTAMPDIFF(HOUR,  re.entrada, re.saida) HOUR, re.saida ) AS minutos,
 					qt.numero ,
 					pf.descricao AS perfil ,
 					pf.tp_modo_reserva AS tipo 
@@ -121,7 +103,7 @@ class Comanda extends CI_Controller {
 		if( $result->tipo == 1 ){
 			$permanencia = ((!$result->dias)?1:$result->dias).' Diária(s)';
 		} elseif( $result->tipo == 2 ){
-			$permanencia = $result->hora.':'.$result->minutos.' Hrs';
+			$permanencia = $result->horas.':'.$result->minutos.' Hrs';
 		}
 		
 				
@@ -174,49 +156,33 @@ class Comanda extends CI_Controller {
 		
 		unset($dados);
 		
-		$this->index();
+		$this->index(); // redirecionar para a tela de comandas
 	}
 	
 	public function calcularPreco($id){
 		$sql = "SELECT 
-					TIMESTAMPDIFF
-					(
-					DAY, 
-					re.entrada + INTERVAL TIMESTAMPDIFF(MONTH, re.entrada, re.saida) MONTH, 
-					re.saida
-					) AS dias ,
-					
-					TIMESTAMPDIFF
-					(
-					HOUR, 
-					re.entrada + INTERVAL TIMESTAMPDIFF(DAY,  re.entrada, re.saida) DAY, 
-					re.saida
-					) AS hora,
-					
-					TIMESTAMPDIFF
-					(
-					MINUTE, 
-					re.entrada + INTERVAL TIMESTAMPDIFF(HOUR,  re.entrada, re.saida) HOUR, 
-					re.saida
-					) AS minutos,
-					
-					pf.tp_modo_reserva AS tipo ,
-					pf.preco_base AS valor_perfil ,
-					pfp.preco AS valor_perfil_por_pessoa ,
-					
-					(SELECT SUM(it.preco) FROM perfil_item pit 
-						LEFT JOIN item it 
-							ON pit.id_item = it.id_item 
-						WHERE pf.id_perfil = pit.id_perfil AND pf.id_perfil = qt.id_perfil) 
-						AS valor_itens,		
-					(SELECT SUM(pt.preco) FROM reserva_produto rpt 
-						LEFT JOIN produto pt 
-							ON rpt.id_produto = pt.id_produto and rpt.ativo = 1
-						WHERE re.id_reserva = rpt.id_reserva) 
-						AS valor_produtos
-
+				
+				TIMESTAMPDIFF( DAY, re.entrada + INTERVAL TIMESTAMPDIFF(MONTH, re.entrada, re.saida) MONTH, re.saida ) AS dias ,
+				
+				TIMESTAMPDIFF( HOUR, re.entrada + INTERVAL TIMESTAMPDIFF(DAY,  re.entrada, re.saida) DAY, re.saida ) AS horas,
+				
+				TIMESTAMPDIFF( MINUTE, re.entrada + INTERVAL TIMESTAMPDIFF(HOUR,  re.entrada, re.saida) HOUR, re.saida ) AS minutos,
+				
+				pf.tp_modo_reserva AS tipo ,
+				
+				pf.preco_base AS valor_perfil ,
+				
+				(SELECT pfp.preco FROM perfil_preco pfp WHERE pfp.id_perfil = pf.id_perfil AND re.qt_pessoas = pfp.qt_pessoas ) AS valor_perfil_por_pessoa ,
+				
+				(SELECT SUM(it.preco) FROM perfil_item pit LEFT JOIN item it ON pit.id_item = it.id_item WHERE pf.id_perfil = pit.id_perfil AND pf.id_perfil = qt.id_perfil) AS valor_itens,
+				
+				(SELECT SUM(pt.preco) FROM reserva_produto rpt 
+				LEFT JOIN produto pt ON rpt.id_produto = 
+				pt.id_produto and rpt.ativo = 1	WHERE re.id_reserva = 
+				rpt.id_reserva) AS valor_produtos
+				
 				FROM reserva re
-
+				
 				LEFT JOIN cliente cl 
 					ON re.id_cliente = cl.id_cliente
 				LEFT JOIN quarto qt 
@@ -236,23 +202,25 @@ class Comanda extends CI_Controller {
 		if( $result->tipo == 1 ){ // diaria 
 			$precoPerfil = $result->valor_perfil_por_pessoa+$result->valor_itens;
 			// TOLERANCIAS
-			if( $result->hora>=14 and $result->minutos>30 ) // tolerancia diaria
+			if( $result->horas>=14 and $result->minutos>30 ) // tolerancia diaria
 				$precoQuarto = $precoPerfil*($diarias+1);
-			// else
 			else
 				$precoQuarto = $precoPerfil*$diarias;
 		} elseif( $result->tipo == 2 ){ // hora
 			$precoPerfil = $result->valor_perfil+$result->valor_itens;
 			// TOLERANCIAS
 			if( $result->minutos>30 )  
-				$precoQuarto = $precoPerfil*($result->hora+1);
+				$precoQuarto = $precoPerfil*($result->horas+1);
 			elseif( $result->minutos>15 )
-				$precoQuarto = $precoPerfil*($result->hora+0.5);
+				$precoQuarto = $precoPerfil*($result->horas+0.5);
 			else
-				$precoQuarto = $precoPerfil*$result->hora;
+				$precoQuarto = $precoPerfil*$result->horas;
 		} elseif( $result->tipo == 3 ){ // pernoite
-			if( $result->hora>=22 and $result->minutos>30 ) // tolerancia pernoite
+			$precoPerfil = $result->valor_perfil_por_pessoa+$result->valor_itens;
+			if( $result->horas>=22 and $result->minutos>30 ) // tolerancia pernoite
 				$precoQuarto = $precoPerfil*($diarias+1);
+			else
+				$precoQuarto = $precoPerfil*$diarias;
 		}
 		$total = $precoQuarto+$result->valor_produtos;
 		

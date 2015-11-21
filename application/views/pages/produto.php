@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
- 
+
+$user = $this->session->get_userdata();
+$gerente = $user['user_session']['gerente'];
+$admin = $user['user_session']['admin'];
+
 ?>
 <script>
 	$(document).ready(function(){
@@ -24,12 +28,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="text" placeholder="Descrição do produto" name="produto" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-1 col-often-11 form-group pull-right">
-			<a class="btn btn-info" href="<?php echo site_url();?>/produto/inserting">Novo</a>
+			<?php if($gerente) { ?><a class="btn btn-info" href="<?php echo site_url();?>/produto/inserting">Novo</a><?php } ?>
 		</div>
 	</div>
 	</form>
@@ -40,14 +44,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th>ID</th>
 				<th>Produto</th>
 				<th>Preço</th>
-				<th>Opções</th>
+				<?php if($gerente) { ?><th>Opções</th><?php } ?>
 			</tr>
 			<?php foreach($tabledata as $produto){ ?>
 			<tr>
 				<td><?php echo $produto->id_produto ?></td>
 				<td width="50%"><?php echo $produto->produto ?></td>
 				<td><?php echo monetaryOutput($produto->preco) ?></td>
-				<td>
+				<?php if($gerente) { ?><td>
 					<a href="<?php echo site_url();?>/produto/editing/<?php  echo $produto->id_produto ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
@@ -55,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<a href="<?php echo site_url();?>/produto/deleting/<?php  echo $produto->id_produto ?>" class="btn btn-default btn-sm">Deletar 
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
-				</td>
+				</td><?php } ?>
 			</tr>
 			<?php } ?>
 		</table> 
@@ -183,16 +187,18 @@ echo form_close();
 
 <div class="row">
 	
-	<?php if(!empty(validation_errors())){ ?>
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
 	<div class="alert alert-success">
-		<?php echo validation_errors(); ?>
+		<?php echo $a; ?>
 	</div>
-	<?php } ?>
+	<?php } 
 	
-	
-	<?php  if(!empty($this->session->flashdata('msg'))){ ?>
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
 	<div class="alert alert-success">
-	  <?php echo $this->session->flashdata('msg'); ?>	
+	  <?php echo $b; ?>	
 	</div>
 	<?php } ?>
 </div>	

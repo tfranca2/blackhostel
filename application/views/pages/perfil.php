@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
- 
+
+$user = $this->session->get_userdata();
+$gerente = $user['user_session']['gerente'];
+$admin = $user['user_session']['admin'];
+
 ?>
 <script>
 	$(document).ready(function(){
@@ -68,12 +72,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="text" placeholder="Descrição do perfil" name="descricao" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
-			<input type="submit" name="submit" value="Buscar" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-1 col-often-11 form-group pull-right">
-			<a class="btn btn-info" href="<?php echo site_url();?>/perfil/inserting">Novo</a>
+			<?php if($gerente) { ?><a class="btn btn-info" href="<?php echo site_url();?>/perfil/inserting">Novo</a><?php } ?>
 		</div>
 	</div>
 	</form>
@@ -87,17 +91,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th>Preço do Perfil</th>
 				<th>Preço dos Itens</th>
 				<th>Total Perfil</th>
-				<th>Opções</th>
+				<?php if($gerente) { ?><th>Opções</th><?php } ?>
 			</tr>
 			<?php foreach($tabledata as $perfil){ ?>
 			<tr>
 				<td><?php echo $perfil->id_perfil ?></td>
 				<td><?php echo $perfil->descricao ?></td>
-				<td><?php echo $perfil->tp_modo_reserva == 1?'Diária':'Hora'; ?></td>
-				<td><?php echo monetaryOutput($perfil->preco_base) ?> R$</td>
-				<td><?php echo monetaryOutput($perfil->preco_itens) ?> R$</td>
-				<td><?php echo monetaryOutput($perfil->preco_base + $perfil->preco_itens) ?> R$</td>
-				<td>
+				<td><?php echo ($perfil->tp_modo_reserva ==1?'Diária':(($perfil->tp_modo_reserva == 2)?'Hora': 'Pernoite'));; ?></td>
+				<td>R$ <?php echo monetaryOutput($perfil->preco_base) ?></td>
+				<td>R$ <?php echo monetaryOutput($perfil->preco_itens) ?> </td>
+				<td>R$ <?php echo monetaryOutput($perfil->preco_base + $perfil->preco_itens) ?></td>
+				<?php if($gerente) { ?><td>
 					<a href="<?php echo site_url();?>/perfil/editing/<?php  echo $perfil->id_perfil ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
@@ -105,7 +109,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<a href="<?php echo site_url();?>/perfil/deleting/<?php  echo $perfil->id_perfil ?>" class="btn btn-default btn-sm">Deletar 
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
-				</td>
+				</td><?php } ?>
 			</tr>
 			<?php } ?>
 			
@@ -146,8 +150,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<label>Modalidade de Reserva</label>
 		<select name="tp_modo_reserva" class="form-control" required="true">
 				<option value=""> -- Selecione --</option>
-				<option value="1">Diária </option>
-				<option value="2">Hora </option>
+				<option value="1">Diária</option>
+				<option value="2">Hora</option>
+				<option value="3">Pernoite</option>
 		
 		</select>
 	</div>
@@ -204,6 +209,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<option value=""> -- Selecione --</option>
 				<option value="1" <?php echo tagAs('selected', $perfil->tp_modo_reserva , 1) ?> >Diária </option>
 				<option value="2" <?php echo tagAs('selected', $perfil->tp_modo_reserva , 2) ?>>Hora </option>
+				<option value="3" <?php echo tagAs('selected', $perfil->tp_modo_reserva , 3) ?>>Pernoite </option>
 		
 		</select>
 	</div>
@@ -339,16 +345,18 @@ echo form_close();
 
 <div class="row">
 	
-	<?php if(!empty(validation_errors())){ ?>
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
 	<div class="alert alert-success">
-		<?php echo validation_errors(); ?>
+		<?php echo $a; ?>
 	</div>
-	<?php } ?>
+	<?php } 
 	
-	
-	<?php  if(!empty($this->session->flashdata('msg'))){ ?>
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
 	<div class="alert alert-success">
-	  <?php echo $this->session->flashdata('msg'); ?>	
+	  <?php echo $b; ?>	
 	</div>
 	<?php } ?>
 </div>	

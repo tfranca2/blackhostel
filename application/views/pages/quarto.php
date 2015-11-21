@@ -15,7 +15,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						obj = JSON.parse(data);
 						console.log(obj);
 						console.log(obj.quarto.ds_quarto);
-						$('#description').val(obj.quarto.ds_quarto);
 						$('#number').val(obj.quarto.numero);
 						$('#perfil').val(obj.perfil.descricao);
 						$('#total-price').val(obj.perfil.total);
@@ -49,10 +48,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<form action="<?php echo site_url();?>/quarto/searching">
 	<div class="row">
 		<div class="col-md-3 form-group">
-			<label>Descrição</label>
-			<input type="text" placeholder="Descrição do quarto" name="descricao" class="form-control"/>
-		</div>
-		<div class="col-md-3 form-group">
 			<label>Perfil</label>
 			<select name="id_per" class="form-control">
 					<option value="" > -- Selecione -- </option>
@@ -63,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<div class="col-md-3 form-group">
 			<label>&nbsp;</label>
-			<input type="submit" name="submit" value="Buscar" style="display: block; border: 1px solid #ccc;" class="btn btn-sucess">
+			<input type="submit" name="submit" value="Buscar" style="display: block; border: 1px solid #ccc;" class="btn btn-success">
 		</div>
 	</div>
 	<div class="row">
@@ -76,18 +71,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="large-12 columns">
 		<table class="table table-responsive"> 
 			<tr>
-				<th>ID</th>
-				<th>Descrição</th>
-				<th>Número</th>
 				<th>Perfil de Quarto</th>
+				<th>Número</th>
 				<th style="width:25%; align:center;">Opções</th>
 			</tr>
 			<?php foreach($tabledata as $quarto){ ?>
 			<tr>
-				<td><?php echo $quarto->id_quarto ?></td>
-				<td><?php echo $quarto->ds_quarto ?></td>
-				<td><?php echo $quarto->numero ?></td>
 				<td><?php echo $quarto->ds_perfil ?></td>
+				<td><?php echo $quarto->numero ?></td>
 				<td>
 					<a href="<?php echo site_url();?>/quarto/detail/<?php  echo $quarto->id_quarto ?>" class="btn btn-default btn-sm detail">Detalhes 
 						<span class="glyphicon glyphicon-search"></span>
@@ -118,8 +109,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  <div class="modal-body">
 				<div class="row">
 					<div class="col-md-6 form-group">
-						<label>	Descrição </label>
-						<input text="text" disabled id="description" class="form-control"/>	
+						<label>	Perfil </label>
+						<input text="text" disabled id="perfil" class="form-control"/>	
 					</div>
 					<div class="col-md-3 form-group">
 						<label>	Número </label>
@@ -127,9 +118,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-6 form-group">
-						<label>	Perfil </label>
-						<input text="text" disabled id="perfil" class="form-control"/>	
+					<div class="col-md-3 form-group">
+						<label>	Tipo De Reserva </label>
+						<input type="text" class="form-control" id="type" disabled />
+					</div>
+					<div class="col-md-3 form-group">
 					</div>
 					<div class="col-md-3 form-group">
 						<label>	Preço Total </label>	
@@ -137,12 +130,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						  <div class="input-group-addon">R$</div>
 						  <input type="text" class="form-control" id="total-price" disabled />
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3 form-group">
-						<label>	Tipo De Reserva </label>
-						<input type="text" class="form-control" id="type" disabled />
 					</div>
 				</div>
 		  </div>
@@ -162,14 +149,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	echo form_open('quarto/save');	
 ?>
 
-<div class="row">
-	<div class="col-md-6 form-group">		  
-	  <?php
-		echo form_label('Descrição');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'Descrição do quarto'),set_value('descricao'),'autofocus');
-	  ?>
-	</div>
-</div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
@@ -214,14 +193,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <div class="row">
-	<div class="col-md-6 form-group">		  
-	  <?php
-		echo form_label('Descrição');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'Descrição do quarto'),$quarto->ds_quarto ,'autofocus');
-	  ?>
-	</div>
-</div>
-<div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
 		echo form_label('Número');
@@ -263,14 +234,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <div class="row">
-	<div class="col-md-6 form-group">		  
-	  <?php
-		echo form_label('Descrição');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','disabled'=>'true'),$quarto->ds_quarto);
-	  ?>
-	</div>
-</div>
-<div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
 		echo form_label('Número');
@@ -309,16 +272,18 @@ echo form_close();
 
 <div class="row">
 	
-	<?php if(!empty(validation_errors())){ ?>
-	<div class="alert alert-danger">
-		<?php echo validation_errors(); ?>
-	</div>
-	<?php } ?>
-	
-	
-	<?php  if(!empty($this->session->flashdata('msg'))){ ?>
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
 	<div class="alert alert-success">
-	  <?php echo $this->session->flashdata('msg'); ?>	
+		<?php echo $a; ?>
+	</div>
+	<?php } 
+	
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
+	<div class="alert alert-success">
+	  <?php echo $b; ?>	
 	</div>
 	<?php } ?>
 </div>	

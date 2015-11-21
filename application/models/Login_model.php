@@ -31,7 +31,9 @@ class Login_model extends CI_Model {
 					   'id_usuario'  => $usuario->id_usuario,
 					   'nome'  => $usuario->nome,
 					   'email'     => $usuario->login,
-					   'senha'     => $usuario->senha
+					   'senha'     => $usuario->senha,
+					   'gerente'     => $usuario->gerente,
+					   'admin'     => $usuario->admin
 				   );
 				$this->session->set_userdata('user_session',$newdata);
 				return true;
