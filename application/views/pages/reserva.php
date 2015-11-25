@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed') ?>
 <script>
 	$(document).ready(function(){
-	
+		$('#duallist').DualListBox({json:false, available:'Disponiveis', selected:'Selecionados',showing:'mostrando',filterLabel:'Filtro'});
 		$('.calendar').datetimepicker({	
 		  beforeShow: function(input, inst) {
 				var calendar = inst.dpDiv;
@@ -42,6 +42,36 @@
 			$("#saida").removeAttr("required");
 		   }
          });
+
+		$(".filter-unselected").on('keyup', function(){
+				if($(this).val().length >= 4 && ($(this).val().length % 2) ==0 )
+	           		loadClientes($(this).val());
+				else
+					$('.unselected').empty();
+	    });
+
+		 function loadClientes(clienteName){
+				$('.unselected').empty();
+	 			var url =  "<?php echo site_url()."/cliente/load/" ;?>";
+				console.log(url);
+				$.ajax({
+						url: url ,
+						type: 'GET',
+						data: {clienteName:clienteName},
+						success: function(data){
+							//console.log(data);
+ 							cliente = JSON.parse(data);
+ 							console.log(cliente);
+							$.each(cliente, function(i,cliente) {
+								if($('#selectclientes').val() != cliente.id_cliente)
+								$('.unselected').append( '<option value="' + cliente.id_cliente+ '" >'+ cliente.cliente + '</option>' ); 
+							});	
+						}
+				});
+			 }
+		 $('#selectclientes').change(function(){
+			 $('.unselected, .selected').empty();
+		 });
 		 
 		 function loadQuartos(){
 			$('#selectquartos').empty();
@@ -201,22 +231,32 @@
 	  </select>
 	</div>
 </div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	  <label>Cliente</label>
-	  <select name="id_cliente" class="form-control" id="selectclientes" >
-	  	<option value=""> -- Selecione -- </option>
-	  	<?php foreach ($clientes as $cliente){?>
-	  		<option value="<?php echo $cliente->id_cliente?>"> <?php echo $cliente->cliente?> </option>	
-	  	<?php }?>
-	  </select>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	<label>Ocupantes</label>
-	<input type="number" name="qt_pessoas" min="1" class="form-control" value="1">
-	</div>
+<div class="panel panel-primary">
+  <div class="panel-heading">Clientes</div>
+  <div class="panel-body">
+	  <div class="row">
+			<div class="col-md-6 form-group">
+			  <label>Cliente Titular da Reserva</label>
+			  <select name="id_cliente" class="form-control" id="selectclientes" >
+			  	<option value=""> -- Selecione -- </option>
+			  	<?php foreach ($clientes as $cliente){?>
+			  		<option value="<?php echo $cliente->id_cliente?>"> <?php echo $cliente->cliente?> </option>	
+			  	<?php }?>
+			  </select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 form-group">
+				<label>Acompanhantes</label>
+			</div>
+	  	</div>
+	  	<div class="row">
+			<div class="col-md-12 form-group">
+				<select name="clientes[]" class="form-control" id="duallist" multiple="true">
+				</select>
+			</div>
+	  	</div>
+  </div>
 </div>
 
 <div class="row">
@@ -297,23 +337,32 @@
 	  </select>
 	</div>
 </div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	  <label>Cliente</label>
-	  <select name="id_cliente" class="form-control" id="selectclientes" >
-	  	<option value=""> -- Selecione -- </option>
-	  	<?php foreach ($clientes as $cliente){?>
-	  		<option value="<?php echo $cliente->id_cliente?>" <?php tagAs('selected',$cliente->id_cliente, $reserva->id_cliente  )?> > <?php echo $cliente->cliente?> </option>	
-	  	<?php }?>
-	  </select>
+<div class="panel panel-primary">
+  <div class="panel-heading">Clientes</div>
+  <div class="panel-body">
+  	 <div class="row">
+		<div class="col-md-6 form-group">
+		  <label>Cliente Titular da Reserva</label>
+		  <select name="id_cliente" class="form-control" id="selectclientes" >
+		  	<option value=""> -- Selecione -- </option>
+		  	<?php foreach ($todos_clientes as $cliente){?>
+		  		<option value="<?php echo $cliente->id_cliente?>" <?php tagAs('selected',$cliente->id_cliente, $reserva->id_cliente  )?> > <?php echo $cliente->cliente?> </option>	
+		  	<?php }?>
+		  </select>
+		</div>
 	</div>
+  	<div class="row">
+		<div class="col-md-12 form-group">
+			<select name="clientes[]" class="form-control" id="duallist" multiple="true">
+				<?php foreach($clientes as $cliente){ ?>
+					<option value="<?php echo $cliente->id_cliente ?>" selected><?php echo $cliente->cliente ?> </option>
+				<?php } ?>
+			</select>
+		</div>
+  	</div>
+  </div>
 </div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	<label>Ocupantes</label>
-	<input type="number" name="qt_pessoas" min="1" class="form-control" value="<?php echo $reserva->qt_pessoas?>">
-	</div>
-</div>
+
 <div class="row">
 	<div class="col-md-6 form-group">
 	<label>Situação</label>

@@ -116,6 +116,12 @@ class Cliente extends CI_Controller {
 		}
 	}
 	
+	public function load(){
+		$clienteName = $this->input->get('clienteName');
+		$this->db->like('cliente', $clienteName );
+		echo json_encode($this->db->get('cliente')->result());
+	}
+	
 	private function runFormValidations(){
 	
 		$this->form_validation->set_message('cliente',"%s é um campo obrigatório.");
