@@ -217,3 +217,14 @@ CREATE TABLE `usuario` (
 #
 
 INSERT INTO `usuario` VALUES (1,'Jocélio','jocelio','200820e3227815ed1756a6b531e7e0d2');
+
+#
+# Structure for table "reserva_cliente"
+#
+
+CREATE TABLE `reserva_cliente` (
+  `id_reserva` int(11) NOT NULL DEFAULT '0',
+  `id_cliente` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id_reserva`,`id_cliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
