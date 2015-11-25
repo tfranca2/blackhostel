@@ -18,8 +18,50 @@ class Reserva extends CI_Controller {
 		$this->load->database();
 		$this->load->model('Quarto_model','quarto');
 		$this->load->model('Reserva_model','reserva'); 
+		
+		$this->teste();
     }
 	 
+    public function teste(){
+    	
+//     	  $bema = new COM("{310DBDAC-85FF-4008-82A8-E22A09F9460B}");
+//     	  usleep(500);
+//     	  	$bema->ConfiguraModeloImpressora(8);
+// 	    	$init = $bema->IniciaPorta("USB");
+// 			echo $init;
+//  	    	if ($init <= 0)
+//  	    		echo "erro! ";
+
+    	
+    	//verifica erro
+    	
+    	//imprime texto com formatação em cada linha
+    	//o espaçamento deve ser ajustado a depender da impressora
+    	
+//     	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX("Bar do Robson \n", 3, 1 , 0, 1, 0);
+//     	$bema->FormataTX(" Sistema de Bar e Restaurante \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX("Mesa: 35 \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX("05 - Cerveja Skol2,00 10,00 \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX("01 - Picanha 15,00 15,00 \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX("02 - Batata Frita 4,008,00 \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX(" ------ \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX(" Total 33,00 \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
+//     	$bema->FormataTX("BarRestaurante v1.0 01/05/2007 \n", 1, 0 , 1, 0, 0);
+//    	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
+    	
+    	
+    	//fecha a porta de impressao
+//     	$bema->FechaPorta();
+//     	DIE;
+    	//echo phpinfo();
+    	
+    	 
+    }
+    
 	public function index(){
 		$this->load->view('index', array(
 					'page'=>'reserva'
@@ -52,7 +94,10 @@ class Reserva extends CI_Controller {
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
 		$reserva = $this->reserva->getFullCurrentReservation($id);
 		$quartos = $this->quarto->getAvailableBadroomsForEdition($reserva->tp_modo_reserva, $id, $reserva->entrada, $reserva->saida);
-		$clientes = $this->db->get('cliente')->result();
+		
+		$clientes = $this->reserva->getClientesFromReserva($id);
+		
+		$todos_clientes = $this->db->get('cliente')->result();
 		if($id){
 			$this->load->view('index', array(
 						'page'=>'reserva'
@@ -60,7 +105,9 @@ class Reserva extends CI_Controller {
 						,'part' => 'editing'
 						,'reserva'=> $reserva
 						,'quartos'=> $quartos
-						,'clientes'=>$clientes));
+						,'clientes'=>$clientes
+						,'todos_clientes'=>$todos_clientes
+			));
 		}else{
 			$this->searching();
 		}
@@ -91,7 +138,19 @@ class Reserva extends CI_Controller {
 			$dados['entrada'] = dateTimeToUs($dados['entrada']);
 			$dados['saida'] = dateTimeToUs($dados['saida']);
 			$dados['id_situacao'] =self::RESERVADO;
+			
 			$this->db->insert('reserva', $dados); 
+			
+			$last_id = $this->db->insert_id();
+				
+				
+			foreach($this->input->post('clientes') as $cliente){
+			
+				$this->db->insert('reserva_cliente', array(
+						'id_reserva' => $last_id,
+						'id_cliente' => $cliente
+				));
+			}
 			
 			$this->load->view('index',array(
 					'page'=>'reserva'
@@ -117,7 +176,20 @@ class Reserva extends CI_Controller {
 			$dados['saida'] = dateTimeToUs($dados['saida']);
 			
 			$this->db->where('id_reserva', $id);
-			$this->db->update('reserva', $dados); 
+			$this->db->update('reserva', $dados);
+			
+			$this->db->where('id_reserva', $id);
+			$this->db->delete('reserva_cliente'); 
+			$clientes = $this->input->post('clientes');
+			if($clientes){
+				foreach($clientes as $cliente){
+						
+					$this->db->insert('reserva_cliente', array(
+							'id_reserva' => $id,
+							'id_cliente' => $cliente
+					));
+				}
+			}
 			
 			$this->session->set_flashdata('msg', 'Reserva atualizada com sucesso.');
 			$this->index();
