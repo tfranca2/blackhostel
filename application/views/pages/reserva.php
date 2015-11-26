@@ -151,7 +151,7 @@
 				<td><?php echo ($reserva->tp_modo_reserva ==1?'Diária':(($reserva->tp_modo_reserva == 2)?'Hora': 'Pernoite')); ?></td>
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
 				<td><?php echo dateTimeToBr( $reserva->saida ) ?></td>
-				<td><?php
+				<td><?php 
 						 if($reserva->id_situacao ==1){
 							echo 'EM USO';
 						 }else if($reserva->id_situacao == 2){ 

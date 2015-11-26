@@ -15,10 +15,15 @@ class Main extends CI_Controller {
 	
 	public function index()
 	{
+		$data['inicio'] = $this->input->post('inicio');
+		$data['fim'] = $this->input->post('fim');
+		
 		$this->load->view('index', array(
 					'page'=>'reports'
 					,'data' => $this->reserva->getSumReservationMonths()
 					,'title'=> 'Relatórios'
+					,'faturamentos' => $this->reserva->getResumoFaturamentoDia($data)
+					,'filtro' => $data
 		));
 	}
 	

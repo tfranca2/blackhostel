@@ -48,6 +48,22 @@ class Reserva_model extends CI_Model {
 		return $this->db->query($sql)->result();
 	}
 	
+	
+	public function getResumoFaturamentoDia($data = ''){
+		
+		if($data['inicio'] != '' and $data['fim'] == '')
+			$part = "month(c.data) = month('".dateTimeToUs($data['inicio']) ."')";
+		elseif($data['inicio'] != '' and $data['fim'] != '')
+			$part = "c.data between '".dateTimeToUs($data['inicio'])."' and '".dateTimeToUs($data['fim']) ."' ";
+		else 
+			$part = "month(c.data) = month(curdate())"; 
+		
+	$sql = 'select * from ( 
+       			select c.id_caixa, date(c.data) data, c.valor  from caixa c where '. $part.' and c.operacao = 4 order by c.id_caixa desc
+			) a group by date(a.data)';
+		return $this->db->query($sql)->result();
+	}
+	
 }
 
 ?>
