@@ -50,7 +50,25 @@ $(function () {
     });
 
 
-	$('.calendar').datetimepicker({	
+// 	$('.calendar').datetimepicker({	
+// 		  beforeShow: function(input, inst) {
+// 				var calendar = inst.dpDiv;
+// 				setTimeout(function() {
+// 					$('.ui_tpicker_time_label').text("Tempo");
+// 					$('.ui_tpicker_hour_label').text("Hora");
+// 					$('.ui_tpicker_minute_label').text("Minuto");
+// 					calendar.position({
+// 						my: 'left top',
+// 						at: 'left bottom',
+// 						collision: 'none',
+// 						of: input
+// 					});
+// 				}, 1);
+// 				customRange(input);
+// 			}
+// 		});
+
+$('.calendar').datepicker({	
 		  beforeShow: function(input, inst) {
 				var calendar = inst.dpDiv;
 				setTimeout(function() {
@@ -77,12 +95,17 @@ $(function () {
 			$( "#saida" ).datepicker( "option", "minDate",x ); 
 		} 
 	}
+
+
+	$(".print-screen").printScreen({
+			hiddenItens:".btn"
+			, targetObj: $(".main")
+	});
+	
 });
 </script>
+<div class="reports">
 
-<!-- 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
--->
 <form method="post">
 <div class="row">
 	<div class="col-md-3 form-group">
@@ -107,26 +130,38 @@ $(function () {
 	</div>
 	<div class="col-md-5 form-group">
 		<input type="submit" name="submit" value="Buscar" style="margin-top: 25px;" class="btn btn-success"/>
+		<input type="button" value="Imprimir" style="margin-top: 25px;" class="print-screen btn btn-info"/>
 	</div>
+	
 </div>
 </form>
+<hr/>
 <h1>Faturamentos Diários</h1>
 
-<table class="table">
-  <tr>
+<table class="table table-striped table-bordered">
+  <tr class="info">
     <th>Data</th>
     <th>Valor</th>
   </tr>
   	<?php foreach($faturamentos as $fat){ ?>
 	  <tr>
-    	<td><?php echo dateTimeToBr($fat->data) ?></td>
-    	<td><?php echo monetaryOutput($fat->valor) ?></td>
+    	<td><?php echo str_replace("00:00","", dateTimeToBr($fat->data)) ?></td>
+    	<td><?php echo "R$ ". monetaryOutput($fat->valor) ?></td>
   	  </tr>
+    <?php }
+    	if(empty($faturamentos)){
+    ?>
+    	<tr>
+    		<td colspan="2">Nenhum registro encontrado.</td>
+  	  	</tr>
     <?php }?>
 </table>
 
+</div>
 
-
+<!-- <h1>Faturamentos Diários Gráfico</h1> 
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+-->
 
 
 		
