@@ -7,6 +7,11 @@ class Reserva_model extends CI_Model {
 		$this->load->database();
 		
     }
+    
+    public function getClientesFromReserva($id){
+    	return $this->db->query("select c.cliente, c.id_cliente from reserva_cliente r inner join cliente c on r.id_cliente = c.id_cliente
+    			where r.id_reserva =". $id)->result();
+    }
 	
 	public function getReservas($situacao = 0){
 		$fil = ($situacao != 0)?' and r.id_situacao ='.$situacao:'';

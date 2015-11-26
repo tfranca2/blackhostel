@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
-* Área da tela responsável pela pesquisa e exibição da lista de resultados
+* Ã�rea da tela responsÃ¡vel pela pesquisa e exibiÃ§Ã£o da lista de resultados
 */
 	if($part =="searching"){
 	
@@ -41,7 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php foreach($tabledata as $cliente){ ?>
 			<tr>
 				<td><?php echo $cliente->id_cliente ?></td>
-				<td width="30%"><?php echo $cliente->cliente ?></td>
+				<td><?php echo $cliente->cliente ?></td>
 				<td><?php echo $cliente->cpf ?></td>
 				<td><?php echo $cliente->rg ?></td>
 				<td><?php echo $cliente->telefone ?></td>
@@ -66,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 <?php 
 /**
-* Área da tela responsável pelo formulário de inserção de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de inserÃ§Ã£o de dados
 */
 	}else if($part =="inserting"){
 		
@@ -149,7 +149,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php 
 
 /**
-* Área da tela responsável pelo formulário de edição de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de ediÃ§Ã£o de dados
 */
 	}else if($part =="editing"){
 		
@@ -231,7 +231,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <?php
 /**
-* Área da tela responsável pela confirmação de deleção dos dados
+* Ã�rea da tela responsÃ¡vel pela confirmaÃ§Ã£o de deleÃ§Ã£o dos dados
 */
 	}else if($part =="deleting"){
 		
