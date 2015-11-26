@@ -69,8 +69,12 @@ $admin = $user['user_session']['admin'];
 		<!-- DualList Plug-in-->
 		<script src="<?php echo base_url();?>assets/js/search.js"></script>
 		
-		
 		<script src="<?php echo base_url();?>assets/js/locales/bootstrap-datetimepicker.pt-BR.js"></script>
+		
+		<!-- PrintScreenShopJs https://github.com/jeffersonphp/printScreenShotJs -->
+		<script src="<?php echo base_url();?>assets/js/html2canvas.js"></script>
+		
+		<script src="<?php echo base_url();?>assets/js/printScreeShot.js"></script>
 
   </head>
 
