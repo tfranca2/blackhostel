@@ -55,7 +55,7 @@ $operacoes = array (
 						
 				$usuario = $this->db->get_where('usuario', array('id_usuario' => $caixa->id_usuario))->row();
 				
-				if( $caixa->operacao == 3 || $caixa->operacao == 5 ) 
+				if( $caixa->operacao == 1 || $caixa->operacao == 3 || $caixa->operacao == 5 ) 
 					// ressuprimento ou venda
 					$total += $caixa->valor;
 				if( $caixa->operacao == 2 || $caixa->operacao == 6 ) 
