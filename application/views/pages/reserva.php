@@ -89,7 +89,7 @@
 							sel = (quarto.id_quarto == <?php echo (@$reserva->id_quarto)?@$reserva->id_quarto:0; ?> )?
 								"selected":"";
 							
-							$('#selectquartos').append( '<option value="' + quarto.id_quarto+ '" '+sel+'>'+ quarto.perfil +' - '+ quarto.numero + '</option>' ); 
+							$('#selectquartos').append( '<option value="' + quarto.id_quarto+ '" '+sel+'>'+ quarto.perfil +' - Nº '+ quarto.numero + '</option>' ); 
 						});	
 					}
 			});
@@ -332,7 +332,7 @@
 	  <select name="id_quarto" class="form-control" id="selectquartos">
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
-			<option value="<?php echo $quarto->id_quarto ?>" <?php tagAs('selected',$quarto->id_quarto , $reserva->id_quarto ) ?> ><?php echo $quarto->id_perfil.' - '.$quarto->numero ?> </option>
+			<option value="<?php echo $quarto->id_quarto ?>" <?php tagAs('selected',$quarto->id_quarto , $reserva->id_quarto ) ?> ><?php echo $quarto->descricao.' - Nº '.$quarto->numero ?> </option>
 			<?php } ?>
 	  </select>
 	</div>
@@ -435,7 +435,7 @@
 	  <select name="id_quarto" class="form-control" id="selectquartos" disabled>
 			<option value=""> -- Selecione -- </option>
 			<?php foreach($quartos as $quarto){ ?>
-			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->id_perfil.' - '.$quarto->numero ?> </option>
+			<option value="<?php echo $quarto->id_quarto ?>" <?php echo $quarto->id_quarto == $reserva->id_quarto?'selected':''; ?>><?php echo $quarto->descricao.' - Nº '.$quarto->numero ?> </option>
 			<?php } ?>
 	  </select>
 	</div>
