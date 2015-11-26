@@ -4,6 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $user = $this->session->get_userdata();
 $gerente = $user['user_session']['gerente'];
 $admin = $user['user_session']['admin'];
+
+$result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT MAX(id_caixa) FROM caixa WHERE operacao IN( 1, 4 ))")->row();
+
+
 ?>
 
 <script>
@@ -111,7 +115,10 @@ $admin = $user['user_session']['admin'];
 				<th>Tipo</th>
 				<th>Opções</th>
 			</tr>
-			<?php foreach($tabledata as $comanda){ ?>
+			<?php 
+			if( $result->operacao == 1 ) {
+			
+				foreach($tabledata as $comanda){ ?>
 			<tr>
 				<td><?php echo $comanda->id_reserva ?></td>
 				<td><?php echo $comanda->perfil." - Nº ".$comanda->numero; ?></td>
@@ -130,6 +137,11 @@ $admin = $user['user_session']['admin'];
 					</a>
 				</td>
 			</tr>
+			<?php } 
+			} else {  ?>
+				<tr>
+					<td colspan="4"><h3>Faça a abertura de caixa primeiro!</h3></td>
+				</tr>
 			<?php } ?>
 		</table> 
 		</div>
