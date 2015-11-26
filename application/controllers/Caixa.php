@@ -73,35 +73,45 @@ class Caixa extends CI_Controller {
 			$dados['id_usuario'] = $id_usuario;
 			$dados['data'] = $data;
 			$dados['valor'] = monetaryInput($dados['valor']);
-			// VALIDAÇÕES AQUI
-			
-			
+
 			if ( $dados['operacao'] == 1 ) { // abertura 
 				$result = $this->db->query("SELECT operacao FROM caixa ORDER BY id_caixa DESC LIMIT 1")->row();
-				if ( $result->operacao == 4 ) { // abertura somente após um fechamento
-					// valor == ao fechamento anterior
+				if ( $result->operacao == 4 ) { // abertura somente apÃ³s um fechamento
+					// valor abertura == ao fechamento anterior
 					$result = $this->db->query("SELECT valor FROM caixa WHERE operacao = 4 ORDER BY id_caixa DESC LIMIT 1")->row();
 					
 					$dados['valor'] = $result->valor;					
 				} else {
-					$this->session->set_flashdata('msg', 'Faça a abertura apenas após um fechamento.');
+					$this->session->set_flashdata('msg', 'Fa&ccedil;a a abertura apenas ap&oacute;s um fechamento.');
 					
 					redirect(current_url());
 				}
 			} else if( $dados['operacao'] == 4 ) { // fechamento
 				$result = $this->db->query("SELECT id_usuario FROM caixa WHERE operacao = 1 ORDER BY id_caixa DESC LIMIT 1")->row();
-				if ( $result->id_usuario == $dados['id_usuario'] ) {
-					// abertura + calculo dos creditos e debitos do dia
-					$result = $this->db->query("SELECT SUM( IF( operacao IN ( 1, 3, 5 ), valor , IF( operacao IN ( 2, 6 ), (valor*-1) , 0 )  ) ) AS valor_fechamento FROM caixa WHERE `id_caixa` >= (SELECT `id_caixa` FROM caixa WHERE operacao = 1 ORDER BY id_caixa DESC LIMIT 1)")->row();
+				if ( $result->id_usuario == $dados['id_usuario'] ) { // apenas o usuario que abriu pode fechar
+					$result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT MAX(id_caixa) FROM caixa WHERE operacao IN( 1, 4 ))")->row();
+					if ( $result->operacao == 1 ) {
+						// valor fechamento == abertura + calculo de creditos e debitos do dia
+						$result = $this->db->query("SELECT SUM( IF( operacao IN ( 1, 3, 5 ), valor , IF( operacao IN ( 2, 6 ), (valor*-1) , 0 )  ) ) AS valor_fechamento FROM caixa WHERE `id_caixa` >= (SELECT `id_caixa` FROM caixa WHERE operacao = 1 ORDER BY id_caixa DESC LIMIT 1)")->row();
 
-					$dados['valor'] = $result->valor_fechamento;
+						$dados['valor'] = $result->valor_fechamento;
+					} else {
+						$this->session->set_flashdata('msg', 'Voc&ecirc; n&atilde;o pode fazer dois fechamentos seguidos.');
+						
+						redirect(current_url());
+					}
 				} else {
-					$this->session->set_flashdata('msg', 'O mesmo usuário deve fazer a abertura e o fechamento.');
+					$this->session->set_flashdata('msg', 'O mesmo usu&aacute;rio deve fazer a abertura e o fechamento.');
 					
 					redirect(current_url());
 				}
-			} else { // outras operações
-				
+			} else { // outras operaÃ§Ãµes
+				$result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT MAX(id_caixa) FROM caixa WHERE operacao IN( 1, 4 ))")->row();
+				if ( $result->operacao == 4 ) { 
+					$this->session->set_flashdata('msg', '&Eacute; necess&aacute;rio fazer a abertura de caixa antes de adicionar algum lan&ccedil;amento.');
+					
+					redirect(current_url());
+				}
 			}
 			
 			$this->db->insert('caixa', $dados); 
@@ -112,7 +122,7 @@ class Caixa extends CI_Controller {
 					,'part' => 'inserting'
 			));
 			
-			$this->session->set_flashdata('msg', 'Movimentação cadastrado com sucesso.');
+			$this->session->set_flashdata('msg', 'Movimenta&ccedil;&atilde;o cadastrado com sucesso.');
 			
 		}else{
 			$this->inserting();
