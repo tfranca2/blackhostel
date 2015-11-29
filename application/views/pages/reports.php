@@ -104,6 +104,14 @@ $('.calendar').datepicker({
 	
 });
 </script>
+<style>
+@media print {
+	.table{
+		font-weight: bold; 
+		font-size: 20pt;
+	}
+}
+</style>
 <div class="reports">
 
 <form method="post">
