@@ -5,7 +5,7 @@ class Main extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->helper(array('url','form','array','app'));
+		$this->load->helper(array('url','form','array','app','printer'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
 		$this->load->model('Login_model','login');
@@ -36,6 +36,17 @@ class Main extends CI_Controller {
 				'page'=>'manual'
 				,'title'=> 'Manual do Sistema'
 		));
+	}
+	
+	public function imprimir(){
+			 
+printComanda('\033[1m'."+-------------------------------------+
+|            BlackHostel              |
++-------------------------------------+
+		");
+		
+		$this->index();
+		
 	}
 	
 }

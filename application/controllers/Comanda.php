@@ -11,7 +11,7 @@ class Comanda extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->helper(array('url','form','array','app'));
+		$this->load->helper(array('url','form','array','app','printer'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
 		$this->load->model('Login_model','login');
@@ -70,6 +70,9 @@ class Comanda extends CI_Controller {
 	}
 	
 	public function detail(){
+		echo $this->buildDetail();
+	}
+	public function buildDetail(){
 		$id = (int) $this->uri->segment(3);
 		
 		$this->calcularPreco($id);
@@ -111,7 +114,7 @@ class Comanda extends CI_Controller {
 		$s = "SELECT rpt.id_reserva_produto, produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto and rpt.ativo = 1 WHERE rpt.id_reserva = ".$id;
 		$produtos = $this->db->query($s)->result_array();
 		
-		echo json_encode( 
+		return json_encode( 
 					 array(
 						"id"=>$id
 						,"numero"=> $quarto
@@ -155,8 +158,10 @@ class Comanda extends CI_Controller {
 		$this->db->update('reserva', $dados);
 		
 		unset($dados);
+		$this->imprimir();
+		redirect("/comanda");
 		
-		$this->index(); // redirecionar para a tela de comandas
+		
 	}
 	
 	public function calcularPreco($id){
@@ -230,5 +235,13 @@ class Comanda extends CI_Controller {
 		$this->_precoProdutos = $result->valor_produtos;
 		$this->_precoValorTotal = $total;
 		
+	}
+	
+	
+	public function imprimir(){
+		$user = $this->session->get_userdata();
+		$username = $user['user_session']['nome'];
+		
+		printComanda(json_decode($this->buildDetail()), $username);
 	}
 }

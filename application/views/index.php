@@ -93,10 +93,10 @@ $admin = $user['user_session']['admin'];
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="<?php echo site_url().'/main/reports'?>" > Relatórios</a></li>
+            <li><a href="<?php echo site_url().'/main/reports'?>" > Relat�rios</a></li>
             <li><a href="<?php echo site_url().'/main/manual'?>" > Manual</a></li>
             <!-- <li><a href="assets/Dashboard Template for Bootstrap.html">Configurações</a></li> -->
-            <?php if($admin) { ?><li><a href="<?php echo site_url()."/usuario"?>">Usuários</a></li><?php } ?>
+            <?php if($admin) { ?><li><a href="<?php echo site_url()."/usuario"?>">Usu�ios</a></li><?php } ?>
             <li>
 				<a href="<?php echo site_url();?>/login/logout">
 					Sair <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> 
@@ -160,6 +160,11 @@ $admin = $user['user_session']['admin'];
 			<li class="<?php echo styleMenuActive('quarto') ?>">
 				<a href="<?php echo site_url()."/quarto"?>"> 
 					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
+				</a>
+			</li>
+			<li class="<?php echo styleMenuActive('quarto') ?>">
+				<a href="<?php echo site_url()."/main/imprimir"?>"> 
+					<span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print 
 				</a>
 			</li>
           </ul>
