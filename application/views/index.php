@@ -129,6 +129,11 @@ $admin = $user['user_session']['admin'];
 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Comandas
 				</a>
 			</li>
+			<li class="<?php echo styleMenuActive('estoque') ?>">
+				<a href="<?php echo site_url()."/estoque"?>">
+					<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Movimento de Estoque
+				</a>
+			</li>
 			<li class="<?php echo styleMenuActive('caixa') ?>">
 				<a href="<?php echo site_url()."/caixa"?>">
 					<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Movimento de Caixa
