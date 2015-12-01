@@ -130,7 +130,6 @@ class Cliente extends CI_Controller {
 		
 		$this->form_validation->set_rules('cliente', 'Nome', 'trim|required|min_length[5]|max_length[60]|ucwords');
 		$this->form_validation->set_rules('cpf', 'cpf', 'required');
-		$this->form_validation->set_rules('rg', 'rg', 'required');
 		
 		return $this->form_validation->run();
 	
