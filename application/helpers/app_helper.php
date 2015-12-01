@@ -79,3 +79,61 @@ function descModoReserva($id){
 	}
 }
 
+function calcularPrecoQuarto($resumoReserva, $diarias, $precoPerfil){
+	if($resumoReserva->tipo == 1){
+		return calculoDiaria($diarias, $precoPerfil, $resumoReserva);
+	}elseif ($resumoReserva->tipo == 2){
+		return calculoHora($precoPerfil, $resumoReserva);
+	}elseif ($resumoReserva->tipo ==3){
+		return calculoPernoite($diarias, $precoPerfil, $resumoReserva);
+	}
+}
+
+
+/**
+ * @param diarias
+ * @param precoPerfil
+ */
+function calculoPernoite($diarias, $precoPerfil, $resumoReserva) {
+	// tolerancia 
+	if( $resumoReserva->horas>=22 and $resumoReserva->minutos>30 ){
+		$precoQuarto = $precoPerfil*($diarias+1);
+	}else{
+		$precoQuarto = $precoPerfil*$diarias;
+	}
+	return $precoQuarto;		
+}
+
+/**
+ * @param precoPerfil
+ */
+function calculoHora($precoPerfil, $resumoReserva) {
+	// TOLERANCIAS
+	if( $resumoReserva->minutos>30 ){
+		$precoQuarto = $precoPerfil*($resumoReserva->horas+1);
+	}elseif( $resumoReserva->minutos>15 ){
+		$precoQuarto = $precoPerfil*($resumoReserva->horas+0.5);		
+	}else{
+		$precoQuarto = $precoPerfil*$resumoReserva->horas;
+	}
+	return $precoQuarto;
+}
+
+/**
+ * @param diarias
+ * @param precoPerfil
+ */
+function calculoDiaria($diarias, $precoPerfil, $resumoReserva) {
+	 // TOLERANCIAS
+	if( $resumoReserva->horas >= 14 and $resumoReserva->minutos>30 ){ // tolerancia diaria
+		$precoQuarto = $precoPerfil * ( $diarias + 1 );
+	}else{
+		$precoQuarto = $precoPerfil * $diarias;
+	}
+	return $precoQuarto;
+}
+
+
+
+
+
