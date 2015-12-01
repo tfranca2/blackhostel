@@ -64,6 +64,12 @@ class Reserva_model extends CI_Model {
 		return $this->db->query($sql)->result();
 	}
 	
+	public function getTotalClientsPerReservation($idReserva){
+		$sql = 'select (select count(id_cliente) from reserva r where r.id_reserva = '.$idReserva.'
+				) + (select count(id_cliente) from reserva_cliente rc where rc.id_reserva = '.$idReserva.'  ) total';
+		return $this->db->query($sql)->row();
+	}
+	
 }
 
 ?>
