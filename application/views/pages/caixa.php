@@ -39,7 +39,7 @@ $operacoes = array (
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
-		<table class="table table-responsive"> 
+		<table class="table table-bordered"> 
 			<tr>
 				<th>Operação</th>
 				<th>Valor</th>
