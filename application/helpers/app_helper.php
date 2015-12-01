@@ -47,7 +47,7 @@ function tagAs($tag, $var1, $var2){
 }
 
 function month($idx){
-	$meses = array(1 => 'Janeiro','Fevereiro','MarÁo','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
+	$meses = array(1 => 'Janeiro','Fevereiro','Mar√ßo','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
 	return $meses[$idx]; 
 }
 
@@ -71,7 +71,7 @@ function extractValues($data, $tipo){
 
 function descModoReserva($id){
 	if($id ==1){
-		return 'Di·rias';
+		return 'Di√°rias';
 	}else if($id == 2){
 		return 'Horas';
 	}else if($id == 3){
