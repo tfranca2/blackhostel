@@ -77,9 +77,7 @@ $admin = $user['user_session']['admin'];
 	</div>
 	<div class="row">
 		<div class="col-md-1 col-often-11 form-group pull-right">
-			<?php if($gerente) { ?>
-				<a class="btn btn-info" href="<?php echo site_url();?>/perfil/inserting">Novo</a>
-			<?php } ?>
+			<?php if($gerente) { ?><a class="btn btn-info" href="<?php echo site_url();?>/perfil/inserting">Novo</a><?php } ?>
 		</div>
 	</div>
 	</form>
