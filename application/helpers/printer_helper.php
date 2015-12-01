@@ -1,9 +1,5 @@
 <?php
 
-
-
-
-
 function printComanda($comanda, $username){
 	
 	$hasProtudos = count( $comanda->produtos) > 0;
@@ -55,9 +51,9 @@ function printComanda($comanda, $username){
  	$font = printer_create_font("Calibri", 25, 25, PRINTER_FW_MEDIUM, false, false, false, 0);
  	printer_select_font($handle, $font);
 	printer_draw_text($handle, "Entrada: ".$comanda->entrada , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Saída    : ".$comanda->saida, 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Saï¿½da    : ".$comanda->saida, 30, $atualHeigth = $atualHeigth + $line);
 	printer_draw_text($handle, "Quarto : ".$comanda->numero.' '.$comanda->perfil, 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Permanência : ".utf8_decode($comanda->permanencia), 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Permanï¿½ncia : ".utf8_decode($comanda->permanencia), 30, $atualHeigth = $atualHeigth + $line);
 	
 	
 	if($hasProtudos){
@@ -95,7 +91,7 @@ function printComanda($comanda, $username){
 	$line = 20;
 	$font = printer_create_font("Calibri", 15, 15, PRINTER_FW_MEDIUM, false, false, false, 0);
 	printer_select_font($handle, $font);
-	printer_draw_text($handle, "OBS: Esse cupom não possui valor fiscal nem", 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "OBS: Esse cupom nï¿½o possui valor fiscal nem", 30, $atualHeigth = $atualHeigth + $line);
 	printer_draw_text($handle, "comprova pagamentos.", 30, $atualHeigth = $atualHeigth + $line);
 	
 	//*/
@@ -124,8 +120,7 @@ function resolveLinha($texto, $len){
 
 function openBematechPrinter(){
 	$printerName = "MP-2500 TH";
-	 
-	if($printer = printer_open($printerName)){
+	if($printer = @printer_open($printerName)){
 		return $printer; 
 	}else {
 		print("Printer_helper could not open this printer:".$printerName);	

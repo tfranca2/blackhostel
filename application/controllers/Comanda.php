@@ -15,6 +15,9 @@ class Comanda extends CI_Controller {
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
 		$this->load->model('Login_model','login');
+		$this->load->model('Perfil_model','perfil');
+		$this->load->model('Reserva_model','reserva');
+		$this->load->model('Comanda_model','comanda');
 		$this->login->authorize();
     }
 	 
@@ -70,9 +73,11 @@ class Comanda extends CI_Controller {
 	}
 	
 	public function detail(){
-		echo $this->buildDetail();
+		echo ($this->buildDetail());
 	}
+		
 	public function buildDetail(){
+	
 		$id = (int) $this->uri->segment(3);
 		
 		$this->calcularPreco($id);
@@ -86,14 +91,9 @@ class Comanda extends CI_Controller {
 					qt.numero ,
 					pf.descricao AS perfil ,
 					pf.tp_modo_reserva AS tipo 
-
-				FROM reserva re
-				
-				LEFT JOIN quarto qt 
-					ON re.id_quarto = qt.id_quarto
-				LEFT JOIN perfil pf 
-					ON qt.id_perfil = pf.id_perfil
-
+				FROM reserva re 
+				LEFT JOIN quarto qt ON re.id_quarto = qt.id_quarto
+				LEFT JOIN perfil pf ON qt.id_perfil = pf.id_perfil
 				WHERE re.id_reserva = ".$id;
 				
 		$result = $this->db->query($sql)->row();
@@ -102,35 +102,27 @@ class Comanda extends CI_Controller {
 		$perfil = $result->perfil;
 		$entrada = $result->entrada;
 		$saida = $result->saida;
-		
 		if( $result->tipo == 1 ){
-			$permanencia = ((!$result->dias)?1:$result->dias).' DiÃ¡ria(s)';
+			$permanencia = ((!$result->dias)?1:$result->dias).' Diária(s)';
 		} elseif( $result->tipo == 2 ){
 			$permanencia = $result->horas.':'.$result->minutos.' Hrs';
 		}
 		
-				
 		//fazer lista de produtos para a view
-		$s = "SELECT rpt.id_reserva_produto, produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto and rpt.ativo = 1 WHERE rpt.id_reserva = ".$id;
-		$produtos = $this->db->query($s)->result_array();
+	    $s = "SELECT rpt.id_reserva_produto, produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto and rpt.ativo = 1 WHERE rpt.id_reserva = ".$id;
+		 $produtos = $this->db->query($s)->result_array();
 		
-		return json_encode( 
-					 array(
-						"id"=>$id
+		  return json_encode(array("id"=>$id
 						,"numero"=> $quarto
 						,"perfil"=>$perfil
 						,"entrada"=>dateTimeToBr($entrada)
 						,"saida"=>dateTimeToBr($saida)
-						,"permanencia"=>$permanencia
-						
+						,"permanencia"=>utf8_encode($permanencia)
 						,"produtos"=>$produtos
-						
 						,"precoPerfil"=> monetaryOutput($this->_precoPerfil)
 						,"precoQuarto"=> monetaryOutput($this->_precoQuarto)
 						,"valorProdutos"=> monetaryOutput($this->_precoProdutos)
-						,"total"=>monetaryOutput($this->_precoValorTotal) 
-						   )
-						);
+						,"total"=>monetaryOutput($this->_precoValorTotal) ));
 	}
 	
 	public function finalizar(){
@@ -165,77 +157,35 @@ class Comanda extends CI_Controller {
 	}
 	
 	public function calcularPreco($id){
-		$sql = "SELECT 
-				
-				TIMESTAMPDIFF( DAY, re.entrada + INTERVAL TIMESTAMPDIFF(MONTH, re.entrada, re.saida) MONTH, re.saida ) AS dias ,
-				
-				TIMESTAMPDIFF( HOUR, re.entrada + INTERVAL TIMESTAMPDIFF(DAY,  re.entrada, re.saida) DAY, re.saida ) AS horas,
-				
-				TIMESTAMPDIFF( MINUTE, re.entrada + INTERVAL TIMESTAMPDIFF(HOUR,  re.entrada, re.saida) HOUR, re.saida ) AS minutos,
-				
-				pf.tp_modo_reserva AS tipo ,
-				
-				pf.preco_base AS valor_perfil ,
-				
-				(SELECT pfp.preco FROM perfil_preco pfp WHERE pfp.id_perfil = pf.id_perfil AND re.qt_pessoas = pfp.qt_pessoas ) AS valor_perfil_por_pessoa ,
-				
-				(SELECT SUM(it.preco) FROM perfil_item pit LEFT JOIN item it ON pit.id_item = it.id_item WHERE pf.id_perfil = pit.id_perfil AND pf.id_perfil = qt.id_perfil) AS valor_itens,
-				
-				(SELECT SUM(pt.preco) FROM reserva_produto rpt 
-				LEFT JOIN produto pt ON rpt.id_produto = 
-				pt.id_produto and rpt.ativo = 1	WHERE re.id_reserva = 
-				rpt.id_reserva) AS valor_produtos
-				
-				FROM reserva re
-				
-				LEFT JOIN cliente cl 
-					ON re.id_cliente = cl.id_cliente
-				LEFT JOIN quarto qt 
-					ON re.id_quarto = qt.id_quarto
-				LEFT JOIN perfil pf 
-					ON qt.id_perfil = pf.id_perfil
-				LEFT JOIN perfil_preco pfp 
-					ON pfp.id_perfil = pf.id_perfil and re.qt_pessoas = pfp.qt_pessoas
-
-				WHERE
-				1 = 1 AND re.id_reserva = ".$id;
-				
-		$result = $this->db->query($sql)->row();
-		
-		$diarias = (!$result->dias)?1:$result->dias;
 	
-		if( $result->tipo == 1 ){ // diaria 
-			$precoPerfil = $result->valor_perfil_por_pessoa+$result->valor_itens;
-			// TOLERANCIAS
-			if( $result->horas>=14 and $result->minutos>30 ) // tolerancia diaria
-				$precoQuarto = $precoPerfil*($diarias+1);
-			else
-				$precoQuarto = $precoPerfil*$diarias;
-		} elseif( $result->tipo == 2 ){ // hora
-			$precoPerfil = $result->valor_perfil+$result->valor_itens;
-			// TOLERANCIAS
-			if( $result->minutos>30 )  
-				$precoQuarto = $precoPerfil*($result->horas+1);
-			elseif( $result->minutos>15 )
-				$precoQuarto = $precoPerfil*($result->horas+0.5);
-			else
-				$precoQuarto = $precoPerfil*$result->horas;
-		} elseif( $result->tipo == 3 ){ // pernoite
-			$precoPerfil = $result->valor_perfil_por_pessoa+$result->valor_itens;
-			if( $result->horas>=22 and $result->minutos>30 ) // tolerancia pernoite
-				$precoQuarto = $precoPerfil*($diarias+1);
-			else
-				$precoQuarto = $precoPerfil*$diarias;
-		}
-		$total = $precoQuarto+$result->valor_produtos;
+		$resumoReserva = $this->comanda->getResumoReserva($id);
 		
+		$precoPessoaPerfil   = $this->perfil->getPriceForClients($resumoReserva->id_perfil);
+		
+		$totalClientesReserva= $this->reserva->getTotalClientsPerReservation($id);
+		
+		$totalClientes = ($totalClientesReserva->total -1);
+		
+		$diarias = (!$resumoReserva->dias)?1:$resumoReserva->dias;
+	
+		if($resumoReserva->tipo == 2){
+			$precoPerfil = $resumoReserva->valor_perfil + $resumoReserva->valor_itens;
+		}else{
+			$precoPerfil = $precoPessoaPerfil[$totalClientes]['preco'] + $resumoReserva->valor_itens;
+		}
+			
+		 $precoQuarto = calcularPrecoQuarto ($resumoReserva, $diarias, $precoPerfil);
+		
+		$total = $precoQuarto+$resumoReserva->valor_produtos;
 		
 		$this->_precoQuarto = $precoQuarto;
 		$this->_precoPerfil = $precoPerfil;
-		$this->_precoProdutos = $result->valor_produtos;
+		$this->_precoProdutos = $resumoReserva->valor_produtos;
 		$this->_precoValorTotal = $total;
 		
 	}
+	
+
 	
 	
 	public function imprimir(){

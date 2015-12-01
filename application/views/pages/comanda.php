@@ -122,7 +122,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
-		<table class="table table-responsive"> 
+		<table class="table table-striped table-bordered"> 
 			<tr>
 				<th>Cod. Reserva</th>
 				<th>Quarto</th>
@@ -154,7 +154,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 			<?php } 
 			} else {  ?>
 				<tr>
-					<td colspan="4"><h3>Faça a abertura de caixa primeiro!</h3></td>
+					<td colspan="4">É necessário realizar a abertura de caixa para gerenciar as comandas</td>
 				</tr>
 			<?php } ?>
 		</table> 

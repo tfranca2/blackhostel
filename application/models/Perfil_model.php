@@ -43,6 +43,14 @@ class Perfil_model extends CI_Model {
 		return $this->db->query($sql);
 	}
 	
+	public function getPriceForClients($idPerfil){
+		
+		$sql = "select qt_pessoas, preco from perfil p inner join perfil_preco pp on p.id_perfil = pp.id_perfil
+		where p.id_perfil = ".$idPerfil ;
+		
+		return $this->db->query($sql)->result_array();
+	}
+	
 }
 
 ?>
