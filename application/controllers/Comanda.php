@@ -102,8 +102,9 @@ class Comanda extends CI_Controller {
 		$perfil = $result->perfil;
 		$entrada = $result->entrada;
 		$saida = $result->saida;
+		$ocupantes = $this->reserva->getTotalClientsPerReservation($id)->total;
 		if( $result->tipo == 1 ){
-			$permanencia = ((!$result->dias)?1:$result->dias).' Di�ria(s)';
+			$permanencia = ((!$result->dias)?1:$result->dias).' Diária(s)';
 		} elseif( $result->tipo == 2 ){
 			$permanencia = $result->horas.':'.$result->minutos.' Hrs';
 		}
@@ -117,7 +118,8 @@ class Comanda extends CI_Controller {
 						,"perfil"=>$perfil
 						,"entrada"=>dateTimeToBr($entrada)
 						,"saida"=>dateTimeToBr($saida)
-						,"permanencia"=>utf8_encode($permanencia)
+						,"permanencia"=>$permanencia
+						,"ocupantes"=>$ocupantes
 						,"produtos"=>$produtos
 						,"precoPerfil"=> monetaryOutput($this->_precoPerfil)
 						,"precoQuarto"=> monetaryOutput($this->_precoQuarto)
