@@ -167,6 +167,11 @@
 					?>
 				</td>
 				<td>
+					<?php if($reserva->id_situacao == 2){ ?>
+					<a href="<?php echo site_url();?>/reserva/ativar/<?php  echo $reserva->id_reserva ?>" class="btn btn-success btn-sm">Ativar
+						<span class="glyphicon glyphicon-ok"></span>
+					</a>
+					<?php } ?>
 					<a href="<?php echo site_url();?>/reserva/editing/<?php  echo $reserva->id_reserva ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
@@ -442,12 +447,6 @@
 	<div class="col-md-6 form-group">
 	<label>Cliente</label>
 	  <input type="text" value="<?php echo $reserva->cliente?>" class="form-control" disabled/>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
-	<label>Ocupantes</label>
-	<input type="number" name="qt_pessoas" min="1" class="form-control" value="<?php echo $reserva->qt_pessoas?>" disabled>
 	</div>
 </div>
 <div class="row">

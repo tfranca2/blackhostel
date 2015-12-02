@@ -103,7 +103,7 @@ class Comanda extends CI_Controller {
 		$entrada = $result->entrada;
 		$saida = $result->saida;
 		if( $result->tipo == 1 ){
-			$permanencia = ((!$result->dias)?1:$result->dias).' Diária(s)';
+			$permanencia = ((!$result->dias)?1:$result->dias).' Diï¿½ria(s)';
 		} elseif( $result->tipo == 2 ){
 			$permanencia = $result->horas.':'.$result->minutos.' Hrs';
 		}
@@ -143,17 +143,13 @@ class Comanda extends CI_Controller {
 		
 		$this->db->insert('caixa', $dados);
 		
-		unset($dados);
-		
-		$dados['id_situacao'] = 5; //finalizado
 		$this->db->where('id_reserva', $id);
-		$this->db->update('reserva', $dados);
+		$this->db->update('reserva', array('id_situacao'=>5));
 		
-		unset($dados);
-		$this->imprimir();
+				
 		redirect("/comanda");
 		
-		
+		$this->imprimir();
 	}
 	
 	public function calcularPreco($id){
@@ -191,7 +187,6 @@ class Comanda extends CI_Controller {
 	public function imprimir(){
 		$user = $this->session->get_userdata();
 		$username = $user['user_session']['nome'];
-		
 		printComanda(json_decode($this->buildDetail()), $username);
 	}
 }
