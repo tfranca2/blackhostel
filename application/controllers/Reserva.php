@@ -13,55 +13,15 @@ class Reserva extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Login_model','login');
 		$this->login->authorize();
-		$this->load->helper(array('url','form','array','app','date'));
+		$this->load->helper(array('url','form','array','app','date','printer'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
 		$this->load->model('Quarto_model','quarto');
 		$this->load->model('Reserva_model','reserva'); 
 		
-		$this->teste();
     }
 	 
-    public function teste(){
-    	
-//     	  $bema = new COM("{310DBDAC-85FF-4008-82A8-E22A09F9460B}");
-//     	  usleep(500);
-//     	  	$bema->ConfiguraModeloImpressora(8);
-// 	    	$init = $bema->IniciaPorta("USB");
-// 			echo $init;
-//  	    	if ($init <= 0)
-//  	    		echo "erro! ";
 
-    	
-    	//verifica erro
-    	
-    	//imprime texto com formatação em cada linha
-    	//o espaçamento deve ser ajustado a depender da impressora
-    	
-//     	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX("Bar do Robson \n", 3, 1 , 0, 1, 0);
-//     	$bema->FormataTX(" Sistema de Bar e Restaurante \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX("Mesa: 35 \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX("05 - Cerveja Skol2,00 10,00 \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX("01 - Picanha 15,00 15,00 \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX("02 - Batata Frita 4,008,00 \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX(" ------ \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX(" Total 33,00 \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
-//     	$bema->FormataTX("BarRestaurante v1.0 01/05/2007 \n", 1, 0 , 1, 0, 0);
-//    	$bema->FormataTX("--------------------------------- \n", 2, 0 , 0, 0, 0);
-    	
-    	
-    	//fecha a porta de impressao
-//     	$bema->FechaPorta();
-//     	DIE;
-    	//echo phpinfo();
-    	
-    	 
-    }
-    
 	public function index(){
 		$this->load->view('index', array(
 					'page'=>'reserva'
@@ -133,7 +93,7 @@ class Reserva extends CI_Controller {
 		$this->form_validation->set_rules('entrada', 'Entrada', 'required');
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('id_quarto','entrada','saida','id_cliente','qt_pessoas'),$this->input->post());
+			$dados = elements(array('id_quarto','entrada','saida','id_cliente'),$this->input->post());
 			
 			$dados['entrada'] = dateTimeToUs($dados['entrada']);
 			$dados['saida'] = dateTimeToUs($dados['saida']);
@@ -171,7 +131,7 @@ class Reserva extends CI_Controller {
 			$id = $this->input->post('id_reserva');
 			$reserva = $this->reserva->getFullCurrentReservation($id);
 			
-			$dados = elements(array('id_quarto','id_situacao','entrada','saida','id_cliente','qt_pessoas'),$this->input->post());
+			$dados = elements(array('id_quarto','id_situacao','entrada','saida','id_cliente'),$this->input->post());
 			$dados['entrada'] = dateTimeToUs($dados['entrada']);
 			$dados['saida'] = dateTimeToUs($dados['saida']);
 			

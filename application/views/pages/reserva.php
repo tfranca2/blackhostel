@@ -53,7 +53,6 @@
 		 function loadClientes(clienteName){
 				$('.unselected').empty();
 	 			var url =  "<?php echo site_url()."/cliente/load/" ;?>";
-				console.log(url);
 				$.ajax({
 						url: url ,
 						type: 'GET',
@@ -76,7 +75,6 @@
 		 function loadQuartos(){
 			$('#selectquartos').empty();
  			var url =  "<?php echo site_url()."/reserva/quartos/" ;?>"+ $("#tipo-quarto").val()+"/"+<?php echo ($this->uri->segment(3))?$this->uri->segment(3):'0'; ?>;
-			console.log(url);
 			$.ajax({
 					url: url ,
 					type: 'GET',
@@ -130,7 +128,7 @@
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
-		<table class="table table-responsive"> 
+		<table class="table table-striped table-bordered"> 
 			<tr>
 				<th>ID</th>
 				<th>Cliente</th>

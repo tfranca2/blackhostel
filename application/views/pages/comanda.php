@@ -19,7 +19,6 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 					url: $(this).attr('href'),
 					type: 'GET',
 					success: function(data){
-						console.log(data)
 						obj = JSON.parse(data);	
 						$('#reserva').val(obj.id);
 						$('#numero').val(obj.numero);
@@ -32,7 +31,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 						$('#valorProdutos').val(obj.valorProdutos);
 						$('#total').val(obj.total);
 						
-						$('.print').attr('href', '<?php echo site_url();?>/comanda/print/'+obj.id);
+						$('.print').attr('href', '<?php echo site_url();?>/comanda/imprimir/'+obj.id);
 						$('.finalizar').attr('href', '<?php echo site_url();?>/comanda/finalizar/'+obj.id);
 						
 						$('#produtos').empty();
@@ -84,6 +83,21 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 		});
 
 		
+		$(document).on("click", ".print", function(){
+			 
+			$.ajax({
+				url: $('.print').attr('href'),
+				type: 'GET',
+				success: function(data){
+					//alert("Comanda Enviada para Impressora.");	
+				},
+				error: function(data){
+					alert("Ocorreu um erro ao enviar o comando para impressora.");
+				}
+			});
+			return false;
+		});
+		
 	});
 </script>
 <style>
@@ -108,7 +122,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
-		<table class="table table-responsive"> 
+		<table class="table table-striped table-bordered"> 
 			<tr>
 				<th>Cod. Reserva</th>
 				<th>Quarto</th>
@@ -140,7 +154,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 			<?php } 
 			} else {  ?>
 				<tr>
-					<td colspan="4"><h3>Faça a abertura de caixa primeiro!</h3></td>
+					<td colspan="4">É necessário realizar a abertura de caixa para gerenciar as comandas</td>
 				</tr>
 			<?php } ?>
 		</table> 
@@ -258,7 +272,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 				
 		  </div>
 		  <div class="modal-footer">
-			<a href="" style="float:left;" id="" class="print btn btn-default">Imprimir 
+			<a href="<?php echo site_url();?>/comanda/imprimir/" style="float:left;" id="" class="print btn btn-default">Imprimir 
 				<span class="glyphicon glyphicon-print"></span>
 			</a>
 			<a href="" id="" class="finalizar btn btn-default">Finalizar 

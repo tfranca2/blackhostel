@@ -96,7 +96,7 @@ $admin = $user['user_session']['admin'];
             <li><a href="<?php echo site_url().'/main/reports'?>" > Relatórios</a></li>
             <li><a href="<?php echo site_url().'/main/manual'?>" > Manual</a></li>
             <!-- <li><a href="assets/Dashboard Template for Bootstrap.html">Configurações</a></li> -->
-            <?php if($admin) { ?><li><a href="<?php echo site_url()."/usuario"?>">Usuários</a></li><?php } ?>
+            <?php if($admin) { ?><li><a href="<?php echo site_url()."/usuario"?>">Usuáios</a></li><?php } ?>
             <li>
 				<a href="<?php echo site_url();?>/login/logout">
 					Sair <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> 
@@ -129,6 +129,11 @@ $admin = $user['user_session']['admin'];
 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Comandas
 				</a>
 			</li>
+			<li class="<?php echo styleMenuActive('estoque') ?>">
+				<a href="<?php echo site_url()."/estoque"?>">
+					<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Movimento de Estoque
+				</a>
+			</li>
 			<li class="<?php echo styleMenuActive('caixa') ?>">
 				<a href="<?php echo site_url()."/caixa"?>">
 					<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Movimento de Caixa
@@ -155,6 +160,11 @@ $admin = $user['user_session']['admin'];
 			<li class="<?php echo styleMenuActive('quarto') ?>">
 				<a href="<?php echo site_url()."/quarto"?>"> 
 					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
+				</a>
+			</li>
+			<li class="<?php echo styleMenuActive('quarto') ?>">
+				<a href="<?php echo site_url()."/main/imprimir"?>"> 
+					<span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print 
 				</a>
 			</li>
           </ul>
