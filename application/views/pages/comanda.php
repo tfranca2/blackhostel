@@ -25,6 +25,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 						$('#perfil').val(obj.perfil);
 						$('#entrada').val(obj.entrada);
 						$('#saida').val(obj.saida);
+						$('#ocupantes').val(obj.ocupantes);
 						$('#permanencia').val(obj.permanencia);
 						$('#precoPerfil').val(obj.precoPerfil);
 						$('#precoQuarto').val(obj.precoQuarto);
@@ -195,17 +196,21 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-4 form-group">
+							<div class="col-md-3 form-group">
 								<label>	Entrada </label>
 								<input text="text" disabled id="entrada" class="form-control"/>	
 							</div>
-							<div class="col-md-4 form-group">
+							<div class="col-md-3 form-group">
 								<label>	Saída </label>
 								<input text="text" disabled id="saida" class="form-control"/>	
 							</div>
-							<div class="col-md-4 form-group">
+							<div class="col-md-3 form-group">
 								<label>	Permanência: </label>
 								<input text="text" disabled id="permanencia" class="form-control"/>	
+							</div>
+							<div class="col-md-3 form-group">
+								<label>	Ocupantes: </label>
+								<input text="text" disabled id="ocupantes" class="form-control"/>	
 							</div>
 						</div>
 				  

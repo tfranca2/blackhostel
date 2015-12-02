@@ -67,7 +67,7 @@ class Cliente extends CI_Controller {
 	public function save(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('cliente','cpf','rg','endereco','cep','cidade','uf','obs','telefone'),$this->input->post());
+			$dados = elements(array('cliente','cpf','rg','telefone','endereco','cep','cidade','uf','obs','telefone'),$this->input->post());
 			
 			$this->db->insert('cliente', $dados); 
 			
@@ -88,7 +88,7 @@ class Cliente extends CI_Controller {
 	public function edit(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('cliente','cpf','rg','endereco','cep','cidade','uf','obs','telefone'),$this->input->post());
+			$dados = elements(array('cliente','cpf','rg','telefone','endereco','cep','cidade','uf','obs','telefone'),$this->input->post());
 
 			$this->db->where('id_cliente', $this->input->post('id_cliente'));
 			$this->db->update('cliente', $dados); 
@@ -126,7 +126,6 @@ class Cliente extends CI_Controller {
 	
 		$this->form_validation->set_message('cliente',"%s é um campo obrigatório.");
 		$this->form_validation->set_message('cpf',"%s é um campo obrigatório.");
-		$this->form_validation->set_message('rg',"%s é um campo obrigatório.");
 		
 		$this->form_validation->set_rules('cliente', 'Nome', 'trim|required|min_length[5]|max_length[60]|ucwords');
 		$this->form_validation->set_rules('cpf', 'cpf', 'required');
