@@ -167,6 +167,11 @@
 					?>
 				</td>
 				<td>
+					<?php if($reserva->id_situacao == 2){ ?>
+					<a href="<?php echo site_url();?>/reserva/ativar/<?php  echo $reserva->id_reserva ?>" class="btn btn-success btn-sm">Ativar
+						<span class="glyphicon glyphicon-ok"></span>
+					</a>
+					<?php } ?>
 					<a href="<?php echo site_url();?>/reserva/editing/<?php  echo $reserva->id_reserva ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
