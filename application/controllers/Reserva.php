@@ -72,6 +72,7 @@ class Reserva extends CI_Controller {
 			$this->searching();
 		}
 	}
+
 	public function deleting(){
 		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_reserva');
 		$reserva = $this->reserva->getFullCurrentReservation( $id);
@@ -158,6 +159,21 @@ class Reserva extends CI_Controller {
 			$this->editing();
 		}
 	}
+
+	public function ativar(){
+		
+			$id = $this->uri->segment(3);
+			
+			$dados['id_situacao'] =self::EM_USO;
+			
+			$this->db->where('id_reserva', $id);
+			$this->db->update('reserva', $dados);
+			
+			$this->session->set_flashdata('msg', 'Reserva ativada com sucesso.');
+			$this->index();
+			
+	}
+
 	
 	public function delete(){
 		if($this->input->post('id_reserva')){
