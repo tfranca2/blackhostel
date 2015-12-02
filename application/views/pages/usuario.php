@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
-		<table class="table table-responsive"> 
+		<table class="table table-striped table-bordered table-responsive"> 
 			<tr>
 				<th>ID</th>
 				<th>Nome</th>
