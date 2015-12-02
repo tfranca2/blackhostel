@@ -4,8 +4,6 @@
 
 /*!40101 SET NAMES latin1 */;
 
-use blackhostel;
-
 #
 # Structure for table "caixa"
 #
