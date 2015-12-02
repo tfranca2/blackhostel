@@ -51,9 +51,9 @@ function printComanda($comanda, $username){
  	$font = printer_create_font("Calibri", 25, 25, PRINTER_FW_MEDIUM, false, false, false, 0);
  	printer_select_font($handle, $font);
 	printer_draw_text($handle, "Entrada: ".$comanda->entrada , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Sa�da    : ".$comanda->saida, 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Saída    : ".$comanda->saida, 30, $atualHeigth = $atualHeigth + $line);
 	printer_draw_text($handle, "Quarto : ".$comanda->numero.' '.$comanda->perfil, 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Perman�ncia : ".utf8_decode($comanda->permanencia), 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Permanência : ".utf8_decode($comanda->permanencia), 30, $atualHeigth = $atualHeigth + $line);
 	
 	
 	if($hasProtudos){
@@ -91,7 +91,7 @@ function printComanda($comanda, $username){
 	$line = 20;
 	$font = printer_create_font("Calibri", 15, 15, PRINTER_FW_MEDIUM, false, false, false, 0);
 	printer_select_font($handle, $font);
-	printer_draw_text($handle, "OBS: Esse cupom n�o possui valor fiscal nem", 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "OBS: Esse cupom não possui valor fiscal nem", 30, $atualHeigth = $atualHeigth + $line);
 	printer_draw_text($handle, "comprova pagamentos.", 30, $atualHeigth = $atualHeigth + $line);
 	
 	//*/
@@ -101,6 +101,7 @@ function printComanda($comanda, $username){
 	printer_end_doc($handle);
 	
 	closeBematechPrinter($handle);
+	die;
 }
 
 function resolveLinha($texto, $len){
@@ -128,5 +129,5 @@ function openBematechPrinter(){
 }
 
 function closeBematechPrinter($printer){
-	printer_close($printer);
+	@printer_close($printer);
 }

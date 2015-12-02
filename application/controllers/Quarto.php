@@ -143,7 +143,7 @@ class Quarto extends CI_Controller {
 			$this->db->delete('quarto'); 
 			
 			$this->session->set_flashdata('msg', 'Quarto deletado com sucesso.');
-			$this->deleting();
+			$this->index();
 			
 	}
 	

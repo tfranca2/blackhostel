@@ -451,12 +451,6 @@
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
-	<label>Ocupantes</label>
-	<input type="number" name="qt_pessoas" min="1" class="form-control" value="<?php echo $reserva->qt_pessoas?>" disabled>
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-6 form-group">
 	<label>Situação</label>
 	    <select name="id_situacao" class="form-control" disabled>
 			<option value=""> -- Selecione -- </option>
