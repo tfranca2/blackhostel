@@ -18,7 +18,7 @@ class Reserva_model extends CI_Model {
 		if ($situacao != 6 and $situacao != 5){
 			$fil .=	" and r.id_situacao not in (6, 5)";
 		}
-		return $this->db->query("select r.*, q.id_quarto, q.numero, q.descricao ds_quarto, p.*,c.* from reserva r 
+		return $this->db->query("select r.*, q.id_quarto, q.numero, p.*,c.* from reserva r 
 						inner join quarto q on r.id_quarto = q.id_quarto
 						inner join perfil p on p.id_perfil = q.id_perfil
 						left join cliente c on c.id_cliente = r.id_cliente
@@ -28,7 +28,7 @@ class Reserva_model extends CI_Model {
 	
 	public function getFullCurrentReservation($id){
 		$id = (int) $id;
-		$sql = "select r.*, q.id_quarto, q.numero, q.descricao ds_quarto, p.*,c.* from quarto q 
+		$sql = "select r.*, q.id_quarto, q.numero, p.*,c.* from quarto q 
 				left join reserva r on r.id_quarto = q.id_quarto
 				left join perfil p on p.id_perfil = q.id_perfil
 				left join cliente c on c.id_cliente = r.id_cliente

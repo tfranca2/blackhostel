@@ -162,11 +162,7 @@ $admin = $user['user_session']['admin'];
 					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
 				</a>
 			</li>
-			<li class="<?php echo styleMenuActive('quarto') ?>">
-				<a href="<?php echo site_url()."/main/imprimir"?>"> 
-					<span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print 
-				</a>
-			</li>
+
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
