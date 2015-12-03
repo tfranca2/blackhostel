@@ -1,3 +1,9 @@
+<script>
+$(document).ready(function(){
+	$('#cpf').mask('000.000.000-00');
+	$('#cep').mask('00.000-000');
+});
+</script>
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -8,7 +14,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 
 ?>
-
 
 	<form action="<?php echo site_url();?>/cliente/searching">
 	<div class="row">
@@ -45,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td><?php echo $cliente->cpf ?></td>
 				<td><?php echo $cliente->rg ?></td>
 				<td><?php echo $cliente->telefone ?></td>
-				<td><?php echo $cliente->endereco .' - '.$cliente->cep ?></td>
+				<td><?php echo (!empty($cliente->endereco) and !empty($cliente->cep))? $cliente->endereco .' - '.$cliente->cep:''; ?></td>
 				<td><?php echo $cliente->obs ?></td>
 				<td>
 					<a href="<?php echo site_url();?>/cliente/editing/<?php  echo $cliente->id_cliente ?>"
