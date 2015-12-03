@@ -25,7 +25,7 @@ $admin = $user['user_session']['admin'];
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
-		<table class="table table-responsive"> 
+		<table class="table table-striped table-bordered table-responsive"> 
 			<tr>
 				<th>Produto</th>
 				<th>Estoque</th>

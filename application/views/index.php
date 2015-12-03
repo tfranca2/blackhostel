@@ -162,7 +162,10 @@ $admin = $user['user_session']['admin'];
 					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Quartos 
 				</a>
 			</li>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 77ded5490104192a7921ab4792c45d284b5a0a04
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

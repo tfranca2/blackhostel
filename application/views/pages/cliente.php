@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
-		<table class="table table-responsive"> 
+		<table class="table table table-striped table-bordered table-responsive"> 
 			<tr>
 				<th>ID</th>
 				<th>Cliente</th>
@@ -97,6 +97,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
+		<?php
+		echo form_label('Telefone');
+		echo form_input(array('name'=>'telefone','id'=>'telefone','class'=>'form-control','placeholder'=>'Telefone do cliente'),set_value('telefone'));
+		?>
+	</div>	
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
 	  <?php
 		echo form_label('Endereço');
 		echo form_input(array('name'=>'endereco','id'=>'endereco','class'=>'form-control','placeholder'=>'Endereço do cliente'),set_value('endereco'));
@@ -111,13 +119,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		echo form_input(array('name'=>'cep','id'=>'cep','class'=>'form-control','placeholder'=>'CEP do cliente'),set_value('cep'));
 	  ?>
 	</div>
-	<div class="col-md-2 form-group">
+	<div class="col-md-3 form-group">
 		<?php 
 			echo form_label('Cidade');
 			echo form_input(array('name'=>'cidade','id'=>'cidade','class'=>'form-control','placeholder'=>'Cidade do cliente'),set_value('cidade'));
 		?>
 	</div>
-	<div class="col-md-2 form-group">
+	<div class="col-md-1 form-group">
 		<?php 
 			echo form_label('UF');
 			echo form_input(array('name'=>'uf','id'=>'uf','class'=>'form-control','placeholder'=>'UF do cliente'),set_value('uf'));
@@ -178,6 +186,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','placeholder'=>'RG do cliente'),$cliente->rg);
 	  ?>
 	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+		<?php
+		echo form_label('Telefone');
+		echo form_input(array('name'=>'telefone','id'=>'telefone','class'=>'form-control','placeholder'=>'Telefone do cliente'),set_value('telefone'));
+		?>
+	</div>	
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
@@ -260,6 +276,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		echo form_input(array('name'=>'rg','id'=>'rg','class'=>'form-control','readonly'=>'readonly'),$cliente->rg);
 	  ?>
 	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+		<?php
+		echo form_label('Telefone');
+		echo form_input(array('name'=>'telefone','id'=>'telefone','class'=>'form-control','readonly'=>'readonly'),set_value('telefone'));
+		?>
+	</div>	
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">

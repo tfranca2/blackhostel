@@ -83,7 +83,7 @@ $admin = $user['user_session']['admin'];
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
-		<table class="table table-responsive"> 
+		<table class="table table-striped table-bordered table-responsive"> 
 			<tr>
 				<th>ID</th>
 				<th>Descrição</th>
@@ -98,9 +98,9 @@ $admin = $user['user_session']['admin'];
 				<td><?php echo $perfil->id_perfil ?></td>
 				<td><?php echo $perfil->descricao ?></td>
 				<td><?php echo ($perfil->tp_modo_reserva ==1?'Diária':(($perfil->tp_modo_reserva == 2)?'Hora': 'Pernoite'));; ?></td>
-				<td>R$ <?php echo monetaryOutput($perfil->preco_base) ?></td>
+				<td>R$ <?php echo ($perfil->tp_modo_reserva ==2)?monetaryOutput($perfil->preco_base):'&nbsp;&nbsp;&nbsp;&nbsp;-'; ?></td>
 				<td>R$ <?php echo monetaryOutput($perfil->preco_itens) ?> </td>
-				<td>R$ <?php echo monetaryOutput($perfil->preco_base + $perfil->preco_itens) ?></td>
+				<td>R$ <?php echo ($perfil->tp_modo_reserva ==2)?monetaryOutput($perfil->preco_base + $perfil->preco_itens):'&nbsp;&nbsp;&nbsp;&nbsp;-'; ?></td>
 				<?php if($gerente) { ?><td>
 					<a href="<?php echo site_url();?>/perfil/editing/<?php  echo $perfil->id_perfil ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
