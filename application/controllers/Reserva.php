@@ -91,39 +91,48 @@ class Reserva extends CI_Controller {
 	}
 	
 	public function save(){
-		$this->form_validation->set_rules('entrada', 'Entrada', 'required');
-		if ($this->runFormValidations() == TRUE){
-			
-			$dados = elements(array('id_quarto','entrada','saida','id_cliente'),$this->input->post());
-			
-			$dados['entrada'] = dateTimeToUs($dados['entrada']);
-			$dados['saida'] = dateTimeToUs($dados['saida']);
-			$dados['id_situacao'] =self::RESERVADO;
-			
-			$this->db->insert('reserva', $dados); 
-			
-			$last_id = $this->db->insert_id();
-				
-				
-			foreach($this->input->post('clientes') as $cliente){
-			
-				$this->db->insert('reserva_cliente', array(
-						'id_reserva' => $last_id,
-						'id_cliente' => $cliente
-				));
-			}
-			
-			$this->load->view('index',array(
-					'page'=>'reserva'
-					,'title'=> 'Reservas'
-					,'part' => 'inserting'
-			));
-			
-			$this->session->set_flashdata('msg', 'Reserva registrada com sucesso.');
-			redirect('/reserva');
-			
+		
+
+		if (new DateTime(dateTimeToUs($this->input->post('saida'))) < new DateTime(dateTimeToUs($this->input->post('entrada')))) {
+			$this->session->set_flashdata('msg', 'A Data Inicial não pode ser depois da Data Final');
+			redirect('/reserva/inserting');
 		}else{
-			$this->searching();
+		
+			$this->form_validation->set_rules('entrada', 'Entrada', 'required');
+			
+			if ($this->runFormValidations() == TRUE){
+			
+				$dados = elements(array('id_quarto','entrada','saida','id_cliente'),$this->input->post());
+				
+				$dados['entrada'] = dateTimeToUs($dados['entrada']);
+				$dados['saida'] = dateTimeToUs($dados['saida']);
+				$dados['id_situacao'] =self::RESERVADO;
+				
+				$this->db->insert('reserva', $dados); 
+				
+				$last_id = $this->db->insert_id();
+					
+					
+				foreach($this->input->post('clientes') as $cliente){
+				
+					$this->db->insert('reserva_cliente', array(
+							'id_reserva' => $last_id,
+							'id_cliente' => $cliente
+					));
+				}
+				
+				$this->load->view('index',array(
+						'page'=>'reserva'
+						,'title'=> 'Reservas'
+						,'part' => 'inserting'
+				));
+				
+				$this->session->set_flashdata('msg', 'Reserva registrada com sucesso.');
+				redirect('/reserva');
+				
+			}else{
+				$this->searching();
+			}
 		}
 	}
 	
@@ -191,10 +200,9 @@ class Reserva extends CI_Controller {
 	
 	private function runFormValidations(){
 		
-		
 		$this->form_validation->set_rules('id_quarto', 'Quarto', 'required');
 		
-		return $this->form_validation->run();
+		return $this->form_validation->run() ;
 	
 	}
 	

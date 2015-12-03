@@ -95,7 +95,22 @@
 		
 	});
 </script>
-
+<div class="row">
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
+	<div class="alert alert-success">
+		<?php echo $a; ?>
+	</div>
+	<?php } 
+	
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
+	<div class="alert alert-success">
+	  <?php echo $b; ?>	
+	</div>
+	<?php } ?>
+</div>	
 <?php 
 /**
 * Ã�rea da tela responsÃ¡vel pela pesquisa e exibiÃ§Ã£o da lista de resultados
@@ -138,7 +153,7 @@
 				<th>Entrada</th>
 				<th>Saída</th>
 				<th>Situação</th>
-				<th>Opções</th>
+				<th  style="text-align: center;">Opções</th>
 			</tr>
 			<?php foreach($tabledata as $reserva){?>
 			<tr>
@@ -149,7 +164,7 @@
 				<td><?php echo ($reserva->tp_modo_reserva ==1?'Diária':(($reserva->tp_modo_reserva == 2)?'Hora': 'Pernoite')); ?></td>
 				<td><?php echo dateTimeToBr( $reserva->entrada ) ?></td>
 				<td><?php echo dateTimeToBr( $reserva->saida ) ?></td>
-				<td><?php 
+				<td  style="text-align: center;"><?php 
 						 if($reserva->id_situacao ==1){
 							echo 'EM USO';
 						 }else if($reserva->id_situacao == 2){ 
@@ -166,7 +181,7 @@
 						 }
 					?>
 				</td>
-				<td>
+				<td style="text-align: center;">
 					<?php if($reserva->id_situacao == 2){ ?>
 					<a href="<?php echo site_url();?>/reserva/ativar/<?php  echo $reserva->id_reserva ?>" class="btn btn-success btn-sm">Ativar
 						<span class="glyphicon glyphicon-ok"></span>
@@ -264,20 +279,10 @@
 
 <div class="row">
 	<div class="col-md-6 form-group">
-	  
-	</div>
-</div>
-<br/><br/>
-<br/>
-<br/>
-
-<div class="row">
-	<div class="col-md-6 form-group">
 	 <?php
 		echo form_submit(array('name'=>'cadastrar','class' =>'btn btn-success'),'Cadastrar')." ";
 		echo form_reset(array('name'=>'limpar','class' =>'btn btn-danger'),'Limpar');
 	  ?>
-	
 	</div>
 	<div class="col-md-6 form-group">
 		<a class="btn btn-info" href="<?php echo site_url();?>/reserva" class="button success">Voltar</a>  
@@ -476,20 +481,3 @@ echo form_close();
 }
 ?>
 
-<div class="row">
-	
-	<?php 
-	$a = validation_errors();
-	if(!empty($a)){ ?>
-	<div class="alert alert-success">
-		<?php echo $a; ?>
-	</div>
-	<?php } 
-	
-	$b = $this->session->flashdata('msg');
-	if(!empty($b)){ ?>
-	<div class="alert alert-success">
-	  <?php echo $b; ?>	
-	</div>
-	<?php } ?>
-</div>	
