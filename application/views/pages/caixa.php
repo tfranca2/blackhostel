@@ -11,6 +11,23 @@ $operacoes = array (
 				);
 				
 ?>
+<div class="row">
+	
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
+	<div class="alert alert-success">
+		<?php echo $a; ?>
+	</div>
+	<?php } 
+	
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
+	<div class="alert alert-success">
+	  <?php echo $b; ?>	
+	</div>
+	<?php } ?>
+</div>	
 <script>
 	$(document).ready(function(){
 		$('#valor').mask('000.000.000.000.000,00', {reverse: true});
@@ -42,7 +59,10 @@ $operacoes = array (
 		<table class="table table-bordered"> 
 			<tr>
 				<th>Operação</th>
-				<th>Valor</th>
+				<th>
+					<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> 
+				Valor
+				</th>
 				<th>Observação</th>
 				<th>Usuário</th>
 				<th>Data</th>
@@ -52,7 +72,7 @@ $operacoes = array (
 			$total = 0; 
 			
 			foreach($tabledata as $caixa){ 
-						
+				// TODO Wtf. Um hit no banco a cada iteração. 	
 				$usuario = $this->db->get_where('usuario', array('id_usuario' => $caixa->id_usuario))->row();
 				
 				if( $caixa->operacao == 1 || $caixa->operacao == 3 || $caixa->operacao == 5 ) 
@@ -64,8 +84,17 @@ $operacoes = array (
 				
 			?>
 			<tr>
-				<td><?php echo ((($caixa->operacao==1)?'<span class="circle green"></span>':(($caixa->operacao==2)?'<span class="circle red"></span>':(($caixa->operacao==4)?'<span class="circle yellow"></span>':'')))). $operacoes[$caixa->operacao]; ?></td>
-				<td><?php echo ( $caixa->operacao==1 || $caixa->operacao==4 )?"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-":"R$ ".(($caixa->operacao==2 || $caixa->operacao==6)?'- ':"&nbsp;&nbsp;&nbsp;" ).monetaryOutput($caixa->valor); ?></td>
+				<td>
+				<?php
+				echo ((($caixa->operacao==1)?
+						'<span class="circle green"></span>'
+						:(($caixa->operacao==2)?
+								'<span class="circle red"></span>'
+								:(($caixa->operacao==4)?
+										'<span class="circle yellow"></span>'
+										:'')))). $operacoes[$caixa->operacao]; 
+				?></td>
+				<td><?php echo ( $caixa->operacao==1 || $caixa->operacao==4 )?"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-":"R$ ".(($caixa->operacao==2 || $caixa->operacao==6)?'- ':"" ).monetaryOutput($caixa->valor); ?></td>
 				<td><?php echo $caixa->observacao; ?></td>
 				<td><?php echo $usuario->nome; ?></td>
 				<td><?php echo dateTimeToBr($caixa->data); ?></td>
@@ -92,7 +121,7 @@ $operacoes = array (
 			</tr>
 			<tr>
 				<th>Total</th>
-				<th><?php echo "R$ ".monetaryOutput($total); ?></th>
+				<th><?php echo "R$ ". monetaryOutput($total); ?></th>
 				<th></th>
 				<th></th>
 				<th></th>
@@ -260,20 +289,3 @@ echo form_close();
 }
 ?>
 
-<div class="row">
-	
-	<?php 
-	$a = validation_errors();
-	if(!empty($a)){ ?>
-	<div class="alert alert-success">
-		<?php echo $a; ?>
-	</div>
-	<?php } 
-	
-	$b = $this->session->flashdata('msg');
-	if(!empty($b)){ ?>
-	<div class="alert alert-success">
-	  <?php echo $b; ?>	
-	</div>
-	<?php } ?>
-</div>	

@@ -1,3 +1,4 @@
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
  
@@ -50,7 +51,7 @@ $admin = $user['user_session']['admin'];
 			<tr>
 				<td><?php echo $item->id_item ?></td>
 				<td width="70%"><?php echo $item->descricao ?></td>
-				<td><?php echo monetaryOutput($item->preco) ?></td>
+				<td><?php echo "R$ ".monetaryOutput($item->preco) ?></td>
 				<?php if($gerente) { ?><td>
 					<a href="<?php echo site_url();?>/item/editing/<?php  echo $item->id_item ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
