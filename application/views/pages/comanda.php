@@ -1,14 +1,31 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+//TODO Tirar isso daqui
 $user = $this->session->get_userdata();
 $gerente = $user['user_session']['gerente'];
 $admin = $user['user_session']['admin'];
-
+//TODO Tirar principalmente isso daqui
 $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT MAX(id_caixa) FROM caixa WHERE operacao IN( 1, 4 ))")->row();
 
-
 ?>
+
+<div class="row">
+	
+	<?php 
+	$a = validation_errors();
+	if(!empty($a)){ ?>
+	<div class="alert alert-success">
+		<?php echo $a; ?>
+	</div>
+	<?php } 
+	$b = $this->session->flashdata('msg');
+	if(!empty($b)){ ?>
+	<div class="alert alert-success">
+	  <?php echo $b; ?>	
+	</div>
+	<?php } ?>
+</div>	
 
 <script>
 	$(document).ready(function(){
@@ -227,7 +244,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 						  <select class="form-control" id="newproduto" >
 						  	<option value=""> -- Selecione -- </option>
 						  	<?php foreach ($produtos as $produto){?>
-						  		<option value="<?php echo $produto->id_produto?>"> <?php echo $produto->produto.'- R$ '.$produto->preco ?> </option>	
+						  		<option value="<?php echo $produto->id_produto?>"> <?php echo $produto->produto.'- R$ '.monetaryOutput( $produto->preco) ?> </option>	
 						  	<?php }?>
 						  </select>
 						  </div>
@@ -294,19 +311,4 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 	} 
 ?>
 
-<div class="row">
-	
-	<?php 
-	$a = validation_errors();
-	if(!empty($a)){ ?>
-	<div class="alert alert-success">
-		<?php echo $a; ?>
-	</div>
-	<?php } 
-	$b = $this->session->flashdata('msg');
-	if(!empty($b)){ ?>
-	<div class="alert alert-success">
-	  <?php echo $b; ?>	
-	</div>
-	<?php } ?>
-</div>	
+

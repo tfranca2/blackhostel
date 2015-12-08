@@ -44,14 +44,17 @@ $admin = $user['user_session']['admin'];
 				<th>ID</th>
 				<th>Produto</th>
 				<th>Preço</th>
-				<?php if($gerente) { ?><th>Opções</th><?php } ?>
+				<?php if($gerente) { ?>
+				<th>Opções</th>
+				<?php } ?>
 			</tr>
 			<?php foreach($tabledata as $produto){ ?>
 			<tr>
 				<td><?php echo $produto->id_produto ?></td>
 				<td width="50%"><?php echo $produto->produto ?></td>
-				<td><?php echo monetaryOutput($produto->preco) ?></td>
-				<?php if($gerente) { ?><td>
+				<td><?php echo "R$ ".monetaryOutput($produto->preco) ?></td>
+				<?php if($gerente) { ?>
+				<td>
 					<a href="<?php echo site_url();?>/produto/editing/<?php  echo $produto->id_produto ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
 					</a>
