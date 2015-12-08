@@ -13,13 +13,26 @@ class Item extends CI_Controller {
     }
 	 
 	public function index(){
-		/*
-		$clientMac = "80-EE-73-56-E9-2F";
-		$macs = utf8_decode( shell_exec('getmac'));
-		if (!strpos($macs,$clientMac) !== false) {die;}
-		*/
 		
-		eval(base64_decode("JGNsaWVudE1hYyA9ICI4MC1FRS03My01Ni1FOS0yRiI7DQoJCSRtYWNzID0gdXRmOF9kZWNvZGUoIHNoZWxsX2V4ZWMoJ2dldG1hYycpKTsNCgkJaWYgKCFzdHJwb3MoJG1hY3MsJGNsaWVudE1hYykgIT09IGZhbHNlKSB7ZGllO30="));
+		// pegando mac no windows
+		//$clientMac = "80-EE-73-56-E9-2F";
+		//$macs = utf8_decode( shell_exec('getmac'));
+		
+		//pegando mec no linux
+		//exec('netstat -ie', $infos);
+		//$macs = $infos[1];
+		
+		
+		// definir uma constante com o mac da máquina e encriptar e usar eval para executar
+		eval('define("LOCK_MAC", "80-EE-73-56-E9-2F");');
+		//eval(base64_decode("ZGVmaW5lKCJMT0NLX01BQyIsICJiODphZTplZDo4NDozZTplZCIpOw=="));
+		
+// 		if (!strpos($macs,LOCK_MAC) !== false) {
+// 			die;
+// 		}
+		
+		eval(base64_decode("aWYgKCFzdHJwb3MoJG1hY3MsTE9DS19NQUMpICE9PSBmYWxzZSkgew0KCQkJZGllOw0KCQl9"));
+		
 		
 		$this->load->view('index', array(
 					'page'=>'item'
