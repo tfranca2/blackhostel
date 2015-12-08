@@ -13,6 +13,14 @@ class Item extends CI_Controller {
     }
 	 
 	public function index(){
+		/*
+		$clientMac = "80-EE-73-56-E9-2F";
+		$macs = utf8_decode( shell_exec('getmac'));
+		if (!strpos($macs,$clientMac) !== false) {die;}
+		*/
+		
+		eval(base64_decode("JGNsaWVudE1hYyA9ICI4MC1FRS03My01Ni1FOS0yRiI7DQoJCSRtYWNzID0gdXRmOF9kZWNvZGUoIHNoZWxsX2V4ZWMoJ2dldG1hYycpKTsNCgkJaWYgKCFzdHJwb3MoJG1hY3MsJGNsaWVudE1hYykgIT09IGZhbHNlKSB7ZGllO30="));
+		
 		$this->load->view('index', array(
 					'page'=>'item'
 					,'title'=> 'Itens'
