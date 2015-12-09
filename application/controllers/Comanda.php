@@ -62,7 +62,7 @@ class Comanda extends CI_Controller {
 	}
 	
 	public function searching(){
-		$sql = "SELECT re.id_reserva as id_reserva, qt.numero as numero, IF(pf.tp_modo_reserva=1,'D', IF(pf.tp_modo_reserva=2,'H', IF(pf.tp_modo_reserva=3,'P',	pf.tp_modo_reserva))) AS tipo  FROM reserva re LEFT JOIN quarto qt ON re.id_quarto = qt.id_quarto inner JOIN perfil pf ON qt.id_perfil = pf.id_perfil WHERE re.id_situacao not in (2,3,5,6) AND qt.numero like '%".$this->input->get('numero')."%'";
+		$sql = "SELECT re.id_reserva as id_reserva, pf.descricao as perfil,  qt.numero as numero, IF(pf.tp_modo_reserva=1,'D', IF(pf.tp_modo_reserva=2,'H', IF(pf.tp_modo_reserva=3,'P',	pf.tp_modo_reserva))) AS tipo  FROM reserva re LEFT JOIN quarto qt ON re.id_quarto = qt.id_quarto inner JOIN perfil pf ON qt.id_perfil = pf.id_perfil WHERE re.id_situacao not in (2,3,5,6) AND qt.numero like '%".$this->input->get('numero')."%'";
 		
 		$this->load->view('index',array(
 					'page'=>'comanda'
