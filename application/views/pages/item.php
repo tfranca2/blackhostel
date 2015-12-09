@@ -1,5 +1,9 @@
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
+
+
  
 $user = $this->session->get_userdata();
 $gerente = $user['user_session']['gerente'];
@@ -14,7 +18,7 @@ $admin = $user['user_session']['admin'];
 
 <?php 
 /**
-* Área da tela responsável pela pesquisa e exibição da lista de resultados
+* Ã�rea da tela responsÃ¡vel pela pesquisa e exibiÃ§Ã£o da lista de resultados
 */
 	if($part =="searching"){
 	
@@ -25,7 +29,7 @@ $admin = $user['user_session']['admin'];
 	<form action="<?php echo site_url();?>/item/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
-			<input type="text" placeholder="Descrição do item" name="descricao" class="form-control"/>
+			<input type="text" placeholder="DescriÃ§Ã£o do item" name="descricao" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
@@ -42,15 +46,15 @@ $admin = $user['user_session']['admin'];
 		<table class="table table-striped table-bordered table-responsive"> 
 			<tr>
 				<th>ID</th>
-				<th>Descrição</th>
-				<th>Preço</th>
-				<?php if($gerente) { ?><th>Opções</th><?php } ?>
+				<th>DescriÃ§Ã£o</th>
+				<th>PreÃ§o</th>
+				<?php if($gerente) { ?><th>OpÃ§Ãµes</th><?php } ?>
 			</tr>
 			<?php foreach($tabledata as $item){ ?>
 			<tr>
 				<td><?php echo $item->id_item ?></td>
 				<td width="70%"><?php echo $item->descricao ?></td>
-				<td><?php echo monetaryOutput($item->preco) ?></td>
+				<td><?php echo "R$ ".monetaryOutput($item->preco) ?></td>
 				<?php if($gerente) { ?><td>
 					<a href="<?php echo site_url();?>/item/editing/<?php  echo $item->id_item ?>" class="btn btn-default btn-sm">Editar 
 						<span class="glyphicon glyphicon-edit"></span>
@@ -68,7 +72,7 @@ $admin = $user['user_session']['admin'];
 	
 <?php 
 /**
-* Área da tela responsável pelo formulário de inserção de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de inserÃ§Ã£o de dados
 */
 	}else if($part =="inserting"){
 		
@@ -78,16 +82,16 @@ $admin = $user['user_session']['admin'];
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
-		echo form_label('Descrição');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'Descrição do item'),set_value('descricao'),'autofocus');
+		echo form_label('DescriÃ§Ã£o');
+		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'DescriÃ§Ã£o do item'),set_value('descricao'),'autofocus');
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('Preço');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do item'),set_value('preco'));
+		echo form_label('PreÃ§o');
+		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'PreÃ§o do item'),set_value('preco'));
 	  ?>
 	</div>
 </div>
@@ -107,7 +111,7 @@ $admin = $user['user_session']['admin'];
 <?php 
 
 /**
-* Área da tela responsável pelo formulário de edição de dados
+* Ã�rea da tela responsÃ¡vel pelo formulÃ¡rio de ediÃ§Ã£o de dados
 */
 	}else if($part =="editing"){
 		
@@ -118,16 +122,16 @@ $admin = $user['user_session']['admin'];
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
-		echo form_label('Descrição');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'Descrição do item'),$item->descricao ,'autofocus');
+		echo form_label('DescriÃ§Ã£o');
+		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'DescriÃ§Ã£o do item'),$item->descricao ,'autofocus');
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('Preço');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do item'),$item->preco);
+		echo form_label('PreÃ§o');
+		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'PreÃ§o do item'),$item->preco);
 	  ?>
 	</div>
 </div>
@@ -145,7 +149,7 @@ $admin = $user['user_session']['admin'];
 
 <?php
 /**
-* Área da tela responsável pela confirmação de deleção dos dados
+* Ã�rea da tela responsÃ¡vel pela confirmaÃ§Ã£o de deleÃ§Ã£o dos dados
 */
 	}else if($part =="deleting"){
 		
@@ -156,7 +160,7 @@ $admin = $user['user_session']['admin'];
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
-		echo form_label('Descrição');
+		echo form_label('DescriÃ§Ã£o');
 		echo form_input(array('name'=>'descricao','class'=>'form-control','readonly'=>'readonly'),$item->descricao);
 	  ?>
 	</div>
@@ -164,7 +168,7 @@ $admin = $user['user_session']['admin'];
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('Preço');
+		echo form_label('PreÃ§o');
 		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','readonly'=>'readonly'),$item->preco);
 	  ?>
 	</div>
