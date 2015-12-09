@@ -57,7 +57,7 @@ class Comanda extends CI_Controller {
 					,'title'=> 'Comandas'
 					,'part' => 'searching'
 					,'tabledata'=>$tabledata
-					,'produtos'=>$this->db->get('produto')->result()
+					,'produtos'=>$this->db->query("SELECT * FROM produto WHERE estoque > 0")->result()
 				));
 	}
 	

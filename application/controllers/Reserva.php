@@ -221,8 +221,17 @@ class Reserva extends CI_Controller {
 		$dados['id_reserva'] = $this->input->post('reserva');
 		$dados['id_produto'] = $this->input->post('produto');
 		$dados['ativo'] = 1;
-		if(isset($dados['id_reserva']) and isset($dados['id_reserva'])){
+		if(isset($dados['id_reserva']) and isset($dados['id_produto'])){
 			$this->db->insert('reserva_produto',$dados);
+			
+			// selecionando o estoque do produto
+			$this->db->select('estoque');
+			$this->db->where('id_produto', $dados['id_produto']);
+			$produto = $this->db->get('produto')->result();
+			
+			// debitando do estoque do produto
+			$this->db->where('id_produto', $dados['id_produto']);
+			$this->db->update('produto', array('estoque'=> $produto[0]->estoque-1 ));
 		}
 	}
 	
@@ -231,6 +240,20 @@ class Reserva extends CI_Controller {
 		$dados['ativo'] = 0;
 		$this->db->where('id_reserva_produto', $id);
 		$this->db->update('reserva_produto', $dados);
+		
+		// selecionando o id do produto
+		$this->db->select('id_produto');
+		$this->db->where('id_reserva_produto', $id);
+		$id_produto = $this->db->get('reserva_produto')->result();
+		
+		// selecionando o estoque do produto
+		$this->db->select('estoque');
+		$this->db->where('id_produto', $id_produto[0]->id_produto );
+		$produto = $this->db->get('produto')->result();
+		
+		// adicionando estoque do produto
+		$this->db->where('id_produto', $id_produto[0]->id_produto );
+		$this->db->update('produto', array('estoque'=> $produto[0]->estoque+1 ));
 		
 		redirect('/comanda');
 	}

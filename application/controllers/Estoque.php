@@ -14,78 +14,64 @@ class Estoque extends CI_Controller {
 	 
 	public function index(){
 		
-		$sql = "SELECT 
-					p.produto AS produto, 
-					SUM(e.quantidade) AS quantidade 
-				FROM estoque e 
-				INNER JOIN produto p 
-					ON p.id_produto = e.id_produto
-				GROUP BY p.id_produto
-				";
+		$sql = "SELECT * FROM produto";
 		
 		$this->load->view('index', array(
 					'page'=>'estoque'
-					,'title'=> 'Movimento de estoque'
+					,'title'=> 'Estoque'
 					,'part' => 'searching'
 					,'tabledata'=>$this->db->query($sql)->result()
 				));
 	}
 	
 	public function searching(){
-		$sql = "SELECT 
-					p.produto AS produto, 
-					SUM(e.quantidade) AS quantidade 
-				FROM estoque e 
-				INNER JOIN produto p 
-					ON p.id_produto = e.id_produto
-				WHERE p.produto LIKE '%".$this->input->get('produto')."%'
-				GROUP BY p.id_produto ";
+		$sql = "SELECT *
+				FROM produto
+				WHERE produto LIKE '%".$this->input->get('produto')."%' ";
 		
 		$this->load->view('index',array(
 					'page'=>'estoque'
-					,'title'=> 'Movimento de estoque'
+					,'title'=> 'Estoque'
 					,'part' => 'searching'
 					,'tabledata'=>$this->db->query($sql)->result()
 				));
 	}
 	
-	public function inserting(){
-		$this->load->view('index', array(
+	public function editing(){
+		$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_produto');
+		if($id){
+			$this->load->view('index', array(
 					'page'=>'estoque'
-					,'title'=> 'Movimento de estoque'
-					,'part' => 'inserting'
-					,'produtos'=>$this->db->get('produto')->result()
-					));
+					,'title'=> 'Estoque'
+					,'part' => 'editing'
+					,'produto'=>$this->db->get_where('produto', array('id_produto' => $id))->row() ));
+		} else {
+			$this->searching();
+		}
 	}
 	
-	public function save(){
+	public function edit(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('id_produto','quantidade'),$this->input->post());
-			$user = $this->session->get_userdata();
-			$dados['id_usuario'] = $user['user_session']['id_usuario'];
-			$dados['data'] = date('Y-m-d H:i:s');
-	
-			$this->db->insert('estoque', $dados); 
+			$id = $this->uri->segment(3) ? $this->uri->segment(3) : $this->input->post('id_produto');
 			
-			$this->load->view('index',array(
-					'page'=>'estoque'
-					,'title'=> 'Movimento de estoque'
-					,'part' => 'inserting'
-			));
+			$dados = elements(array('id_produto', 'estoque'),$this->input->post());
+
+			$this->db->where('id_produto', $id );
+			$this->db->update('produto', $dados); 
 			
-			$this->session->set_flashdata('msg', 'Movimento de estoque cadastrado com sucesso.');
-			redirect(current_url());
+			$this->session->set_flashdata('msg', 'Estoque cadastrado com sucesso.');
+			
+			$this->searching();
 			
 		}else{
-			$this->inserting();
+			$this->searching();
 		}
 	}
 
 	private function runFormValidations(){
 	
-		$this->form_validation->set_rules('id_produto', 'Produto', 'required');
-		$this->form_validation->set_rules('quantidade', 'Quantidade', 'required');
+		$this->form_validation->set_rules('estoque', 'Estoque', 'required');
 		
 		return $this->form_validation->run();
 	

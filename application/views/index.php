@@ -131,7 +131,7 @@ $admin = $user['user_session']['admin'];
 			</li>
 			<li class="<?php echo styleMenuActive('estoque') ?>">
 				<a href="<?php echo site_url()."/estoque"?>">
-					<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Movimento de Estoque
+					<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Estoque
 				</a>
 			</li>
 			<li class="<?php echo styleMenuActive('caixa') ?>">
