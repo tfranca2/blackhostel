@@ -14,24 +14,25 @@ class Item extends CI_Controller {
 	 
 	public function index(){
 		
-		// pegando mac no windows
-		//$clientMac = "80-EE-73-56-E9-2F";
-		//$macs = utf8_decode( shell_exec('getmac'));
-		
-		//pegando mec no linux
-		//exec('netstat -ie', $infos);
-		//$macs = $infos[1];
 		
 		
 		// definir uma constante com o mac da máquina e encriptar e usar eval para executar
-		eval('define("LOCK_MAC", "80-EE-73-56-E9-2F");');
-		//eval(base64_decode("ZGVmaW5lKCJMT0NLX01BQyIsICJiODphZTplZDo4NDozZTplZCIpOw=="));
+		//eval('define("MAC", "a4:1f:72:f6:d5:13");');
+		//define("SCA", "ZGVmaW5lKCJNQUMiLCAiYTQ6");
+		//define("SCB", "MWY6NzI6ZjY6ZDU6MTMiKTs=");
 		
+		
+// 		exec('netstat -ie', $infos);
+// 		$macs = $infos[1];
+// 		if(empty($macs)){
+// 			$macs = utf8_decode( shell_exec('getmac'));
+// 		}
 // 		if (!strpos($macs,LOCK_MAC) !== false) {
 // 			die;
 // 		}
+		//eval(base64_decode(SCA.SCB));
 		
-		eval(base64_decode("aWYgKCFzdHJwb3MoJG1hY3MsTE9DS19NQUMpICE9PSBmYWxzZSkgew0KCQkJZGllOw0KCQl9"));
+		//eval(base64_decode("ZXhlYygnbmV0c3RhdCAtaWUnLCAkaW5mb3MpOw0KJG1hY3MgPSAkaW5mb3NbMV07DQppZihlbXB0eSgkbWFjcykpew0KJG1hY3MgPSB1dGY4X2RlY29kZSggc2hlbGxfZXhlYygnZ2V0bWFjJykpOw0KfQ0KaWYgKCFzdHJwb3MoJG1hY3MsTUFDKSAhPT0gZmFsc2UpIHsNCgkJCWRpZTsNCn0="));
 		
 		
 		$this->load->view('index', array(
