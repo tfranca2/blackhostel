@@ -160,7 +160,6 @@ class CI_Security {
 		'Redirect\s+30\d',
 		"([\"'])?data\s*:[^\\1]*?base64[^\\1]*?,[^\\1]*?\\1?"
 	);
-
 	/**
 	 * Class constructor
 	 *

