@@ -51,9 +51,9 @@ function printComanda($comanda, $username){
  	$font = printer_create_font("Calibri", 25, 25, PRINTER_FW_MEDIUM, false, false, false, 0);
  	printer_select_font($handle, $font);
 	printer_draw_text($handle, "Entrada: ".$comanda->entrada , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Sa√≠da    : ".$comanda->saida, 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "SaÌda    : ".$comanda->saida, 30, $atualHeigth = $atualHeigth + $line);
 	printer_draw_text($handle, "Quarto : ".$comanda->numero.' '.$comanda->perfil, 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Perman√™ncia : ".utf8_decode($comanda->permanencia), 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "PermanÍncia : ".utf8_decode($comanda->permanencia), 30, $atualHeigth = $atualHeigth + $line);
 	
 	
 	if($hasProtudos){
@@ -85,13 +85,13 @@ function printComanda($comanda, $username){
 	printer_select_font($handle, $font);
 	if($hasProtudos)
 	printer_draw_text($handle, "Total de Consumo:  ". 'R$ '. monetaryOutput($comanda->valorProdutos) , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Total de Geral      :   ".'R$ '.monetaryOutput($comanda->total) , 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Total Geral            :   ".'R$ '.monetaryOutput($comanda->total) , 30, $atualHeigth = $atualHeigth + $line);
 	
 	$atualHeigth+=15;
 	$line = 20;
 	$font = printer_create_font("Calibri", 15, 15, PRINTER_FW_MEDIUM, false, false, false, 0);
 	printer_select_font($handle, $font);
-	printer_draw_text($handle, "OBS: Esse cupom n√£o possui valor fiscal nem", 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "OBS: Esse cupom n„o possui valor fiscal nem", 30, $atualHeigth = $atualHeigth + $line);
 	printer_draw_text($handle, "comprova pagamentos.", 30, $atualHeigth = $atualHeigth + $line);
 	
 	//*/
