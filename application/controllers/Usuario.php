@@ -67,7 +67,8 @@ class Usuario extends CI_Controller {
 	public function save(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('nome','login','senha'),$this->input->post());
+			$dados = elements(array('nome','login'),$this->input->post());
+			$dados['senha'] = md5($this->input->post('senha'));
 			$this->db->insert('usuario', $dados); 
 			
 			$this->load->view('index',array(
@@ -87,7 +88,14 @@ class Usuario extends CI_Controller {
 	public function edit(){
 		if ($this->runFormValidations() == TRUE){
 			
+			// pegar senha antiga
+			// comparar o hash
+			// se a senha for diferente alterar
+			
 			$dados = elements(array('nome','login','senha'),$this->input->post());
+			
+			// $dados['senha'] = md5($this->input->post('senha'));
+			
 			$this->db->where('id_usuario', $this->input->post('id_usuario'));
 			$this->db->update('usuario', $dados); 
 			

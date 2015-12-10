@@ -17,11 +17,6 @@ $admin = $user['user_session']['admin'];
 			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-1 col-often-11 form-group pull-right">
-			<?php if($gerente) { ?><a class="btn btn-info" href="<?php echo site_url();?>/estoque/inserting">Adicionar</a><?php } ?>
-		</div>
-	</div>
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
@@ -29,11 +24,18 @@ $admin = $user['user_session']['admin'];
 			<tr>
 				<th>Produto</th>
 				<th>Estoque</th>
+				<th>Opções</th>
 			</tr>
-			<?php foreach($tabledata as $estoque){ ?>
+			<?php foreach($tabledata as $produto){ ?>
 			<tr>
-				<td><?php echo $estoque->produto ?></td>
-				<td width="50%"><?php echo $estoque->quantidade ?></td>
+				<td><?php echo $produto->produto ?></td>
+				<td><?php echo $produto->estoque ?></td>
+				<td> <center>
+					<a href="<?php echo site_url();?>/estoque/editing/<?php  echo $produto->id_produto ?>">Editar 
+							<span class="glyphicon glyphicon-edit"></span>
+						</a>
+					</center>
+				</td>
 			</tr>
 			<?php } ?>
 		</table> 
@@ -41,27 +43,26 @@ $admin = $user['user_session']['admin'];
 	</div>
 	
 <?php 
-	}else if($part =="inserting"){
+	}else if($part =="editing"){
 		
-		echo form_open('estoque/save');	
+		echo form_open('estoque/edit');	
+		
+		echo form_hidden('id_produto',$produto->id_produto);
 ?>
 
 <div class="row">
 	<div class="col-md-6 form-group">
-	  <label>Produto</label>
-			  <select name="id_produto" class="form-control" id="selectprodutos" >
-			  	<option value=""> -- Selecione -- </option>
-			  	<?php foreach ($produtos as $produto){?>
-			  		<option value="<?php echo $produto->id_produto?>"> <?php echo $produto->produto?> </option>	
-			  	<?php }?>
-			  </select>
+	<?php
+		echo form_label('Produto');
+		echo form_input(array('name'=>'produto','id'=>'produto','class'=>'form-control','placeholder'=>'Descrição do produto','disabled'=>'disabled'), $produto->produto);
+	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
-		echo form_label('Quantidade');
-		echo form_input(array('name'=>'quantidade','class'=>'form-control','placeholder'=>'Quantidade do estoque'),set_value('quantidade'));
+		echo form_label('Estoque');
+		echo form_input(array('name'=>'estoque','class'=>'form-control','placeholder'=>'Quantidade do estoque do produto'), $produto->estoque);
 	  ?>
 	</div>
 </div>
@@ -69,7 +70,6 @@ $admin = $user['user_session']['admin'];
 	<div class="col-md-6 form-group">
 	 <?php
 		echo form_submit(array('name'=>'cadastrar','class' =>'btn btn-success'),'Cadastrar')." ";
-		echo form_reset(array('name'=>'limpar','class' =>'btn btn-danger'),'Limpar');
 	  ?>
 	
 	</div>

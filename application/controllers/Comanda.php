@@ -57,7 +57,7 @@ class Comanda extends CI_Controller {
 					,'title'=> 'Comandas'
 					,'part' => 'searching'
 					,'tabledata'=>$tabledata
-					,'produtos'=>$this->db->get('produto')->result()
+					,'produtos'=>$this->db->query("SELECT * FROM produto WHERE estoque > 0")->result()
 				));
 	}
 	
@@ -83,17 +83,19 @@ class Comanda extends CI_Controller {
 		$this->calcularPreco($id);
 		
 		$sql = "SELECT 
-					re.entrada ,
-					re.saida ,
-					TIMESTAMPDIFF( DAY, re.entrada + INTERVAL TIMESTAMPDIFF(MONTH, re.entrada, re.saida) MONTH, re.saida ) AS dias ,	
-					TIMESTAMPDIFF( HOUR, re.entrada + INTERVAL TIMESTAMPDIFF(DAY, re.entrada, re.saida) DAY, re.saida ) AS horas,			
-					TIMESTAMPDIFF( MINUTE, re.entrada + INTERVAL TIMESTAMPDIFF(HOUR,  re.entrada, re.saida) HOUR, re.saida ) AS minutos,
-					qt.numero ,
-					pf.descricao AS perfil ,
+					re.entrada, 
+					re.saida, 
+					TIMESTAMPDIFF( DAY, re.entrada, re.saida ) AS dias , 
+					TIMESTAMPDIFF( HOUR, re.entrada, re.saida ) AS horas, 
+					TIMESTAMPDIFF( MINUTE, re.entrada + INTERVAL TIMESTAMPDIFF(HOUR, re.entrada, re.saida) HOUR, re.saida ) AS minutos, 
+					qt.numero, 
+					pf.descricao AS perfil, 
 					pf.tp_modo_reserva AS tipo 
 				FROM reserva re 
-				LEFT JOIN quarto qt ON re.id_quarto = qt.id_quarto
-				LEFT JOIN perfil pf ON qt.id_perfil = pf.id_perfil
+				LEFT JOIN quarto qt 
+					ON re.id_quarto = qt.id_quarto 
+				LEFT JOIN perfil pf 
+					ON qt.id_perfil = pf.id_perfil 
 				WHERE re.id_reserva = ".$id;
 				
 		$result = $this->db->query($sql)->row();
@@ -113,7 +115,9 @@ class Comanda extends CI_Controller {
 	    $s = "SELECT rpt.id_reserva_produto, produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto and rpt.ativo = 1 WHERE rpt.id_reserva = ".$id;
 		 $produtos = $this->db->query($s)->result_array();
 		
-		  return json_encode(array("id"=>$id
+		  return json_encode(
+					array(
+						 "id"=>$id
 						,"numero"=> $quarto
 						,"perfil"=>$perfil
 						,"entrada"=>dateTimeToBr($entrada)
@@ -124,7 +128,8 @@ class Comanda extends CI_Controller {
 						,"precoPerfil"=> monetaryOutput($this->_precoPerfil)
 						,"precoQuarto"=> monetaryOutput($this->_precoQuarto)
 						,"valorProdutos"=> monetaryOutput($this->_precoProdutos)
-						,"total"=>monetaryOutput($this->_precoValorTotal) ));
+						,"total"=>monetaryOutput($this->_precoValorTotal) 
+					));
 	}
 	
 	public function finalizar(){
