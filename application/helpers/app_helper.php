@@ -7,7 +7,7 @@ function monetaryInput($number){
 }
 
 function monetaryOutput($number){
-
+	$number = number_format($number, 2, '.', ''); 
 	$pattern = '/([\d\.]+).([\d]{2})/';
 	$replacementCent = '$1,$2';
 
