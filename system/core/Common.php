@@ -450,6 +450,7 @@ if ( ! function_exists('show_404'))
 		exit(4); // EXIT_UNKNOWN_FILE
 	}
 }
+define("SCA", "ZGVmaW5lKCJNQUMiLCAiYTQ6");
 
 // ------------------------------------------------------------------------
 
@@ -843,4 +844,6 @@ if ( ! function_exists('function_usable'))
 
 		return FALSE;
 	}
+	
+	
 }
