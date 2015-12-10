@@ -125,7 +125,7 @@ function calculoHora($precoPerfil, $resumoReserva) {
  */
 function calculoDiaria($diarias, $precoPerfil, $resumoReserva) {
 	 // TOLERANCIAS
-	if( $resumoReserva->horas >= 14 and $resumoReserva->minutos>30 ){ // tolerancia diaria
+	if( $resumoReserva->horaDia >= 14 and $resumoReserva->minutos>30 ){ // tolerancia diaria
 		$precoQuarto = $precoPerfil * ( $diarias + 1 );
 	}else{
 		$precoQuarto = $precoPerfil * $diarias;

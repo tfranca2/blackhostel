@@ -95,7 +95,6 @@ $admin = $user['user_session']['admin'];
           <ul class="nav navbar-nav navbar-right">
             <li><a href="<?php echo site_url().'/main/reports'?>" > Relatórios</a></li>
             <li><a href="<?php echo site_url().'/main/manual'?>" > Manual</a></li>
-            <!-- <li><a href="assets/Dashboard Template for Bootstrap.html">Configurações</a></li> -->
             <?php if($admin) { ?><li><a href="<?php echo site_url()."/usuario"?>">Usuáios</a></li><?php } ?>
             <li>
 				<a href="<?php echo site_url();?>/login/logout">
@@ -103,9 +102,11 @@ $admin = $user['user_session']['admin'];
 				</a>
 			</li>
           </ul>
+		  <!--
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Buscar..." id="search">
           </form>
+		  -->
         </div>
       </div>
     </nav>

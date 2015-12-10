@@ -11,8 +11,9 @@ class Comanda_model extends CI_Model {
 	public function getResumoReserva($idReserva){
 	
 		$sql = "SELECT 
-					TIMESTAMPDIFF( DAY, re.entrada + INTERVAL TIMESTAMPDIFF(MONTH, re.entrada, re.saida) MONTH, re.saida ) AS dias 
-					,TIMESTAMPDIFF( HOUR, re.entrada + INTERVAL TIMESTAMPDIFF(DAY,  re.entrada, re.saida) DAY, re.saida ) AS horas
+					TIMESTAMPDIFF( DAY, re.entrada, re.saida ) AS dias 
+					,TIMESTAMPDIFF( HOUR, re.entrada, re.saida ) AS horas
+					,TIMESTAMPDIFF( HOUR, re.entrada + INTERVAL TIMESTAMPDIFF(DAY,  re.entrada, re.saida) DAY, re.saida ) AS horaDia
 					,TIMESTAMPDIFF( MINUTE, re.entrada + INTERVAL TIMESTAMPDIFF(HOUR,  re.entrada, re.saida) HOUR, re.saida ) AS minutos
 					,pf.tp_modo_reserva AS tipo 
 					,pf.preco_base AS valor_perfil  
