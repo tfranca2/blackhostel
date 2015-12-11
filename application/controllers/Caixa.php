@@ -5,7 +5,7 @@ class Caixa extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->helper(array('url','form','array','app'));
+		$this->load->helper(array('url','form','array','app','printer'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->database();
 		$this->load->model('Login_model','login');
@@ -114,12 +114,23 @@ class Caixa extends CI_Controller {
 				}
 			}
 			
+			if($dados['operacao'] == 4){
+				$caixa = $this->db->query("SELECT * FROM caixa WHERE `id_caixa` >= ( SELECT `id_caixa` FROM caixa WHERE operacao = 1 ORDER BY id_caixa DESC LIMIT 1)")->result();
+				$cash->operacao =  $dados['operacao'];
+				$cash->valor =  $dados['valor'];
+				$cash->observacao =  $dados['observacao'];
+				array_push($caixa, $cash);
+			
+				printCaixa($caixa, $user['user_session']['nome']);
+			}
+			
 			$this->db->insert('caixa', $dados); 
 			
 			$this->load->view('index',array(
 					'page'=>'caixa'
 					,'title'=> 'Movimento de Caixa'
-					,'part' => 'inserting'
+					,'part' => 'show'
+					,'tabledata'=>$this->db->query("SELECT * FROM caixa WHERE `id_caixa` >= ( SELECT `id_caixa` FROM caixa WHERE operacao = 1 ORDER BY id_caixa DESC LIMIT 1)")->result()
 			));
 			
 			$this->session->set_flashdata('msg', 'Movimenta&ccedil;&atilde;o cadastrado com sucesso.');
