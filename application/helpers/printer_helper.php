@@ -85,7 +85,7 @@ function printComanda($comanda, $username){
 	printer_select_font($handle, $font);
 	if($hasProtudos)
 	printer_draw_text($handle, "Total de Consumo:  ". 'R$ '. monetaryOutput($comanda->valorProdutos) , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Total Geral            :   ".'R$ '.monetaryOutput($comanda->total) , 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Total Geral         :   ".'R$ '.monetaryOutput($comanda->total) , 30, $atualHeigth = $atualHeigth + $line);
 	
 	$atualHeigth+=15;
 	$line = 20;
@@ -101,7 +101,97 @@ function printComanda($comanda, $username){
 	printer_end_doc($handle);
 	
 	closeBematechPrinter($handle);
-	die;
+}
+
+function printCaixa($cashMovmts, $username){
+
+	$handle = openBematechPrinter();
+	
+	printer_start_doc($handle, "Comanda");
+	printer_start_page($handle);
+
+	$line = 40;
+	$atualHeigth = 0;
+
+	// HEADER                                                       <i>     <u>
+	$font = printer_create_font("Calibri", 50, 30, PRINTER_FW_BOLD, false, false, false, 0);
+	printer_select_font($handle, $font);
+	printer_draw_text($handle, "  Pousada Sol Nascente   ", 0, 0);
+
+	$atualHeigth+=25;
+	$line = 20;
+
+	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_MEDIUM, false, false, false, 0);
+	printer_select_font($handle, $font);
+	printer_draw_text($handle, "Av Chanceler Edson Queiroz 3321", 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Data: ".date('d/m/Y H:i') , 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "CNPJ: 40.146.306/0001-75 " , 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Atendente: ".utf8_decode( $username)  , 30, $atualHeigth = $atualHeigth + $line);
+
+	//$atualHeigth-=10;
+	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_BOLD, false, false, false, 0);
+	printer_select_font($handle, $font);
+	printer_draw_text($handle, "____________________________", 30, $atualHeigth = $atualHeigth + $line);
+
+	$line = 30;
+	//*
+	// COMANDA HEADER
+	$font = printer_create_font("Calibri", 30, 30, PRINTER_FW_BOLD, false, false, false, 0);
+	printer_select_font($handle, $font);
+	printer_draw_text($handle, "Fechamento de Caixa ", 30, $atualHeigth = $atualHeigth + $line);
+
+	// LINHA SEPARADORA
+	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_BOLD, false, false, false, 0);
+	printer_select_font($handle, $font);
+	printer_draw_text($handle, "____________________________", 30, $atualHeigth = $atualHeigth + $line);
+
+	// MOVIMENTAÇÕES
+	$atualHeigth += 5;
+	$font = printer_create_font("Calibri", 30, 30, PRINTER_FW_BOLD, false, false, false, 0);
+	printer_select_font($handle, $font);
+	printer_draw_text($handle, "Movimentações", 30, $atualHeigth = $atualHeigth + $line);
+	
+	//*
+	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_MEDIUM, false, true, false, 0);
+	printer_select_font($handle, $font);
+
+	$linelen = 25;
+	
+	foreach($cashMovmts as $cash){
+		$description = utf8_decode($cash->observacao);
+		$fw = PRINTER_FW_MEDIUM;
+		if(empty($description)){
+			if($cash->operacao == 4){
+				$description = "Fechamento de Caixa    ";
+				printer_select_font($handle, $font);
+				$fw = PRINTER_FW_BOLD;
+			}else{
+				 $description ="Mov. sem Descrição     ";				
+			}
+		}
+		
+		$font = printer_create_font("Calibri", 20, 20, $fw, false, true, false, 0);
+		printer_select_font($handle, $font);
+		printer_draw_text($handle, $description.' R$ '. monetaryOutput($cash->valor) , 30, $atualHeigth = $atualHeigth + $line);
+	}
+		
+	$atualHeigth += 5;
+
+	$font = printer_create_font("Calibri", 25, 25, PRINTER_FW_MEDIUM, false, false, false, 0);
+	printer_select_font($handle, $font);
+
+		$atualHeigth+=15;
+		$line = 20;
+		$font = printer_create_font("Calibri", 15, 15, PRINTER_FW_MEDIUM, false, false, false, 0);
+		printer_select_font($handle, $font);
+
+		//*/
+		printer_delete_font($font);
+
+		printer_end_page($handle);
+		printer_end_doc($handle);
+
+		closeBematechPrinter($handle);
 }
 
 function resolveLinha($texto, $len){
