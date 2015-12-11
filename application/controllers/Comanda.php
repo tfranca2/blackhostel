@@ -153,10 +153,10 @@ class Comanda extends CI_Controller {
 		$this->db->where('id_reserva', $id);
 		$this->db->update('reserva', array('id_situacao'=>5));
 		
-				
-		redirect("/comanda");
-		
 		$this->imprimir();
+				
+		$this->index();
+		
 	}
 	
 	public function calcularPreco($id){
