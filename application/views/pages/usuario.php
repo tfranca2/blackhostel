@@ -89,6 +89,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
+		<label><input type="checkbox" name="gerente" id="gerente" /> Gerente</label> 
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+		<label><input type="checkbox" name="admin" id="admin" /> Administrador</label> 
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
 	 <?php
 		echo form_submit(array('name'=>'cadastrar','class' =>'btn btn-success'),'Cadastrar')." ";
 		echo form_reset(array('name'=>'limpar','class' =>'btn btn-danger'),'Limpar');
@@ -127,11 +137,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  ?>
 	</div>
 </div>
+
+<div class="row">
+	<div class="col-md-6 form-group">
+		<label><input type="checkbox" name="gerente" id="gerente" <?php echo ($usuario->gerente)?"checked":""; ?> /> Gerente</label> 
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+		<label><input type="checkbox" name="admin" id="admin" <?php echo ($usuario->admin)?"checked":""; ?> /> Administrador</label> 
+	</div>
+</div>
+
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('Senha');
-		echo form_input(array('name'=>'senha','id'=>'senha','type'=>'password','class'=>'form-control','placeholder'=>'Senha do usuário'),$usuario->senha);
+		echo form_label('Nova Senha');
+		echo form_input(array('name'=>'novasenha','id'=>'novasenha','type'=>'password','class'=>'form-control','placeholder'=>'Nova senha do usuário'),set_value('novasenha'));
+	  ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 form-group">
+	  <?php
+		echo form_label('Confirme a Senha');
+		echo form_input(array('name'=>'confirmenovasenha','id'=>'confirmenovasenha','type'=>'password','class'=>'form-control','placeholder'=>'Confirme a nova senha do usuário'),set_value('confirmenovasenha'));
 	  ?>
 	</div>
 </div>
@@ -155,7 +185,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 	echo form_open('usuario/delete');
 	echo form_hidden('id_usuario', $usuario->id_usuario);
-	echo form_hidden('senha', true);
 ?>
 
 <div class="row">

@@ -67,9 +67,13 @@ class Usuario extends CI_Controller {
 	public function save(){
 		if ($this->runFormValidations() == TRUE){
 			
-			$dados = elements(array('nome','login'),$this->input->post());
+			$dados = elements(array('nome','login','gerente','admin'),$this->input->post());
 			$dados['senha'] = md5($this->input->post('senha'));
 			$this->db->insert('usuario', $dados); 
+			
+			$dados['gerente'] = ( $dados['gerente'] == 'on' )?1:0;
+			$dados['admin'] = ( $dados['admin'] == 'on' )?1:0;
+			
 			
 			$this->load->view('index',array(
 					'page'=>'usuario'
@@ -78,48 +82,41 @@ class Usuario extends CI_Controller {
 			));
 			
 			$this->session->set_flashdata('msg', 'Usuário cadastrado com sucesso.');
-			redirect(current_url());
+			$this->index();
 			
 		}else{
 			$this->inserting();
 		}
 	}
 	
-	public function edit(){
-		if ($this->runFormValidations() == TRUE){
-			
-			// pegar senha antiga
-			// comparar o hash
-			// se a senha for diferente alterar
-			
-			$dados = elements(array('nome','login','senha'),$this->input->post());
-			
-			// $dados['senha'] = md5($this->input->post('senha'));
-			
-			$this->db->where('id_usuario', $this->input->post('id_usuario'));
-			$this->db->update('usuario', $dados); 
-			
-			$this->session->set_flashdata('msg', 'Usuário atualizado com sucesso.');
-			redirect(current_url());
-			
-		}else{
-			$this->editing();
+	public function edit() {
+		$dados = elements(array('nome','login','gerente','admin','novasenha','confirmenovasenha'),$this->input->post());
+		
+		if( strlen($dados['novasenha']) > 0 ) {
+			if( $dados['novasenha'] == $dados['confirmenovasenha'] ) {
+				$dados['senha'] = md5($dados['novasenha']);
+			}
 		}
+		
+		$dados['gerente'] = ( $dados['gerente'] == 'on' )?1:0;
+		$dados['admin'] = ( $dados['admin'] == 'on' )?1:0;
+		
+		unset($dados['novasenha']);
+		unset($dados['confirmenovasenha']);
+		
+		$this->db->where('id_usuario', $this->input->post('id_usuario'));
+		$this->db->update('usuario', $dados); 
+		
+		$this->session->set_flashdata('msg', 'Usuário atualizado com sucesso.');
+		$this->index();
 	}
 	
-	public function delete(){
-		if ($this->runFormValidations() == TRUE){
-			
-			
-			$this->db->where('id_usuario', $this->input->post('id_usuario'));
-			$this->db->delete('usuario'); 
-			
-			$this->session->set_flashdata('msg', 'Usuário deletado com sucesso.');
-			redirect(current_url());
-			
-		}else{
-			$this->deleting();
-		}
+	public function delete() {					
+		$this->db->where('id_usuario', $this->input->post('id_usuario'));
+		$this->db->delete('usuario'); 
+		
+		$this->session->set_flashdata('msg', 'Usuário deletado com sucesso.');
+		$this->index();
 	}
 	
 	private function runFormValidations(){
