@@ -64,6 +64,19 @@ class Reserva_model extends CI_Model {
 		return $this->db->query($sql)->result();
 	}
 	
+	public function getVendasProdutoDia($data = ''){
+		
+		if($data['inicio'] != '' and $data['fim'] == '')
+			$part = "month(r.saida) = month('".dateTimeToUs($data['inicio']) ."')";
+		elseif($data['inicio'] != '' and $data['fim'] != '')
+			$part = "r.saida between '".dateTimeToUs($data['inicio'])."' and '".dateTimeToUs($data['fim']) ."' ";
+		else 
+			$part = "month(r.saida) = month(curdate())"; 
+		
+	$sql = 'SELECT * FROM ( SELECT p.produto, SUM(rp.id_produto) AS quantidade FROM reserva r INNER JOIN reserva_produto rp ON rp.id_reserva = r.id_reserva INNER JOIN produto p ON p.id_produto = rp.id_produto WHERE '.$part.' GROUP BY rp.id_produto ) AS v ORDER BY v.quantidade DESC';
+		return $this->db->query($sql)->result();
+	}
+	
 	public function getTotalClientsPerReservation($idReserva){
 		$sql = 'select (select count(id_cliente) from reserva r where r.id_reserva = '.$idReserva.'
 				) + (select count(id_cliente) from reserva_cliente rc where rc.id_reserva = '.$idReserva.'  ) total';

@@ -165,6 +165,28 @@ $('.calendar').datepicker({
     <?php }?>
 </table>
 
+<hr/>
+<h1>Produtos Mais Vendidos</h1>
+
+<table class="table table-striped table-bordered">
+  <tr class="info">
+    <th>Produto</th>
+    <th>Quantidade</th>
+  </tr>
+  	<?php foreach($produtosVendidos as $prod){ ?>
+	  <tr>
+    	<td><?php echo $prod->produto ?></td>
+    	<td><?php echo $prod->quantidade ?></td>
+  	  </tr>
+    <?php }
+    	if(empty($produtosVendidos)){
+    ?>
+    	<tr>
+    		<td colspan="2">Nenhum registro encontrado.</td>
+  	  	</tr>
+    <?php }?>
+</table>
+
 </div>
 
 <!-- <h1>Faturamentos Diários Gráfico</h1> 

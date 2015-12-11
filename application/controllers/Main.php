@@ -23,6 +23,7 @@ class Main extends CI_Controller {
 					,'data' => $this->reserva->getSumReservationMonths()
 					,'title'=> 'Relatórios'
 					,'faturamentos' => $this->reserva->getResumoFaturamentoDia($data)
+					,'produtosVendidos' => $this->reserva->getVendasProdutoDia($data)
 					,'filtro' => $data
 		));
 	}
