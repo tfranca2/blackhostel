@@ -37,7 +37,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<th>ID</th>
 				<th>Cliente</th>
 				<th>CPF</th>
-				<th>RG</th>
 				<th>Telefone</th>
 				<th>Endereço</th>
 				<th>OBS.</th>
@@ -48,7 +47,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<td><?php echo $cliente->id_cliente ?></td>
 				<td><?php echo $cliente->cliente ?></td>
 				<td><?php echo $cliente->cpf ?></td>
-				<td><?php echo $cliente->rg ?></td>
 				<td><?php echo $cliente->telefone ?></td>
 				<td><?php echo (!empty($cliente->endereco) and !empty($cliente->cep))? $cliente->endereco .' - '.$cliente->cep:''; ?></td>
 				<td><?php echo $cliente->obs ?></td>

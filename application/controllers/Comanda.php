@@ -155,7 +155,7 @@ class Comanda extends CI_Controller {
 		
 		$this->imprimir();
 				
-		$this->index();
+		redirect('/comanda/');
 		
 	}
 	

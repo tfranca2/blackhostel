@@ -114,13 +114,10 @@ class Caixa extends CI_Controller {
 				}
 			}
 			
-			if($dados['operacao'] == 4){
+			if($dados['operacao'] == 4 && !empty($dados)){
 				$caixa = $this->db->query("SELECT * FROM caixa WHERE `id_caixa` >= ( SELECT `id_caixa` FROM caixa WHERE operacao = 1 ORDER BY id_caixa DESC LIMIT 1)")->result();
-				$cash->operacao =  $dados['operacao'];
-				$cash->valor =  $dados['valor'];
-				$cash->observacao =  $dados['observacao'];
+				$cash = (Object) $dados;
 				array_push($caixa, $cash);
-			
 				printCaixa($caixa, $user['user_session']['nome']);
 			}
 			

@@ -166,17 +166,28 @@ $('.calendar').datepicker({
 </table>
 
 <hr/>
-<h1>Produtos Mais Vendidos</h1>
+<h1>Produtos Vendidos</h1>
 
 <table class="table table-striped table-bordered">
   <tr class="info">
-    <th>Data</th>
     <th>Produto</th>
     <th>Quantidade</th>
   </tr>
-  	<?php foreach( $produtosVendidos as $prod ) { ?>
+  	<?php 
+  	
+  	for($i = 0;$i < count($produtosVendidos) ; $i++ ){
+  		$prod = $produtosVendidos[$i];
+  		$data = str_replace("00:00","", dateTimeToBr($prod->data));
+  		$key = ($i != 0)?$i-1:$i;
+  		$dataControle = str_replace("00:00","", dateTimeToBr($produtosVendidos[$key]->data));
+  		
+  		if($i == 0 || $data != $dataControle ){
+  	?>    	
+  	  <tr class="active">
+    	<th colspan="2"> Data: <?php echo $data; ?></th>	
+  	  </tr>
+  	<?php }?>
 	  <tr>
-    	<td><?php echo str_replace("00:00","", dateTimeToBr($prod->data)); ?></td>
     	<td><?php echo $prod->produto; ?></td>
     	<td><?php echo $prod->quantidade; ?></td>
   	  </tr>

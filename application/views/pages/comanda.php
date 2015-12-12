@@ -148,7 +148,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 				<th>Opções</th>
 			</tr>
 			<?php 
-			if( $result->operacao == 1 ) {
+			if(isset($result) and $result->operacao == 1 ) {
 			
 				foreach($tabledata as $comanda){ ?>
 			<tr>
