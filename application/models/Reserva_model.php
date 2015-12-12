@@ -73,7 +73,7 @@ class Reserva_model extends CI_Model {
 		else 
 			$part = "month(r.saida) = month(curdate())"; 
 		
-	$sql = 'SELECT * FROM ( SELECT p.produto, SUM(rp.id_produto) AS quantidade FROM reserva r INNER JOIN reserva_produto rp ON rp.id_reserva = r.id_reserva INNER JOIN produto p ON p.id_produto = rp.id_produto WHERE '.$part.' GROUP BY rp.id_produto ) AS v ORDER BY v.quantidade DESC';
+	$sql = 'SELECT * FROM ( SELECT DATE(r.saida) AS data, p.produto, SUM(rp.id_produto) AS quantidade FROM reserva r INNER JOIN reserva_produto rp ON rp.id_reserva = r.id_reserva INNER JOIN produto p ON p.id_produto = rp.id_produto WHERE '.$part.' GROUP by data, rp.id_produto ) AS v ORDER BY v.data DESC, v.quantidade DESC';
 		return $this->db->query($sql)->result();
 	}
 	

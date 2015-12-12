@@ -151,18 +151,18 @@ $('.calendar').datepicker({
     <th>Data</th>
     <th>Valor</th>
   </tr>
-  	<?php foreach($faturamentos as $fat){ ?>
+  	<?php foreach( $faturamentos as $fat ) { ?>
 	  <tr>
-    	<td><?php echo str_replace("00:00","", dateTimeToBr($fat->data)) ?></td>
-    	<td><?php echo "R$ ". monetaryOutput($fat->valor) ?></td>
+    	<td><?php echo str_replace("00:00","", dateTimeToBr($fat->data)); ?></td>
+    	<td><?php echo "R$ ". monetaryOutput($fat->valor); ?></td>
   	  </tr>
     <?php }
-    	if(empty($faturamentos)){
+    	if( empty($faturamentos) ) {
     ?>
     	<tr>
     		<td colspan="2">Nenhum registro encontrado.</td>
   	  	</tr>
-    <?php }?>
+    <?php } ?>
 </table>
 
 <hr/>
@@ -170,21 +170,23 @@ $('.calendar').datepicker({
 
 <table class="table table-striped table-bordered">
   <tr class="info">
+    <th>Data</th>
     <th>Produto</th>
     <th>Quantidade</th>
   </tr>
-  	<?php foreach($produtosVendidos as $prod){ ?>
+  	<?php foreach( $produtosVendidos as $prod ) { ?>
 	  <tr>
-    	<td><?php echo $prod->produto ?></td>
-    	<td><?php echo $prod->quantidade ?></td>
+    	<td><?php echo str_replace("00:00","", dateTimeToBr($prod->data)); ?></td>
+    	<td><?php echo $prod->produto; ?></td>
+    	<td><?php echo $prod->quantidade; ?></td>
   	  </tr>
     <?php }
-    	if(empty($produtosVendidos)){
+    	if( empty( $produtosVendidos ) ) {
     ?>
     	<tr>
     		<td colspan="2">Nenhum registro encontrado.</td>
   	  	</tr>
-    <?php }?>
+    <?php } ?>
 </table>
 
 </div>
