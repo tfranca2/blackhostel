@@ -1,4 +1,4 @@
-
+﻿
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -29,7 +29,7 @@ $admin = $user['user_session']['admin'];
 	<form action="<?php echo site_url();?>/item/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
-			<input type="text" placeholder="DescriÃ§Ã£o do item" name="descricao" class="form-control"/>
+			<input type="text" placeholder="Descrição do item" name="descricao" class="form-control"/>
 		</div>
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
@@ -46,9 +46,9 @@ $admin = $user['user_session']['admin'];
 		<table class="table table-striped table-bordered table-responsive"> 
 			<tr>
 				<th>ID</th>
-				<th>DescriÃ§Ã£o</th>
-				<th>PreÃ§o</th>
-				<?php if($gerente) { ?><th>OpÃ§Ãµes</th><?php } ?>
+				<th>Descrição</th>
+				<th>Preço</th>
+				<?php if($gerente) { ?><th>Opções</th><?php } ?>
 			</tr>
 			<?php foreach($tabledata as $item){ ?>
 			<tr>
@@ -82,16 +82,16 @@ $admin = $user['user_session']['admin'];
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
-		echo form_label('DescriÃ§Ã£o');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'DescriÃ§Ã£o do item'),set_value('descricao'),'autofocus');
+		echo form_label('Descrição');
+		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'Descrição do item'),set_value('descricao'),'autofocus');
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('PreÃ§o');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'PreÃ§o do item'),set_value('preco'));
+		echo form_label('Preço');
+		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do item'),set_value('preco'));
 	  ?>
 	</div>
 </div>
@@ -122,16 +122,16 @@ $admin = $user['user_session']['admin'];
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
-		echo form_label('DescriÃ§Ã£o');
-		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'DescriÃ§Ã£o do item'),$item->descricao ,'autofocus');
+		echo form_label('Descrição');
+		echo form_input(array('name'=>'descricao','class'=>'form-control','placeholder'=>'Descrição do item'),$item->descricao ,'autofocus');
 	  ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('PreÃ§o');
-		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'PreÃ§o do item'),$item->preco);
+		echo form_label('Preço');
+		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','placeholder'=>'Preço do item'),$item->preco);
 	  ?>
 	</div>
 </div>
@@ -160,7 +160,7 @@ $admin = $user['user_session']['admin'];
 <div class="row">
 	<div class="col-md-6 form-group">		  
 	  <?php
-		echo form_label('DescriÃ§Ã£o');
+		echo form_label('Descrição');
 		echo form_input(array('name'=>'descricao','class'=>'form-control','readonly'=>'readonly'),$item->descricao);
 	  ?>
 	</div>
@@ -168,7 +168,7 @@ $admin = $user['user_session']['admin'];
 <div class="row">
 	<div class="col-md-6 form-group">
 	  <?php
-		echo form_label('PreÃ§o');
+		echo form_label('Preço');
 		echo form_input(array('name'=>'preco','id'=>'preco','class'=>'form-control','readonly'=>'readonly'),$item->preco);
 	  ?>
 	</div>

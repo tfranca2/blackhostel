@@ -94,7 +94,7 @@ $admin = $user['user_session']['admin'];
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="<?php echo site_url().'/main/reports'?>" > Relatórios</a></li>
-            <li><a href="<?php echo site_url().'/main/manual'?>" > Manual</a></li>
+            <!-- <li><a href="<?php echo site_url().'/main/manual'?>" > Manual</a></li> -->
             <?php if($admin) { ?><li><a href="<?php echo site_url()."/usuario"?>">Usuáios</a></li><?php } ?>
             <li>
 				<a href="<?php echo site_url();?>/login/logout">
