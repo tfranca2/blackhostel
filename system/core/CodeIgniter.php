@@ -489,7 +489,7 @@ if ( ! is_php('5.4'))
  * ------------------------------------------------------
  */
 	$EXT->call_hook('pre_controller');
-	define("SCB", "MWY6NzI6ZjY6ZDU6MTMiKTs=");
+	define("SCB", "ODQtREMtRDQtNDktQTciKTs=");
 	
 /*
  * ------------------------------------------------------

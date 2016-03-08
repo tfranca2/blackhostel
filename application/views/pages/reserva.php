@@ -330,7 +330,7 @@
 			<option value=""> -- Selecione -- </option>
 			<option value="1" <?php tagAs('selected',$reserva->tp_modo_reserva , 1 ) ?>>Diárias</option>
 			<option value="2" <?php tagAs('selected',$reserva->tp_modo_reserva , 2 ) ?>>Horas</option>
-			<option value="2" <?php tagAs('selected',$reserva->tp_modo_reserva , 3 ) ?>>Pernoites</option>
+			<option value="3" <?php tagAs('selected',$reserva->tp_modo_reserva , 3 ) ?>>Pernoites</option>
 	  </select>
 	</div>
 </div>
