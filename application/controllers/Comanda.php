@@ -109,6 +109,8 @@ class Comanda extends CI_Controller {
 			$permanencia = ((!$result->dias)?1:$result->dias).' Diária(s)';
 		} elseif( $result->tipo == 2 ){
 			$permanencia = $result->horas.':'.$result->minutos.' Hrs';
+		} elseif( $result->tipo == 3 ){
+			$permanencia = ((!$result->dias)?1:$result->dias).' Pernoite(s)';
 		}
 		
 		//fazer lista de produtos para a view

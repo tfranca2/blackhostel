@@ -97,7 +97,7 @@ function calcularPrecoQuarto($resumoReserva, $diarias, $precoPerfil){
  */
 function calculoPernoite($diarias, $precoPerfil, $resumoReserva) {
 	// tolerancia 
-	if( $resumoReserva->horas>=22 and $resumoReserva->minutos>30 ){
+	if( $resumoReserva->horaDia>=10 and $resumoReserva->minutos>30 ){
 		$precoQuarto = $precoPerfil*($diarias+1);
 	}else{
 		$precoQuarto = $precoPerfil*$diarias;
@@ -110,13 +110,19 @@ function calculoPernoite($diarias, $precoPerfil, $resumoReserva) {
  */
 function calculoHora($precoPerfil, $resumoReserva) {
 	// TOLERANCIAS
-	if( $resumoReserva->minutos>30 ){
-		$precoQuarto = $precoPerfil*($resumoReserva->horas+1);
-	}elseif( $resumoReserva->minutos>15 ){
-		$precoQuarto = $precoPerfil*($resumoReserva->horas+0.5);		
-	}else{
+	if( $resumoReserva->horas == 0 ) {
+		$resumoReserva->horas = 1;
 		$precoQuarto = $precoPerfil*$resumoReserva->horas;
+	} else {
+		if( $resumoReserva->minutos>30 ){
+			$precoQuarto = $precoPerfil*($resumoReserva->horas+1);
+		}elseif( $resumoReserva->minutos>15 ){
+			$precoQuarto = $precoPerfil*($resumoReserva->horas+0.5);		
+		}else{
+			$precoQuarto = $precoPerfil*$resumoReserva->horas;
+		}
 	}
+	
 	return $precoQuarto;
 }
 
