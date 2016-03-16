@@ -144,16 +144,20 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 			<tr>
 				<th>Cod. Reserva</th>
 				<th>Quarto</th>
+				<th>Entrada</th>
+				<th>Saída (Prévia)</th>
 				<th>Tipo</th>
 				<th>Opções</th>
 			</tr>
 			<?php 
-			if( $result->operacao == 1 ) {
+			if(isset($result) and $result->operacao == 1 ) {
 			
 				foreach($tabledata as $comanda){ ?>
 			<tr>
 				<td><?php echo $comanda->id_reserva ?></td>
 				<td><?php echo $comanda->perfil." - Nº ".$comanda->numero; ?></td>
+				<td><?php echo dateTimeToBr( $comanda->entrada ) ?></td>
+				<td><?php echo dateTimeToBr( $comanda->saida ) ?></td>
 				<td><?php 
 					if ($comanda->tipo ==1){
 						echo 'Diária';

@@ -7,7 +7,8 @@ $operacoes = array (
 					5 => "Venda",
 					3 => "Ressuprimento",
 					6 => "Compra",
-					4 => "Fechamento de Caixa"
+					4 => "Fechamento de Caixa",
+					0 => "Venda Avulso"
 				);
 				
 ?>
@@ -31,14 +32,32 @@ $operacoes = array (
 <script>
 	$(document).ready(function(){
 		$('#valor').mask('000.000.000.000.000,00', {reverse: true});
+
 		
 		$('label > input').click( function( event ){
+
+			$('.produtos').hide();
 			if( event.target.value == 1 || event.target.value == 4 ){
 				$('#valor').val("");
 				$('#valor').attr("disabled", "disabled");
-			} else {
+			}else if(event.target.value == 0 && $(this).is(':checked')){
+				$('.produtos').show();
+				$('#valor').val("");
+				$('#valor').attr("readonly", "true");
+			}else {
 				$('#valor').removeAttr("disabled");
 			}
+		});
+
+		
+
+		$('#newproduto').click( function( event ){
+			console.log($('#newproduto option:selected').attr('valor'))
+			
+			$('#valor').val($('#newproduto option:selected').attr('valor'));
+			$('#observacao').val($('#newproduto option:selected').attr('desc'));
+			
+			
 		});
 		
 	});
@@ -151,8 +170,22 @@ $operacoes = array (
 			echo "<label>".form_radio('operacao', $chave, false).$valor."</label><br/>";
 		}
 	  ?>
-	  
 	</div>
+</div>
+<div class="row">	
+	
+	<div class="col-md-4 form-group produtos" style="display:none;" >
+  		<label>Produto</label>
+		  <select class="form-control" id="newproduto" name="id_produto" >
+		  	<option value=""> -- Selecione -- </option>
+		  	<?php foreach ($produtos as $produto){?>
+	  		<option value="<?php echo $produto->id_produto?>" 
+	  			valor="<?php echo monetaryOutput($produto->preco) ?>"
+	  			desc="<?php echo $produto->produto ?>"
+	  			> <?php echo $produto->produto.' - R$ '.monetaryOutput( $produto->preco) ?> </option>	
+	  	<?php }?>
+	  </select>
+	  </div>
 </div>
 <div class="row">
 	<div class="col-md-6 form-group">

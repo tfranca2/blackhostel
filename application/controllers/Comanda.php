@@ -25,6 +25,8 @@ class Comanda extends CI_Controller {
 		
 		$sql = "SELECT 
 					re.id_reserva ,
+					re.entrada,
+					re.saida,
 					qt.numero ,
 					pf.descricao as perfil ,
 					pf.tp_modo_reserva AS tipo ,
@@ -73,6 +75,13 @@ class Comanda extends CI_Controller {
 	}
 	
 	public function detail(){
+		$id = (int) $this->uri->segment(3);
+		
+		$dados['saida'] = dateTimeToUs(date('Y-m-d H:i:s'));
+			
+		$this->db->where('id_reserva', $id);
+		$this->db->update('reserva', $dados);
+		
 		echo ($this->buildDetail());
 	}
 		
@@ -103,6 +112,7 @@ class Comanda extends CI_Controller {
 		$quarto = $result->numero;
 		$perfil = $result->perfil;
 		$entrada = $result->entrada;
+		$saida = date('Y-m-d H:i:s');
 		$saida = $result->saida;
 		$ocupantes = $this->reserva->getTotalClientsPerReservation($id)->total;
 		if( $result->tipo == 1 ){
@@ -157,7 +167,7 @@ class Comanda extends CI_Controller {
 		
 		$this->imprimir();
 				
-		$this->index();
+		redirect('/comanda/');
 		
 	}
 	

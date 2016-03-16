@@ -66,14 +66,38 @@ class Reserva_model extends CI_Model {
 	
 	public function getVendasProdutoDia($data = ''){
 		
-		if($data['inicio'] != '' and $data['fim'] == '')
-			$part = "month(r.saida) = month('".dateTimeToUs($data['inicio']) ."')";
-		elseif($data['inicio'] != '' and $data['fim'] != '')
-			$part = "r.saida between '".dateTimeToUs($data['inicio'])."' and '".dateTimeToUs($data['fim']) ."' ";
-		else 
-			$part = "month(r.saida) = month(curdate())"; 
+		if($data['inicio'] != '' and $data['fim'] == ''){
+			$part1 = "month(r.saida) = month('".dateTimeToUs($data['inicio']) ."')";
+			$part2 = "month(r.data) = month('".dateTimeToUs($data['inicio']) ."')";
+		}elseif($data['inicio'] != '' and $data['fim'] != ''){
+			$part1 = "r.saida between '".dateTimeToUs($data['inicio'])."' and '".dateTimeToUs($data['fim']) ."' ";
+			$part2 = "r.data between '".dateTimeToUs($data['inicio'])."' and '".dateTimeToUs($data['fim']) ."' ";
+		}else{ 
+			$part1 = "month(r.saida) = month(curdate())";
+			$part2 = "month(r.data) = month(curdate())";
+		} 
 		
-	$sql = 'SELECT * FROM ( SELECT DATE(r.saida) AS data, p.produto, SUM(rp.id_produto) AS quantidade FROM reserva r INNER JOIN reserva_produto rp ON rp.id_reserva = r.id_reserva INNER JOIN produto p ON p.id_produto = rp.id_produto WHERE '.$part.' GROUP by data, rp.id_produto ) AS v ORDER BY v.data DESC, v.quantidade DESC';
+	$sql = 'SELECT * FROM (
+				SELECT 
+					DATE(r.saida) AS data
+				  , p.produto
+			      , count(rp.id_produto) AS quantidade 
+				FROM reserva r 
+				INNER JOIN reserva_produto rp ON rp.id_reserva = r.id_reserva and rp.ativo = 1
+				INNER JOIN produto p ON p.id_produto = rp.id_produto 
+				WHERE '.$part1.' GROUP by data, rp.id_produto 
+				
+				union all
+
+        		SELECT 
+					DATE(r.data) AS data
+				  , p.produto
+			    , count(r.id_produto) AS quantidade 
+				FROM caixa r 
+				INNER JOIN produto p ON p.id_produto = r.id_produto 
+				WHERE '.$part2.' GROUP by data, r.id_produto
+						
+			) AS v ORDER BY v.data asc, v.quantidade DESC';
 		return $this->db->query($sql)->result();
 	}
 	
