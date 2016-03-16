@@ -34,7 +34,9 @@ class Caixa extends CI_Controller {
 		$this->load->view('index', array(
 					'page'=>'caixa'
 					,'title'=> 'Movimento de Caixa'
-					,'part' => 'inserting'));
+					,'part' => 'inserting'
+					,'produtos' => $this->db->get('produto')->result()				
+					));
 	}
 	
 	public function editing(){
@@ -69,7 +71,7 @@ class Caixa extends CI_Controller {
 			$id_usuario = $user['user_session']['id_usuario'];
 			$data = date("Y-m-d H:i:s");
 			
-			$dados = elements(array('operacao','valor','observacao'),$this->input->post());
+			$dados = elements(array('operacao','valor','observacao','id_produto'),$this->input->post());
 			$dados['id_usuario'] = $id_usuario;
 			$dados['data'] = $data;
 			$dados['valor'] = monetaryInput($dados['valor']);
@@ -118,11 +120,22 @@ class Caixa extends CI_Controller {
 				$caixa = $this->db->query("SELECT * FROM caixa WHERE `id_caixa` >= ( SELECT `id_caixa` FROM caixa WHERE operacao = 1 ORDER BY id_caixa DESC LIMIT 1)")->result();
 				$cash = (Object) $dados;
 				array_push($caixa, $cash);
-				printCaixa($caixa, $user['user_session']['nome']);
+				//printCaixa($caixa, $user['user_session']['nome']);
 			}
 			
-			$this->db->insert('caixa', $dados); 
+			$this->db->insert('caixa', $dados);
 			
+			// debitando do estoque do produto
+			if($this->input->post('id_produto') > 0){
+	
+				// selecionando o estoque do produto
+				$this->db->select('estoque');
+				$this->db->where('id_produto', $this->input->post('id_produto'));
+				$produto = $this->db->get('produto')->result();
+					
+				$this->db->where('id_produto', $this->input->post('id_produto'));
+				$this->db->update('produto', array('estoque'=> $produto[0]->estoque-1 ));
+			}
 			$this->load->view('index',array(
 					'page'=>'caixa'
 					,'title'=> 'Movimento de Caixa'

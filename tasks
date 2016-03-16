@@ -1,0 +1,2 @@
+adicionar campo id_produto na tabela de caixa
+	ALTER TABLE `caixa` ADD `id_produto` INT(99) NOT NULL AFTER `id_usuario`;
