@@ -74,10 +74,10 @@ $active_group = 'remote';
 $query_builder = TRUE;
 
 $db['remote'] = array(
-		'dsn'	=> 'https://127.2.230.2:3306',
-		'hostname' => 'https://127.2.230.2:3306',
-		'username' => 'admin78f3El7',
-		'password' => 'bYWnzik5Affs',
+		'dsn'	=> '',
+		'hostname' => '',
+		'username' => '',
+		'password' => '',
 		'database' => 'blackhostel',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
