@@ -74,10 +74,10 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['remote'] = array(
-		'dsn'	=> 'www.db4free.net',
-		'hostname' => 'www.db4free.net',
-		'username' => 'blackhostel',
-		'password' => 'blackhostel',
+		'dsn'	=> '',
+		'hostname' => '',
+		'username' => '',
+		'password' => '',
 		'database' => 'blackhostel',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
