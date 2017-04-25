@@ -36,8 +36,38 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 					url: $(this).attr('href'),
 					type: 'GET',
 					success: function(data){
-						obj = JSON.parse(data);
-						abreModal( obj );
+						obj = JSON.parse(data);	
+						$('#reserva').val(obj.id);
+						$('#numero').val(obj.numero);
+						$('#perfil').val(obj.perfil);
+						$('#entrada').val(obj.entrada);
+						$('#saida').val(obj.saida);
+						$('#ocupantes').val(obj.ocupantes);
+						$('#permanencia').val(obj.permanencia);
+						$('#precoPerfil').val(obj.precoPerfil);
+						$('#precoQuarto').val(obj.precoQuarto);
+						$('#valorProdutos').val(obj.valorProdutos);
+						$('#total').val(obj.total);
+						
+						$('.print').attr('href', '<?php echo site_url();?>/comanda/imprimir/'+obj.id);
+						$('.finalizar').attr('href', '<?php echo site_url();?>/comanda/finalizar/'+obj.id);
+						
+						$('#produtos').empty();
+
+						$('#produtos').append('<tr><th>Produto</th><th>Valor</th><?php if($gerente) { ?><th>Opções</th><?php } ?></tr>');
+						
+						if(obj.produtos.length > 0){
+							$.each(obj.produtos, function(i,produto) {
+								$('#produtos').append( 
+							'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> <?php if($gerente) { ?> <td> <a href="<?php echo site_url();?>/reserva/remover/'+produto.id_reserva_produto+' " class="btn btn-danger btn-sm remove-produto">Remover <span class="glyphicon glyphicon-remove"></span></a> </td> <?php } ?> </tr>'
+								); 
+							});
+						}else{
+							$('#produtos').empty();
+							$('#produtos').append('<div class="alert alert-success">Nenhum produto adicionado a essa comanda.</div>');
+						}				
+
+						$('#myModal').modal('show');
 					}
 				});
                         return false;
@@ -87,67 +117,11 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 		});
 		
 	});
-
-	
-	function abreModal( obj ) {
-		$('#reserva').val(obj.id);
-		$('#numero').val(obj.numero);
-		$('#perfil').val(obj.perfil);
-		$('#entrada').val(obj.entrada);
-		$('#saida').val(obj.saida);
-		$('#ocupantes').val(obj.ocupantes);
-		$('#permanencia').val(obj.permanencia);
-		$('#precoPerfil').val(obj.precoPerfil);
-		$('#precoQuarto').val(obj.precoQuarto);
-		$('#valorProdutos').val(obj.valorProdutos);
-		$('#total').val(obj.total);
-		
-		$('.print').attr('href', '<?php echo site_url();?>/comanda/imprimir/'+obj.id);
-		$('.finalizar').attr('href', '<?php echo site_url();?>/comanda/finalizar/'+obj.id);
-		
-		$('#produtos').empty();
-
-		$('#produtos').append('<tr><th>Produto</th><th>Valor</th><?php if($gerente) { ?><th>Opções</th><?php } ?></tr>');
-		
-		if(obj.produtos.length > 0){
-			$.each(obj.produtos, function(i,produto) {
-				$('#produtos').append( 
-			'<tr> <td>'+produto.produto+'</td> <td> R$ '+produto.preco+'</td> <?php if($gerente) { ?> <td> <a href="<?php echo site_url();?>/reserva/remover/'+produto.id_reserva_produto+' " class="btn btn-danger btn-sm remove-produto">Remover <span class="glyphicon glyphicon-remove"></span></a> </td> <?php } ?> </tr>'
-				); 
-			});
-		}else{
-			$('#produtos').empty();
-			$('#produtos').append('<div class="alert alert-success">Nenhum produto adicionado a essa comanda.</div>');
-		}				
-
-		$('#myModal').modal('show');
-	}
-
-	function detalhes( id ){
-		$.ajax({
-			url: "<?php echo site_url();?>/comanda/detail/" + id ,
-			type: 'GET',
-			success: function(data){
-				obj = JSON.parse(data);
-				abreModal( obj );
-			}
-		});
-        return false;
-	}
 </script>
 <style>
 .modal-dialog {
     width: 830px;
     margin: 30px auto;
-}
-
-.mesas {
-	border: 1px solid #ccc; 
-	display: line; 
-	height: 100px; 
-	line-height: 4;  
-	text-align: center; 
-	width: 100px;
 }
 </style>
 <?php
@@ -157,7 +131,7 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 	<form action="<?php echo site_url();?>/comanda/searching">
 	<div class="row">
 		<div class="col-md-5 form-group">
-			<input type="text" placeholder="Número da mesa" name="numero" class="form-control" />
+			<input type="text" placeholder="Numero do quarto" name="numero" class="form-control" />
 		</div>
 		<div class="col-md-5 form-group">
 			<input type="submit" name="submit" value="Buscar" class="btn btn-success">
@@ -166,25 +140,46 @@ $result = $this->db->query("SELECT operacao FROM caixa WHERE id_caixa = (SELECT 
 	</form>
 	<div class="row">
 		<div class="large-12 columns">
-			<fieldset>
-				<legend>COPA</legend>
-				<?php 
-					if( isset($result) and $result->operacao == 1 ) {
-						foreach( $tabledata as $comanda ) {
-							$hora = explode( " ", $comanda->entrada );
-				?>
-				<div class="mesas" onclick="javascript:detalhes( <?php echo $comanda->id_reserva; ?> )" >
-					<span class="glyphicon glyphicon-search"></span>
-					Mesa nº <strong><?php echo $comanda->numero ?></strong>
-					<br/><sub><?php echo substr( $hora[1], 0, 5 ); ?></sub>
-				</div>
-				<?php
-						}
-					} else {
-						echo '<table class="table table-striped table-bordered"><tr><td colspan="4">É necessário realizar a abertura de caixa para gerenciar as comandas</td></tr></table>';
-					}
-				?>
-			</fieldset>	
+		<table class="table table-striped table-bordered"> 
+			<tr>
+				<th>Cod. Reserva</th>
+				<th>Quarto</th>
+				<th>Entrada</th>
+				<th>Saída (Prévia)</th>
+				<th>Tipo</th>
+				<th>Opções</th>
+			</tr>
+			<?php 
+			if(isset($result) and $result->operacao == 1 ) {
+			
+				foreach($tabledata as $comanda){ ?>
+			<tr>
+				<td><?php echo $comanda->id_reserva ?></td>
+				<td><?php echo $comanda->perfil." - Nº ".$comanda->numero; ?></td>
+				<td><?php echo dateTimeToBr( $comanda->entrada ) ?></td>
+				<td><?php echo dateTimeToBr( $comanda->saida ) ?></td>
+				<td><?php 
+					if ($comanda->tipo ==1){
+						echo 'Diária';
+					}elseif($comanda->tipo ==2){
+						echo 'Hora';
+					}elseif($comanda->tipo ==3){
+						echo 'Pernoite';
+					} 
+				?></td>
+				<td>
+					<a href="<?php echo site_url();?>/comanda/detail/<?php  echo $comanda->id_reserva ?>" class="btn btn-default btn-sm detail">Detalhar 
+						<span class="glyphicon glyphicon-search"></span>
+					</a>
+				</td>
+			</tr>
+			<?php } 
+			} else {  ?>
+				<tr>
+					<td colspan="4">É necessário realizar a abertura de caixa para gerenciar as comandas</td>
+				</tr>
+			<?php } ?>
+		</table> 
 		</div>
 	</div>
 	

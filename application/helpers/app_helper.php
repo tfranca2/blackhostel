@@ -70,6 +70,15 @@ function extractValues($data, $tipo){
 	return rtrim($values,', ');
 }
 
+function number_pad($numero,$tamanho) {
+    return str_pad((string) $numero,$tamanho," ",STR_PAD_LEFT);
+}
+
+function tiraAcento( $str ) {
+    return strtr(utf8_decode($str),utf8_decode('ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
+}
+
+
 function descModoReserva($id){
 	if($id ==1){
 		return 'Diárias';

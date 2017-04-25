@@ -18,6 +18,7 @@ class Comanda extends CI_Controller {
 		$this->load->model('Perfil_model','perfil');
 		$this->load->model('Reserva_model','reserva');
 		$this->load->model('Comanda_model','comanda');
+		$this->load->model('Bematech_model','impressora');
 		$this->login->authorize();
     }
 	 
@@ -206,6 +207,60 @@ class Comanda extends CI_Controller {
 	public function imprimir(){
 		$user = $this->session->get_userdata();
 		$username = $user['user_session']['nome'];
-		printComanda(json_decode($this->buildDetail()), $username);
-	}
+		$comanda = json_decode($this->buildDetail());
+
+//		var_dump($comanda);
+
+        $this->impressora->conecta('192.168.9.100');
+
+        $this->impressora->alinha("center");
+
+        $this->impressora->escreve(
+            $this->impressora->expandeTexto(
+                $this->impressora->italico( "Pousada Sol Nascente" )
+            )
+        );
+
+        $this->impressora->escreve( "Av. Chanceler Edson Queiroz, 3321\nCohab, Cascavel - CE" );
+        $this->impressora->escreve( "Tel.: (85) 9 8765-4321 - CNPJ.: 40.146.306/0001-75" );
+        $this->impressora->escreve( date("d/m/Y H:i")
+            . str_pad( "Atend.: ". strtoupper( tiraAcento( $username ) ),34,' ',STR_PAD_LEFT) );
+
+        $this->impressora->escreve(
+            $this->impressora->negrito( "\nSEM VALOR FISCAL / NAO COMPROVA PAGAMENTO\n" )
+        );
+        $this->impressora->escreve( " Mesa ".$comanda->numero."                    Permanencia: ". $comanda->permanencia );
+        $this->impressora->escreve( "Comanda ".$comanda->id
+//            .$this->impressora->geraCodigoDeBarras( $comanda->id )
+        );
+
+        $this->impressora->alinha("left");
+
+        $this->impressora->escreve( $this->impressora->sublinha( "ITEM DESCRICAO        QTD  VL. ITEM    SUB TOTAL " ));
+
+        $couvert = 15.00;
+        $soma = 0;
+        $i = 0;
+        foreach( $comanda->produtos as $produto ) {
+            $i++;
+            $this->impressora->escreve( str_pad($i,2,'0',STR_PAD_LEFT)." - ".str_pad( strtoupper( tiraAcento( $produto->produto ) ) ,15,' ')."  ".str_pad('1',2,'0',STR_PAD_LEFT)."   R$ ". number_pad( monetaryOutput( $produto->preco ), 6 ) ."   R$ ". number_pad( monetaryOutput( $produto->preco ), 8 )  );
+            $soma += $produto->preco;
+        }
+        $this->impressora->escreve( $this->impressora->sublinha( "                                                  " ) );
+        $this->impressora->escreve( "Total consumo:                         R$ ". number_pad( monetaryOutput( $soma ), 8 ) );
+        $this->impressora->escreve( "Taxa de Atendimento (10%):             R$ ".number_pad(monetaryOutput( $soma*0.1), 8 ) );
+        $this->impressora->escreve( "Couvert Artistico:    ".str_pad($comanda->ocupantes,2,'0',STR_PAD_LEFT)."   R$ ".number_pad( monetaryOutput( $couvert ), 5 )."    R$ ". number_pad(monetaryOutput( $couvert*$comanda->ocupantes), 8 ) );
+        $this->impressora->escreve(
+            $this->impressora->negrito(
+                $this->impressora->sublinha( "Valor a Pagar:                         R$ ".number_pad(monetaryOutput(  $soma + ($soma*0.1) + ($couvert*$comanda->ocupantes) ), 8 ) )
+            )
+        );
+
+        $this->impressora->alinha("center");
+        $this->impressora->escreve( "\nObrigado pela preferencia.\nVOLTE SEMPRE!" );
+//        $this->impressora->escreve( "Visite nosso site!".$this->impressora->geraQrCode( 'http://www.pousadasolnascente.com.br/' ) );
+        $this->impressora->corta();
+        $this->impressora->desconecta();
+
+    }
 }

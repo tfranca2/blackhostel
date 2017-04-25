@@ -115,19 +115,29 @@ $admin = $user['user_session']['admin'];
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-			<li class="<?php echo styleMenuActive('cliente') ?>">
+			<li class="<?php echo styleMenuActive('cliente') ?>" style="display: none;" >
 				<a href="<?php echo site_url()."/cliente"?>">
 				<span class="glyphicon glyphicon-user" aria-hidden="true"></span> Clientes 
 				</a>
 			</li>
-		    <li class="<?php echo styleMenuActive('reserva') ?>">
+		    <li class="<?php echo styleMenuActive('reserva') ?>" style="display: none;" >
 				<a href="<?php echo site_url()."/reserva"?>">
 					<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Reservas
+				</a>
+			</li>
+			<li class="<?php echo styleMenuActive('mesa') ?>">
+				<a href="<?php echo site_url()."/mesa"?>"> 
+					<span class="glyphicon glyphicon-lamp" aria-hidden="true"></span> Mesas 
 				</a>
 			</li>
 			<li class="<?php echo styleMenuActive('comanda') ?>">
 				<a href="<?php echo site_url()."/comanda"?>">
 					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Comandas
+				</a>
+			</li>
+			<li class="<?php echo styleMenuActive('produto') ?>">
+				<a href="<?php echo site_url()."/produto"?>">
+					<span class="glyphicon glyphicon-glass" aria-hidden="true"></span> Produtos 
 				</a>
 			</li>
 			<li class="<?php echo styleMenuActive('estoque') ?>">
@@ -137,12 +147,21 @@ $admin = $user['user_session']['admin'];
 			</li>
 			<li class="<?php echo styleMenuActive('caixa') ?>">
 				<a href="<?php echo site_url()."/caixa"?>">
-					<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Movimento de Caixa
+					<span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Caixa
 				</a>
 			</li>
 		  </ul>
 		  
+		  
           <ul class="nav nav-sidebar">
+            <li class="<?php echo styleMenuActive('impressora') ?>">
+				<a href="<?php echo site_url()."/impressora"?>">
+					<span class="glyphicon glyphicon-print" aria-hidden="true"></span> Impressoras
+				</a>
+			</li>
+          </ul>
+		  
+          <ul class="nav nav-sidebar" style="display: none;" >
             <li class="<?php echo styleMenuActive('item') ?>">
 				<a href="<?php echo site_url()."/item"?>">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Itens
@@ -151,11 +170,6 @@ $admin = $user['user_session']['admin'];
 			<li class="<?php echo styleMenuActive('perfil') ?>">
 				<a href="<?php echo site_url()."/perfil"?>">
 					<span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Perfis
-				</a>
-			</li>
-			<li class="<?php echo styleMenuActive('produto') ?>">
-				<a href="<?php echo site_url()."/produto"?>">
-					<span class="glyphicon glyphicon-glass" aria-hidden="true"></span> Produtos 
 				</a>
 			</li>
 			<li class="<?php echo styleMenuActive('quarto') ?>">

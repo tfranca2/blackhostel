@@ -1,59 +1,48 @@
 <?php
 
+
+
 function printComanda($comanda, $username){
-	
+
+//     var_dump($comanda);
+
+//    $socket =  fsockopen( '192.168.9.100',9100, $errno, $errstr, 1 );
+//    fwrite( $socket, chr(27)."@" );
+//    fwrite( $socket, "texto de teste".chr(10) );
+//    fwrite( $socket, chr(27)."m" );
+//    fclose( $socket );
+
+    $bema = new Bematech();
+    $bema->conecta('192.168.9.100');
+    $bema->escreve("Texto de teste");
+//    $bema->corta();
+    $bema->desconecta();
+
+    /*/
 	$hasProtudos = count( $comanda->produtos) > 0;
 	$handle = openBematechPrinter();
 	
 	printer_start_doc($handle, "Comanda");
 	printer_start_page($handle);
 	
-	$line = 40;
 	$atualHeigth = 0;
 	
-	// HEADER                                                       <i>     <u>
-	$font = printer_create_font("Calibri", 50, 30, PRINTER_FW_BOLD, false, false, false, 0);
-	printer_select_font($handle, $font);
-	printer_draw_text($handle, "  Pousada Sol Nascente   ", 0, 0);
-	
-	$atualHeigth+=25;
-	$line = 20;
-	
-	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_MEDIUM, false, false, false, 0);
-	printer_select_font($handle, $font);
-	printer_draw_text($handle, "Av Chanceler Edson Queiroz 3321", 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Data: ".date('d/m/Y H:i') , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "CNPJ: 40.146.306/0001-75 " , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Atendente: ".utf8_decode( $username)  , 30, $atualHeigth = $atualHeigth + $line);
-	
-	//$atualHeigth-=10;
-	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_BOLD, false, false, false, 0);
-	printer_select_font($handle, $font);
-	printer_draw_text($handle, "____________________________", 30, $atualHeigth = $atualHeigth + $line);
+	$atualHeigth = cabecalho( $handle, $atualHeigth );
 	
 	$line = 30;
-	//*
+	
 	// COMANDA HEADER
 	$font = printer_create_font("Calibri", 30, 30, PRINTER_FW_BOLD, false, false, false, 0);
 	printer_select_font($handle, $font);
 	printer_draw_text($handle, "Comanda: ". $comanda->id, 30, $atualHeigth = $atualHeigth + $line);
 	
-	// LINHA SEPARADORA
-	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_BOLD, false, false, false, 0);
-	printer_select_font($handle, $font);
-	printer_draw_text($handle, "____________________________", 30, $atualHeigth = $atualHeigth + $line);
-	
-	
-	$font = printer_create_font("Calibri", 30, 30, PRINTER_FW_BOLD, false, false, false, 0);
-	printer_select_font($handle, $font);
-	printer_draw_text($handle, "Reserva", 30, $atualHeigth = $atualHeigth + $line);
-	//*
+	$atualHeigth = linhaSeparadora( $handle, $atualHeigth, $line );
+
  	$font = printer_create_font("Calibri", 25, 25, PRINTER_FW_MEDIUM, false, false, false, 0);
  	printer_select_font($handle, $font);
-	printer_draw_text($handle, "Entrada: ".$comanda->entrada , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Saída    : ".$comanda->saida, 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Quarto : ".$comanda->numero.' '.$comanda->perfil, 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Permanência : ".utf8_decode($comanda->permanencia), 30, $atualHeigth = $atualHeigth + $line);
+
+ 	printer_draw_text($handle, "Mesa : ".$comanda->numero, 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "PermanÃªncia : ".utf8_decode($comanda->permanencia), 30, $atualHeigth = $atualHeigth + $line);
 	
 	
 	if($hasProtudos){
@@ -62,8 +51,7 @@ function printComanda($comanda, $username){
 		$font = printer_create_font("Calibri", 30, 30, PRINTER_FW_BOLD, false, false, false, 0);
 		printer_select_font($handle, $font);
 		printer_draw_text($handle, "Consumo", 30, $atualHeigth = $atualHeigth + $line);
-		
-		//*
+
 		$font = printer_create_font("Calibri", 25, 25, PRINTER_FW_MEDIUM, false, true, false, 0);
 		printer_select_font($handle, $font);
 	
@@ -81,26 +69,29 @@ function printComanda($comanda, $username){
 	printer_draw_text($handle, "Totais", 30, $atualHeigth = $atualHeigth + $line);
 	
 	
-	$font = printer_create_font("Calibri", 25, 25, PRINTER_FW_MEDIUM, false, false, false, 0);
-	printer_select_font($handle, $font);
-	if($hasProtudos)
-	printer_draw_text($handle, "Total de Consumo:  ". 'R$ '. monetaryOutput($comanda->valorProdutos) , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Total Geral         :   ".'R$ '.monetaryOutput($comanda->total) , 30, $atualHeigth = $atualHeigth + $line);
+	
+	$font = printer_create_font( "Calibri", 25, 25, PRINTER_FW_MEDIUM, false, false, false, 0 );
+	printer_select_font( $handle, $font );
+	if( $hasProtudos )
+	printer_draw_text( $handle, "Total de Consumo:           R$ ". monetaryOutput( $comanda->valorProdutos ), 30, $atualHeigth = $atualHeigth + $line );
+	printer_draw_text( $handle, "Taxa de Atend. (10%):       R$ ". monetaryOutput( $comanda->total ), 30, $atualHeigth = $atualHeigth + $line );
+	printer_draw_text( $handle, "Total Geral:                R$ ". monetaryOutput( $comanda->total ), 30, $atualHeigth = $atualHeigth + $line );
 	
 	$atualHeigth+=15;
 	$line = 20;
 	$font = printer_create_font("Calibri", 15, 15, PRINTER_FW_MEDIUM, false, false, false, 0);
 	printer_select_font($handle, $font);
-	printer_draw_text($handle, "OBS: Esse cupom não possui valor fiscal nem", 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "OBS: Esse cupom nÃ£o possui valor fiscal nem", 30, $atualHeigth = $atualHeigth + $line);
 	printer_draw_text($handle, "comprova pagamentos.", 30, $atualHeigth = $atualHeigth + $line);
 	
-	//*/
 	printer_delete_font($font);
 	
 	printer_end_page($handle);
 	printer_end_doc($handle);
 	
 	closeBematechPrinter($handle);
+
+	//*/
 }
 
 function printCaixa($cashMovmts, $username){
@@ -110,46 +101,24 @@ function printCaixa($cashMovmts, $username){
 	printer_start_doc($handle, "Comanda");
 	printer_start_page($handle);
 
-	$line = 40;
 	$atualHeigth = 0;
-
-	// HEADER                                                       <i>     <u>
-	$font = printer_create_font("Calibri", 50, 30, PRINTER_FW_BOLD, false, false, false, 0);
-	printer_select_font($handle, $font);
-	printer_draw_text($handle, "  Pousada Sol Nascente   ", 0, 0);
-
-	$atualHeigth+=25;
-	$line = 20;
-
-	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_MEDIUM, false, false, false, 0);
-	printer_select_font($handle, $font);
-	printer_draw_text($handle, "Av Chanceler Edson Queiroz 3321", 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Data: ".date('d/m/Y H:i') , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "CNPJ: 40.146.306/0001-75 " , 30, $atualHeigth = $atualHeigth + $line);
-	printer_draw_text($handle, "Atendente: ".utf8_decode( $username)  , 30, $atualHeigth = $atualHeigth + $line);
-
-	//$atualHeigth-=10;
-	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_BOLD, false, false, false, 0);
-	printer_select_font($handle, $font);
-	printer_draw_text($handle, "____________________________", 30, $atualHeigth = $atualHeigth + $line);
-
+	
+	$atualHeigth = cabecalho( $handle, $atualHeigth );
+	
 	$line = 30;
-	//*
+	
 	// COMANDA HEADER
 	$font = printer_create_font("Calibri", 30, 30, PRINTER_FW_BOLD, false, false, false, 0);
 	printer_select_font($handle, $font);
 	printer_draw_text($handle, "Fechamento de Caixa ", 30, $atualHeigth = $atualHeigth + $line);
+	
+	$atualHeigth = linhaSeparadora( $handle, $atualHeigth, $line );
 
-	// LINHA SEPARADORA
-	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_BOLD, false, false, false, 0);
-	printer_select_font($handle, $font);
-	printer_draw_text($handle, "____________________________", 30, $atualHeigth = $atualHeigth + $line);
-
-	// MOVIMENTAÇÕES
+	// MOVIMENTAï¿½ï¿½ES
 	$atualHeigth += 5;
 	$font = printer_create_font("Calibri", 30, 30, PRINTER_FW_BOLD, false, false, false, 0);
 	printer_select_font($handle, $font);
-	printer_draw_text($handle, "Movimentações", 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "MovimentaÃ§Ãµes", 30, $atualHeigth = $atualHeigth + $line);
 	
 	//*
 	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_MEDIUM, false, true, false, 0);
@@ -166,7 +135,7 @@ function printCaixa($cashMovmts, $username){
 				printer_select_font($handle, $font);
 				$fw = PRINTER_FW_BOLD;
 			}else{
-				 $description ="Mov. sem Descrição     ";				
+				 $description ="Mov. sem DescriÃ§Ã£o     ";				
 			}
 		}
 		
@@ -209,8 +178,42 @@ function resolveLinha($texto, $len){
 	
 }
 
+
+function cabecalho( $handle, $atualHeigth ) {
+	$line = 40;
+	$atualHeigth = 0;
+	
+	// HEADER                                                       <i>     <u>
+	$font = printer_create_font("Calibri", 50, 30, PRINTER_FW_BOLD, false, false, false, 0);
+	printer_select_font($handle, $font);
+	printer_draw_text($handle, "  Pousada Sol Nascente   ", 0, 0);
+	
+	$atualHeigth+=25;
+	$line = 20;
+	
+	$font = printer_create_font("Calibri", 20, 20, PRINTER_FW_MEDIUM, false, false, false, 0);
+	printer_select_font($handle, $font);
+	printer_draw_text($handle, "Av Chanceler Edson Queiroz 3321", 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Data: ".date('d/m/Y H:i') , 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "CNPJ: 40.146.306/0001-75 " , 30, $atualHeigth = $atualHeigth + $line);
+	printer_draw_text($handle, "Atendente: ".utf8_decode( $username)  , 30, $atualHeigth = $atualHeigth + $line);
+	
+	return linhaSeparadora( $handle, $atualHeigth, $line );
+}
+
+function linhaSeparadora( $handle, $atualHeigth, $line ) {
+	$atualHeigth = $atualHeigth + $line;
+	
+	printer_select_font( $handle, printer_create_font( "Calibri", 20, 20, PRINTER_FW_BOLD, false, false, false, 0 ) );
+	printer_draw_text( $handle, "____________________________", 30, $atualHeigth );
+	
+	return $atualHeigth;
+}
+
+
 function openBematechPrinter(){
-	$printerName = "MP-2500 TH";
+	// $printerName = "MP-2500 TH";
+	$printerName = "192.168.1.157";
 	if($printer = @printer_open($printerName)){
 		return $printer; 
 	}else {
