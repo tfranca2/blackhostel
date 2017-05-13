@@ -106,7 +106,14 @@ class Reserva_model extends CI_Model {
 				) + (select count(id_cliente) from reserva_cliente rc where rc.id_reserva = '.$idReserva.'  ) total';
 		return $this->db->query($sql)->row();
 	}
-	
+
+    public function getFormasPagamentoReserva( $id ) {
+        return $this->db->select('*')
+						->where('id_reserva', $id)
+						->get('reserva_pagamento')
+						->result();
+    }
+
 }
 
 ?>

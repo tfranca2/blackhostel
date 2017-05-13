@@ -116,7 +116,10 @@ class Produto extends CI_Controller {
 		}
 	}
 	
-
+    public function pesquisaProduto() {
+        $codigo = $this->input->post('codigo');
+        echo json_encode( $this->db->get_where('produto', array('id_produto' => $codigo))->row() );
+    }
 	
 	private function runFormValidations(){
 	
@@ -131,6 +134,5 @@ class Produto extends CI_Controller {
 		return $this->form_validation->run();
 	
 	}
-	
-	
+
 }

@@ -149,7 +149,9 @@ function calculoDiaria($diarias, $precoPerfil, $resumoReserva) {
 	return $precoQuarto;
 }
 
-
+function getConfigJson(){
+    return json_decode( file_get_contents(BASEPATH.'../config.json' ) );
+}
 
 
 

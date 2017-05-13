@@ -8,7 +8,9 @@ class Comanda extends CI_Controller {
 	public $_precoItens = 0;
 	public $_precoProdutos = 0;
 	public $_precoValorTotal = 0;
-	
+	public $_precoTaxaAtendimento = 0;
+	public $_precoCouvert = 0;
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper(array('url','form','array','app','printer'));
@@ -61,6 +63,7 @@ class Comanda extends CI_Controller {
 					,'part' => 'searching'
 					,'tabledata'=>$tabledata
 					,'produtos'=>$this->db->query("SELECT * FROM produto WHERE estoque > 0")->result()
+					,'formasPagamento'=> $this->db->get('forma_pagamento')->result()
 				));
 	}
 	
@@ -95,6 +98,7 @@ class Comanda extends CI_Controller {
 		$sql = "SELECT 
 					re.entrada, 
 					re.saida, 
+					re.qt_pessoas, 
 					TIMESTAMPDIFF( DAY, re.entrada, re.saida ) AS dias , 
 					TIMESTAMPDIFF( HOUR, re.entrada, re.saida ) AS horas, 
 					TIMESTAMPDIFF( MINUTE, re.entrada + INTERVAL TIMESTAMPDIFF(HOUR, re.entrada, re.saida) HOUR, re.saida ) AS minutos, 
@@ -115,7 +119,8 @@ class Comanda extends CI_Controller {
 		$entrada = $result->entrada;
 		$saida = date('Y-m-d H:i:s');
 		$saida = $result->saida;
-		$ocupantes = $this->reserva->getTotalClientsPerReservation($id)->total;
+//		$ocupantes = $this->reserva->getTotalClientsPerReservation($id)->total;
+		$ocupantes = $result->qt_pessoas;
 		if( $result->tipo == 1 ){
 			$permanencia = ((!$result->dias)?1:$result->dias).' Diária(s)';
 		} elseif( $result->tipo == 2 ){
@@ -125,9 +130,9 @@ class Comanda extends CI_Controller {
 		}
 		
 		//fazer lista de produtos para a view
-	    $s = "SELECT rpt.id_reserva_produto, produto, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto and rpt.ativo = 1 WHERE rpt.id_reserva = ".$id;
+	    $s = "SELECT rpt.id_reserva_produto, pt.id_produto, produto, rpt.quantidade, preco FROM produto pt inner JOIN reserva_produto rpt ON rpt.id_produto = pt.id_produto and rpt.ativo = 1 WHERE rpt.id_reserva = ".$id;
 		 $produtos = $this->db->query($s)->result_array();
-		
+
 		  return json_encode(
 					array(
 						 "id"=>$id
@@ -142,9 +147,12 @@ class Comanda extends CI_Controller {
 						,"precoQuarto"=> monetaryOutput($this->_precoQuarto)
 						,"valorProdutos"=> monetaryOutput($this->_precoProdutos)
 						,"total"=>monetaryOutput($this->_precoValorTotal) 
+						,"couvert"=>monetaryOutput($this->_precoCouvert)
+						,"taxaAtendimento"=>monetaryOutput($this->_precoTaxaAtendimento)
+						,"formasPagamentoReserva"=> $this->reserva->getFormasPagamentoReserva( $id )
 					));
 	}
-	
+
 	public function finalizar(){
 		
 		$id = (int) $this->uri->segment(3);
@@ -189,16 +197,24 @@ class Comanda extends CI_Controller {
 		}else{
 			$precoPerfil = $precoPessoaPerfil[$totalClientes]['preco'] + $resumoReserva->valor_itens;
 		}
-			
-		 $precoQuarto = calcularPrecoQuarto ($resumoReserva, $diarias, $precoPerfil);
-		
-		$total = $precoQuarto+$resumoReserva->valor_produtos;
-		
-		$this->_precoQuarto = $precoQuarto;
+
+        $precoQuarto = calcularPrecoQuarto ($resumoReserva, $diarias, $precoPerfil);
+        $total = $precoQuarto+$resumoReserva->valor_produtos;
+
+        //*/
+        $config = getConfigJson();
+        $couvert = $config->valorCouvert * $resumoReserva->qt_pessoas;
+        $taxaAtentimento = $resumoReserva->valor_produtos * $config->taxaAtendimento;
+        $total = $couvert+$taxaAtentimento+$resumoReserva->valor_produtos;
+        //*/
+
+        $this->_precoQuarto = $precoQuarto;
 		$this->_precoPerfil = $precoPerfil;
 		$this->_precoProdutos = $resumoReserva->valor_produtos;
 		$this->_precoValorTotal = $total;
-		
+        $this->_precoTaxaAtendimento = $taxaAtentimento;
+        $this->_precoCouvert = $couvert;
+
 	}
 	
 
@@ -208,29 +224,30 @@ class Comanda extends CI_Controller {
 		$user = $this->session->get_userdata();
 		$username = $user['user_session']['nome'];
 		$comanda = json_decode($this->buildDetail());
+        $config = getConfigJson();
 
 //		var_dump($comanda);
 
-        $this->impressora->conecta('192.168.9.100');
+        $this->impressora->conecta( $config->ipImpressora );
 
         $this->impressora->alinha("center");
 
         $this->impressora->escreve(
             $this->impressora->expandeTexto(
-                $this->impressora->italico( "Pousada Sol Nascente" )
+                $this->impressora->italico( $config->empresa )
             )
         );
 
-        $this->impressora->escreve( "Av. Chanceler Edson Queiroz, 3321\nCohab, Cascavel - CE" );
-        $this->impressora->escreve( "Tel.: (85) 9 8765-4321 - CNPJ.: 40.146.306/0001-75" );
+        $this->impressora->escreve( $config->endereco .", ". $config->numero  ."\n". $config->bairro .", ". $config->cidade ." - ". $config->uf );
+        $this->impressora->escreve( "Tel.: (". $config->ddd .") ". $config->telefone ." - CNPJ.: ". $config->cnpj );
         $this->impressora->escreve( date("d/m/Y H:i")
             . str_pad( "Atend.: ". strtoupper( tiraAcento( $username ) ),34,' ',STR_PAD_LEFT) );
 
         $this->impressora->escreve(
             $this->impressora->negrito( "\nSEM VALOR FISCAL / NAO COMPROVA PAGAMENTO\n" )
         );
-        $this->impressora->escreve( " Mesa ".$comanda->numero."                    Permanencia: ". $comanda->permanencia );
-        $this->impressora->escreve( "Comanda ".$comanda->id
+        $this->impressora->escreve( " Mesa ". $comanda->numero ."                    Permanencia: ". $comanda->permanencia );
+        $this->impressora->escreve( "Comanda ". $comanda->id
 //            .$this->impressora->geraCodigoDeBarras( $comanda->id )
         );
 
@@ -238,7 +255,14 @@ class Comanda extends CI_Controller {
 
         $this->impressora->escreve( $this->impressora->sublinha( "ITEM DESCRICAO        QTD  VL. ITEM    SUB TOTAL " ));
 
-        $couvert = 15.00;
+        $couvert = 0;
+        if( strpos( $config->diasSemanaCobrancaCouvert, date('w') ) !== false ) {
+            // considerar o horario tbm !
+            // and ( $config->horarioInicioCobrancaCouvert >= date('H') )
+            // or ( $config->horarioFinalCobrancaCouvert <= date('H') )
+            $couvert = $config->valorCouvert;
+        }
+
         $soma = 0;
         $i = 0;
         foreach( $comanda->produtos as $produto ) {
@@ -248,11 +272,12 @@ class Comanda extends CI_Controller {
         }
         $this->impressora->escreve( $this->impressora->sublinha( "                                                  " ) );
         $this->impressora->escreve( "Total consumo:                         R$ ". number_pad( monetaryOutput( $soma ), 8 ) );
-        $this->impressora->escreve( "Taxa de Atendimento (10%):             R$ ".number_pad(monetaryOutput( $soma*0.1), 8 ) );
-        $this->impressora->escreve( "Couvert Artistico:    ".str_pad($comanda->ocupantes,2,'0',STR_PAD_LEFT)."   R$ ".number_pad( monetaryOutput( $couvert ), 5 )."    R$ ". number_pad(monetaryOutput( $couvert*$comanda->ocupantes), 8 ) );
+        $this->impressora->escreve( "Taxa de Atendimento (".($config->taxaAtendimento * 100 )."%):             R$ ".number_pad(monetaryOutput( $soma*0.1), 8 ) );
+        if( $couvert > 0 )
+            $this->impressora->escreve( "Couvert Artistico:    ".str_pad($comanda->ocupantes,2,'0',STR_PAD_LEFT)."   R$ ".number_pad( monetaryOutput( $couvert ), 5 )."    R$ ". number_pad(monetaryOutput( $couvert*$comanda->ocupantes), 8 ) );
         $this->impressora->escreve(
             $this->impressora->negrito(
-                $this->impressora->sublinha( "Valor a Pagar:                         R$ ".number_pad(monetaryOutput(  $soma + ($soma*0.1) + ($couvert*$comanda->ocupantes) ), 8 ) )
+                $this->impressora->sublinha( "Valor a Pagar:                         R$ ".number_pad(monetaryOutput(  $soma + ($soma*$config->taxaAtendimento) + ($couvert*$comanda->ocupantes) ), 8 ) )
             )
         );
 
@@ -263,4 +288,6 @@ class Comanda extends CI_Controller {
         $this->impressora->desconecta();
 
     }
+
+
 }
